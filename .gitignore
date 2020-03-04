@@ -1,0 +1,13 @@
+.DS_Store
+.idea
+*.log
+tmp/
+
+# virtual env
+env
+
+# compiled python files
+**/__pycache__
+
+# migration files
+**/migrations/*initial.py
