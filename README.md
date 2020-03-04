@@ -30,6 +30,12 @@ pip3 install -r requirements.txt
 
 > Set your password to be admin123
 
+```shell script
+# back to your project root directory
+python manage.py makemigrations
+python manage.py migrate
+```
+
 5. Build frontend project
 
 ```shell script
