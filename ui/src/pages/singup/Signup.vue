@@ -1,7 +1,7 @@
 <template>
   <div class="signup-panel">
     <div class="panel-header"><h2>Create an account with PandaValley</h2></div>
-    <div class="panel-form">
+    <div class="panel-form" @keyup.enter="signupAction">
       <div class="panel-form-email">
         <el-input style="border-radius: 0" v-model="user.email" placeholder="Email" clearable class="form-data"></el-input>
       </div>
@@ -66,13 +66,14 @@ export default {
 
 <style scoped>
   .overlap-bottom >>> .el-input__inner {
-    border-bottom: 0;
+    margin-bottom: 1px;
   }
   .overlap-left >>> .el-input__inner {
-    border-left: 0;
+    margin-left: -1px;
   }
   >>> .el-input__inner {
     border-radius: 0;
+    border-collapse: collapse
   }
   .el-button {
     border-radius: 0;

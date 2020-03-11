@@ -1,9 +1,10 @@
+from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
 
 # Create your models here.
-class UserProfile(models.Model):
+class UserProfile(AbstractUser):
 
     GENDER_CHOICES = (
         ('FEMALE', 'Female'),

@@ -53,6 +53,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTH_USER_MODEL = 'user.UserProfile'
+
+AUTHENTICATION_BACKENDS = (
+    'apps.user.views.EmailBackend',
+)
+
 ROOT_URLCONF = 'PandaValley.urls'
 
 TEMPLATES = [
