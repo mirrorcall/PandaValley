@@ -62,8 +62,10 @@ export default {
     },
     linkToSignup () {
       this.$router.push({path: '/signup'})
+      console.log('signup')
     },
     linkToLogin () {
+      this.$router.push({path: '/login'})
       console.log('login')
     }
   }

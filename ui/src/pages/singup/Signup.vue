@@ -7,10 +7,10 @@
       </div>
       <div class="panel-form-name">
         <el-row>
-          <el-col :span="12"><el-input v-model="user.firstName" placeholder="First Name" clearable></el-input></el-col>
-          <el-col :span="12"><el-input v-model="user.lastName" placeholder="Last Name" clearable></el-input></el-col>
+          <el-col :span="12"><el-input class="overlap-bottom" v-model="user.firstName" placeholder="First Name" clearable></el-input></el-col>
+          <el-col :span="12"><el-input class="overlap-bottom overlap-left" v-model="user.lastName" placeholder="Last Name" clearable></el-input></el-col>
         </el-row>
-        <el-input v-model="user.telephone" placeholder="Telephone" clearable></el-input>
+        <el-input class="overlap-bottom" v-model="user.telephone" placeholder="Telephone" clearable></el-input>
         <el-input v-model="user.password" show-password placeholder="Create Password" clearable></el-input>
       </div>
       <div class="panel-form-button">
@@ -51,7 +51,7 @@ export default {
         telephone: this.user.telephone,
         password: this.user.password
       })
-      this.$axios.post('http://127.0.0.1:8000/api/join', data)
+      this.$axios.post('/api/join', data)
         .then((response) => {
           console.log(response.data)
           // TODO Check response if the email has been registered with response['code']=101
@@ -65,6 +65,12 @@ export default {
 </script>
 
 <style scoped>
+  .overlap-bottom >>> .el-input__inner {
+    border-bottom: 0;
+  }
+  .overlap-left >>> .el-input__inner {
+    border-left: 0;
+  }
   >>> .el-input__inner {
     border-radius: 0;
   }
@@ -73,12 +79,12 @@ export default {
   }
   .signup-panel {
     margin-top: 70px;
-    margin-left: 65%;
     margin-right: 10%;
+    margin-left: 65%;
   }
   .panel-form {
-    margin-left: 13%;
     margin-right: 13%;
+    margin-left: 13%;
   }
   .panel-form-name {
     margin-top: 10px;
