@@ -13,7 +13,6 @@ class EmailBackend(ModelBackend):
         try:
             user_profile = UserProfile.objects.get(Q(email=username))
             if user_profile.check_password(password):
-            # if user_profile.password == password:
                 return user_profile
         except UserProfile.DoesNotExist:
             return None
