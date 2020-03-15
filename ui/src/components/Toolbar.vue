@@ -1,15 +1,6 @@
 <template>
-    <el-container>
+  <el-container>
     <el-header style="font-size: 20px; height: 70px; border-bottom: 1px solid rgb(220, 223, 230)">
-<!--      <span>Username</span>-->
-<!--      <el-dropdown>-->
-<!--        <i class="el-icon-setting"></i>-->
-<!--        <el-dropdown-menu slot="dropdown">-->
-<!--          <el-dropdown-item>Profile</el-dropdown-item>-->
-<!--          <el-dropdown-item>Transaction</el-dropdown-item>-->
-<!--          <el-dropdown-item>Log out</el-dropdown-item>-->
-<!--        </el-dropdown-menu>-->
-<!--      </el-dropdown>-->
       <div class="top-navigator">
         <el-row :gutter="20">
           <el-col :span="4" :offset="1">
@@ -23,11 +14,11 @@
               <el-row>
                 <el-col :span="10">
                   <el-input
-                      v-model="searchArea"
-                      placeholder="Search Suburbs within NSW"
-                      prefix-icon="el-icon-search"
-                      @click="searchAction"
-                      @keyup.enter="searchAction"></el-input>
+                    v-model="searchArea"
+                    placeholder="Search Suburbs within NSW"
+                    prefix-icon="el-icon-search"
+                    @click="searchAction"
+                    @keyup.enter="searchAction"></el-input>
                 </el-col>
                 <el-col :span="13" :offset="1">
                   <el-button icon="el-icon-search" circle></el-button>
@@ -35,10 +26,24 @@
               </el-row>
             </div>
           </el-col>
-          <el-col :span="5" :offset="4">
-            <div class="top-action">
+          <el-col :span="6" :offset="3">
+            <div v-if="!this.$store.state.user" class="top-action">
               <el-button @click="linkToSignup" type="primary" round>Sign up</el-button>
               <el-button @click="linkToLogin" type="primary" round>Log in</el-button>
+            </div>
+            <div v-else class="top-user">
+              <el-dropdown>
+                <div class="user-dropdown">
+                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="vertical-align: middle"></el-avatar>
+                   {{ this.$store.state.user }}
+                </div>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item>Profile</el-dropdown-item>
+                  <el-dropdown-item>My Properties</el-dropdown-item>
+                  <el-dropdown-item>My Bookings</el-dropdown-item>
+                  <el-dropdown-item @click.native="logoutAction">Logout</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </div>
           </el-col>
         </el-row>
@@ -67,6 +72,12 @@ export default {
     linkToLogin () {
       this.$router.push({path: '/login'})
       console.log('login')
+    },
+    searchAction () {
+
+    },
+    logoutAction () {
+      this.$store.commit('$_removeStorage')
     }
   }
 }
@@ -90,4 +101,13 @@ export default {
     text-align: left;
     margin-top: 10px;
   }
+  .top-user {
+    text-align: center;
+    margin-top: 12px;
+  }
+  .user-dropdown {
+    cursor: pointer;
+    color: #409EFF;
+  }
+
 </style>

@@ -38,15 +38,15 @@ class JoinView(View):
 
             # Handling exception - if email is being registered
             if UserProfile.objects.filter(email=user_profile.email):
-                response['code'] = 101
+                response['code'] = 1
                 response['msg'] = 'unsuccessfully creating the user, as the email has been registered'
             else:
                 user_profile.save()
-                response['code'] = 100
+                response['code'] = 0
                 response['msg'] = 'successfully creating the user'
 
         except Exception as e:
-            response['code'] = 102
+            response['code'] = 127
             response['msg'] = 'Request failed to get. ' + str(e)
 
         return JsonResponse(response)
@@ -59,15 +59,15 @@ class LoginView(View):
             email = request.POST.get('email')
             password = request.POST.get('password')
             user = authenticate(username=email, password=password)
-            print(user)
-            if user:
-                response['code'] = 200
-                response['msg'] = 'successfully login as the user'
-            else:
-                response['code'] = 201
+            if not user:
+                response['code'] = 1
                 response['msg'] = 'failed to authenticate username and password'
+            else:
+                response['email'] = email
+                response['code'] = 0
+                response['msg'] = 'successfully login as the user'
         except Exception as e:
-            response['code'] = 202
+            response['code'] = 127
             response['msg'] = 'Request failed to get. ' + str(e)
 
         return JsonResponse(response)

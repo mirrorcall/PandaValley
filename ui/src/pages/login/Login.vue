@@ -34,9 +34,16 @@ export default {
       let data = this.$qs.stringify(this.user)
       this.$axios.post('/api/login', data)
         .then((response) => {
-          console.log(response.data)
+          if (response.data.code === 0) {
+            console.log('login successfully')
+            this.$store.commit('$_setStorage', response.data.email)
+            this.$router.push({name: 'Home'})
+          } else if (response.data.code === 1) { // TODO handle incorrect password
+            console.log(response.data.msg)
+          }
         })
         .catch(function (error) {
+          console.log('ERROR')
           console.log(error)
         })
     }
