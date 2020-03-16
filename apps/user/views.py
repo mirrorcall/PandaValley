@@ -1,12 +1,12 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.generic.base import View
-
 from .models import UserProfile
 
+from django.shortcuts import redirect,reverse
 
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
@@ -42,7 +42,7 @@ class JoinView(View):
                 response['code'] = 101
                 response['msg'] = 'unsuccessfully creating the user, as the email has been registered'
             else:
-                user_profile.save()
+                user_profile.save()# save the data
                 response['code'] = 100
                 response['msg'] = 'successfully creating the user'
 
@@ -72,3 +72,13 @@ class LoginView(View):
             response['msg'] = 'Request failed to get. ' + str(e)
 
         return JsonResponse(response)
+
+class LogoutView(View):
+    def get(self,request):
+        #log out
+        response = logout(request)
+        #clear cookies
+        #response = redirect(reverse()) #later need changes
+        response.delete_cookie('email')
+        response.delete_cookie('password')
+        return response

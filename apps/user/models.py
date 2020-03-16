@@ -3,7 +3,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 
 
-# Create your models here.
+# Create your models here.   database info
 class UserProfile(AbstractUser):
 
     GENDER_CHOICES = (
@@ -20,7 +20,10 @@ class UserProfile(AbstractUser):
     telephone = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{10}$')])
     # File path for the avatar shall be stored
     avatar = models.FileField(upload_to='media/avatar')
-    email = models.EmailField(unique=True)
+    # change
+    email = models.EmailField(primary_key= True)
+    #change
+    is_host = models.BooleanField()
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     c_time = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField()
