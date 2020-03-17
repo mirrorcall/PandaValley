@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
 from django.db import models
 
+#from ..property.models import Property
+#from djangotoolbox.fields import ListField
 
 # Create your models here.   database info
 class UserProfile(AbstractUser):
@@ -23,7 +25,7 @@ class UserProfile(AbstractUser):
     # change
     email = models.EmailField(primary_key= True)
     #change
-    is_host = models.BooleanField()
+    is_host = models.BooleanField(default= False)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     c_time = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField()
@@ -41,3 +43,15 @@ class UserProfile(AbstractUser):
 #     """
 #     user = models.OneToOneField(UserProfile, null=True)
 #     token = models.CharField(max_length=64)
+
+
+class Reviews(models.Model):
+    host_id = models.ForeignKey('property.Property',on_delete = models.CASCADE)
+    user = models.ForeignKey(UserProfile,on_delete = models.CASCADE)
+    comment_date = models.DateField(auto_now_add=True)
+    comment = models.TextField()
+    is_deleted = models.BooleanField(default = False)
+
+class WishList(models.Model):
+    user = models.ForeignKey(UserProfile,on_delete = models.CASCADE)
+    property = models.ForeignKey('property.Property',on_delete = models.CASCADE)

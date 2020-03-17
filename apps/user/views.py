@@ -4,9 +4,10 @@ from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.generic.base import View
+
+
 from .models import UserProfile
 
-from django.shortcuts import redirect,reverse
 
 class EmailBackend(ModelBackend):
     def authenticate(self, request, username=None, password=None, **kwargs):
@@ -42,7 +43,7 @@ class JoinView(View):
                 response['code'] = 101
                 response['msg'] = 'unsuccessfully creating the user, as the email has been registered'
             else:
-                user_profile.save()# save the data
+                user_profile.save()
                 response['code'] = 100
                 response['msg'] = 'successfully creating the user'
 
@@ -82,3 +83,5 @@ class LogoutView(View):
         response.delete_cookie('email')
         response.delete_cookie('password')
         return response
+
+
