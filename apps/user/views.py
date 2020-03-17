@@ -74,14 +74,73 @@ class LoginView(View):
 
         return JsonResponse(response)
 
-class LogoutView(View):
+# class LogoutView(View):
+#     def get(self,request):
+#         #log out
+#         #clear session
+#         logout(request)
+#         #request.session.clear()
+#         #request.session.flush()
+#         #clear cookies
+#         #response = redirect(reverse()) #later need changes
+#         # response.delete_cookie('email')
+#         # response.delete_cookie('password')
+#         return None
+
+from django.core.mail import send_mail
+import base64
+
+#from django.core.validators import validate_email
+
+class ForgetPassword(View):
+    def post(self,request):
+        response = {}
+        try:
+            email = request.POST.get('email')
+            #check if the email is resigerested
+            if UserProfile.objects.get(email=email):
+            #    response['msg'] = 'Invalid email.'
+                #encryption
+                code = email.encode("utf-8")   #  decodebytes
+                code = base64.encodebytes(code)
+                mail_title = 'Forgot password with PandaValley'
+                mail_body = 'Click the link to rest your password: http://127.0.0.1:8000/api/emailvalidation?token=%s'%code
+                send_state = send_mail(mail_title,mail_body,'PandaValley@163.com',[email])
+                response['code'] = 2
+                response['msg'] = 'Sent email.'
+            else:
+                response['code'] = 1
+                response['msg'] = 'Invalid email.'
+
+        except Exception as e:
+            response['code'] = 0
+            response['msg'] = 'Request failed to get %s.'%e
+        return JsonResponse(response)
+
+class EmailValidation(View):
     def get(self,request):
-        #log out
-        response = logout(request)
-        #clear cookies
-        #response = redirect(reverse()) #later need changes
-        response.delete_cookie('email')
-        response.delete_cookie('password')
-        return response
+        response = {}
+        try:
+            token = request.GET.get('token')
+            email = base64.decodebytes(token).decode("utf-8")
+            user = UserProfile.objects.filter(email=email)
+            response['msg'] = email
+        except Exception as e:
+            response['code'] = 0
+            response['msg'] = 'Request failed to get %s.'%e
+        return JsonResponse(response)
 
-
+class ResetPassword(View):
+    def post(self,request):
+        response = {}
+        try:
+            email = request.POST.get('email')
+            new_password = request.POST.get('newpassword')
+            user = UserProfile.objects.get(email=email)
+            user.password = new_password
+            user.save()
+            response['msg'] = 'Successful change the password.'
+        except Exception as e:
+            response['code'] = 0
+            response['msg'] = 'Request failed to get %s.'%e
+        return JsonResponse(response)
