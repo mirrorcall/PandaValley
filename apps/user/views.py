@@ -58,6 +58,7 @@ class LoginView(View):
     def post(self, request):
         response = {}
         try:
+            print(request)
             email = request.POST.get('email')
             password = request.POST.get('password')
             user = authenticate(username=email, password=password)
@@ -98,13 +99,14 @@ class ForgetPassword(View):
         try:
             email = request.POST.get('email')
             #check if the email is resigerested
+            print(email)
             if UserProfile.objects.get(email=email):
             #    response['msg'] = 'Invalid email.'
                 #encryption
                 code = email.encode("utf-8")   #  decodebytes
                 code = base64.encodebytes(code)
                 mail_title = 'Forgot password with PandaValley'
-                mail_body = 'Click the link to rest your password: http://127.0.0.1:8000/api/emailvalidation?token=%s'%code
+                mail_body = 'Click the link to rest your password: http://127.0.0.1:8000/api/emailvalidation?token=%s'%code.decode()
                 send_state = send_mail(mail_title,mail_body,'PandaValley@163.com',[email])
                 response['code'] = 2
                 response['msg'] = 'Sent email.'
@@ -119,10 +121,11 @@ class ForgetPassword(View):
 
 class EmailValidation(View):
     def get(self,request):
+        print(request)
         response = {}
         try:
             token = request.GET.get('token')
-            email = base64.decodebytes(token).decode("utf-8")
+            email = base64.decodebytes(token.encode()).decode("utf-8")
             user = UserProfile.objects.filter(email=email)
             response['msg'] = email
         except Exception as e:

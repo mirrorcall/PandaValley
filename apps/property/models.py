@@ -7,7 +7,7 @@ class Property(models.Model):
     #foreignkey
     #default id pk
 
-    host_id = models.ForeignKey('user.UserProfile',on_delete = models.CASCADE)
+    host = models.ForeignKey('user.UserProfile',on_delete = models.CASCADE)
     title = models.CharField(max_length=50)
     host_name = models.CharField(max_length=15)
     suburb = models.CharField(max_length=15)
