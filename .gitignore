@@ -12,3 +12,5 @@ env
 # migration files
 **/migrations/*initial.py
 **/migrations/*auto*.py
+
+changelog.txt
