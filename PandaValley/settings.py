@@ -143,9 +143,6 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 # s3 static settings
 STATIC_URL = '/static/'
-# STATIC_LOCATION = 'static'
-# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, STATIC_LOCATION)
-# STATICFILES_STORAGE = 'PandaValley.storage_backends.StaticStorage'
 # s3 public media settings
 PUBLIC_MEDIA_LOCATION = 'media'
 MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, PUBLIC_MEDIA_LOCATION)
@@ -155,17 +152,17 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "ui/dist/static")
 ]
 
+# Email setting
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'pdvalley.official@gmail.com'
+EMAIL_HOST_PASSWORD = 'pandavalley9900!!'
+DEFAULT_FORM_EMAIL = 'Do not reply <PandaValley.com>'
+
 # Ignored warnings
 SILENCED_SYSTEM_CHECKS = ["auth.W004"]
 
-
-##email setting
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   #email后端
-
-EMAIL_USE_SSL = True
-EMAIL_HOST = 'smtp.163.com'
-EMAIL_PORT = 465
-EMAIL_HOST_USER = 'PandaValley@163.com'
-EMAIL_HOST_PASSWORD = 'XJDTERGWYFJKLUGP'
-DEFAULT_FORM_EMAIL = 'Do not reply <PandaValley.com>'

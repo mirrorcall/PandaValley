@@ -19,10 +19,11 @@ class UserProfile(AbstractUser):
     # It has to be exactly 10 digits
     telephone = models.CharField(max_length=10, validators=[RegexValidator(r'^\d{10}$')])
     # File path for the avatar shall be stored
-    avatar = models.FileField(upload_to='media/avatar')
-    email = models.EmailField(unique=True)
+    avatar = models.FileField(upload_to='avatar', default='default_avatar.png')
+    email = models.EmailField(primary_key=True)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     c_time = models.DateTimeField(auto_now_add=True)
+    dob = models.DateField(null=True)
     is_active = models.BooleanField()
 
     def __str__(self):
