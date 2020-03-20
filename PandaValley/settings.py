@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'storages',     # django storage interacting with AWS S3
+
     'apps.user',
 ]
 
@@ -80,19 +82,11 @@ TEMPLATES = [
     },
 ]
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "ui/dist/static")
-]
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
-
 WSGI_APPLICATION = 'PandaValley.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -137,11 +131,28 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-
+# Amazon S3 Storage
+AWS_ACCESS_KEY_ID = 'AKIAZZGTZIABUTFPMOF2'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'pandavalley-media'
+AWS_DEFAULT_ACL = None
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+# s3 static settings
 STATIC_URL = '/static/'
+# STATIC_LOCATION = 'static'
+# STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, STATIC_LOCATION)
+# STATICFILES_STORAGE = 'PandaValley.storage_backends.StaticStorage'
+# s3 public media settings
+PUBLIC_MEDIA_LOCATION = 'media'
+MEDIA_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, PUBLIC_MEDIA_LOCATION)
+DEFAULT_FILE_STORAGE = 'PandaValley.storage_backends.PublicMediaStorage'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "ui/dist/static")
+]
 
 # Ignored warnings
 SILENCED_SYSTEM_CHECKS = ["auth.W004"]

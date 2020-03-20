@@ -20,11 +20,6 @@ class EmailBackend(ModelBackend):
 
 # Create your views here.
 class JoinView(View):
-    """
-    JoinView is a django view for user linking /api/join
-    Performing join (sign up) action
-    Only accepting POST method
-    """
     def post(self, request):
         response = {}
         try:
@@ -47,7 +42,7 @@ class JoinView(View):
 
         except Exception as e:
             response['code'] = 127
-            response['msg'] = 'Request failed to get. ' + str(e)
+            response['msg'] = 'Internal server failure. ' + str(e)
 
         return JsonResponse(response)
 
@@ -68,6 +63,73 @@ class LoginView(View):
                 response['msg'] = 'successfully login as the user'
         except Exception as e:
             response['code'] = 127
-            response['msg'] = 'Request failed to get. ' + str(e)
+            response['msg'] = 'Internal server failure. ' + str(e)
+
+        return JsonResponse(response)
+
+
+class PassUserInfoView(View):
+    def get(self, request):
+        response = {}
+        try:
+            email = request.GET.get('email')
+            user = UserProfile.objects.get(email=email)
+            if user.avatar.name:
+                response['avatar_url'] = user.avatar.url
+            else:
+                response['avatar_url'] = ''
+            response['c_time'] = str(user.c_time).split('-')[0]
+            response['first_name'] = user.first_name
+            response['last_name'] = user.last_name
+            response['gender'] = user.gender
+            response['dob'] = user.dob
+            response['phone'] = user.telephone
+            response['code'] = 0
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+
+        return JsonResponse(response)
+
+
+class UploadAvatarView(View):
+    def post(self, request):
+        response = {}
+        try:
+            email = request.POST.get('email')
+            user = UserProfile.objects.get(email=email)
+            user.avatar = request.FILES.get('avatar')
+            print(user.avatar.url)
+            user.save()
+            response['avatar_url'] = user.avatar.url
+            response['code'] = 0
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+
+        return JsonResponse(response)
+
+
+class ModifyProfileView(View):
+    def post(self, request):
+        response = {}
+        try:
+            email = request.POST.get('email')
+            profile_key = request.POST.get('profile_key')
+            user = UserProfile.objects.get(email=email)
+
+            if profile_key == 'NAME':
+                user.first_name = request.POST.get('profile_value_1')
+                user.last_name = request.POST.get('profile_value_2')
+            elif profile_key == 'GENDER':
+                user.gender = request.POST.get('profile_value_1')
+            elif profile_key == 'DOB':
+                user.dob = request.POST.get('profile_value_1')
+
+            user.save()
+            response['code'] = 0
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
 
         return JsonResponse(response)

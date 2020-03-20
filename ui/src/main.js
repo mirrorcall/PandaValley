@@ -5,11 +5,12 @@ import App from './App'
 import router from './router'
 import store from './store/index'
 import Element from 'element-ui'
+import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import qs from 'qs'
 
-Vue.use(Element)
+Vue.use(Element, { locale })
 
 Vue.prototype.$axios = axios
 // register the default baseURL for axios

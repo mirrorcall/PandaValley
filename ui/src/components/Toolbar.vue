@@ -34,13 +34,17 @@
             <div v-else class="top-user">
               <el-dropdown>
                 <div class="user-dropdown">
-                  <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" style="vertical-align: middle"></el-avatar>
+                  <el-avatar id="toolbar-avatar" :src="imageUrl" style="vertical-align: middle"></el-avatar>
                    {{ this.$store.state.user }}
                 </div>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>Profile</el-dropdown-item>
+                  <el-dropdown-item @click.native="linkToProfile">Profile</el-dropdown-item>
                   <el-dropdown-item>My Properties</el-dropdown-item>
                   <el-dropdown-item>My Bookings</el-dropdown-item>
+                  <el-dropdown-item>Messages</el-dropdown-item>
+                  <el-dropdown-item>Watchlist</el-dropdown-item>
+                  <el-dropdown-item>English (AU)</el-dropdown-item>
+                  <el-dropdown-item>$ AUD</el-dropdown-item>
                   <el-dropdown-item @click.native="logoutAction">Logout</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
@@ -53,12 +57,29 @@
 </template>
 
 <script>
+import bus from '../assets/eventBus'
 export default {
   name: 'Toolbar',
   data () {
     return {
-      searchArea: ''
+      searchArea: '',
+      imageUrl: ''
     }
+  },
+  created () {
+    this.$axios.get('/api/pass_user_info?email=' + this.$store.getters.getStorage)
+      .then((response) => {
+        if (response.data.code === 0) {
+          this.imageUrl = response.data.avatar_url
+        }
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    bus.$on('updateUserAvatar', (params) => {
+      this.imageUrl = params
+      console.log(params)
+    })
   },
   methods: {
     // functions that map routers for buttons
@@ -73,11 +94,15 @@ export default {
       this.$router.push({path: '/login'})
       console.log('login')
     },
+    linkToProfile () {
+      this.$router.push({path: '/profile'})
+    },
     searchAction () {
 
     },
     logoutAction () {
       this.$store.commit('$_removeStorage')
+      this.$router.push({path: '/'})
     }
   }
 }
