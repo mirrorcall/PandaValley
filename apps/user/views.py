@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate,logout
 from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
@@ -61,6 +61,70 @@ class LoginView(View):
                 response['email'] = email
                 response['code'] = 0
                 response['msg'] = 'successfully login as the user'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+
+        return JsonResponse(response)
+
+
+from django.core.mail import send_mail
+import base64
+
+#from django.core.validators import validate_email
+
+class ForgetPassword(View):
+    def post(self,request):
+        response = {}
+        try:
+            email = request.POST.get('email')
+            #check if the email is resigerested
+            print(email)
+            if UserProfile.objects.get(email=email):
+            #    response['msg'] = 'Invalid email.'
+                #encryption
+                code = email.encode("utf-8")   #  decodebytes
+                code = base64.encodebytes(code)
+                mail_title = 'Forgot password with PandaValley'
+                mail_body = 'Click the link to rest your password: http://127.0.0.1:8000/api/emailvalidation?token=%s'%code.decode()
+                send_state = send_mail(mail_title,mail_body,'PandaValley@163.com',[email])
+                response['code'] = 2
+                response['msg'] = 'Sent email.'
+            else:
+                response['code'] = 1
+                response['msg'] = 'Invalid email.'
+
+        except Exception as e:
+            response['code'] = 0
+            response['msg'] = 'Request failed to get %s.'%e
+        return JsonResponse(response)
+
+
+class EmailValidation(View):
+    def get(self,request):
+        print(request)
+        response = {}
+        try:
+            token = request.GET.get('token')
+            email = base64.decodebytes(token.encode()).decode("utf-8")
+            user = UserProfile.objects.filter(email=email)
+            response['msg'] = email
+        except Exception as e:
+            response['code'] = 0
+            response['msg'] = 'Request failed to get %s.'%e
+        return JsonResponse(response)
+
+
+class ResetPassword(View):
+    def post(self,request):
+        response = {}
+        try:
+            email = request.POST.get('email')
+            new_password = request.POST.get('newpassword')
+            user = UserProfile.objects.get(email=email)
+            user.password = new_password
+            user.save()
+            response['msg'] = 'Successful change the password.'
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)

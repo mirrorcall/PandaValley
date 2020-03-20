@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'storages',     # django storage interacting with AWS S3
 
     'apps.user',
+    'apps.property',
 ]
 
 MIDDLEWARE = [
@@ -156,3 +157,15 @@ STATICFILES_DIRS = [
 
 # Ignored warnings
 SILENCED_SYSTEM_CHECKS = ["auth.W004"]
+
+
+##email setting
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'   #email后端
+
+EMAIL_USE_SSL = True
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'PandaValley@163.com'
+EMAIL_HOST_PASSWORD = 'XJDTERGWYFJKLUGP'
+DEFAULT_FORM_EMAIL = 'Do not reply <PandaValley.com>'
