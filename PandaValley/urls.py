@@ -19,9 +19,11 @@ from django.urls import path, re_path
 from django.views.generic import TemplateView
 from django.contrib.auth import views as auth_views
 import apps.user.urls
+import apps.property.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name="index.html")),
-    re_path(r'^api/', include(apps.user.urls))
+    re_path(r'^api/', include(apps.user.urls)),
+    re_path(r'^api/', include(apps.property.urls))
 ]

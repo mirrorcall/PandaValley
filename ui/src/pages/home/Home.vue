@@ -36,3 +36,13 @@
     margin-right: 60%;
   }
 </style>
+
+<script>
+export default {
+  name: 'Home.vue',
+  data () {
+    return {
+    }
+  }
+}
+</script>
