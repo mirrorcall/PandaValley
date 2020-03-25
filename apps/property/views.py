@@ -13,7 +13,8 @@ class AddProperty(View):
         response = {}
         try:
             new_property = Property()
-            new_property.host = request.POST.get('email')
+            # can not just write new_property.host = request.POST.get('email')
+            new_property.host = UserProfile.objects.get(email=request.POST.get('email'))
             new_property.title = request.POST.get('title')
             # user = UserProfile.objects.get(email=host).first_name
             new_property.host_name = UserProfile.objects.get(email=new_property.host).first_name
@@ -31,15 +32,19 @@ class AddProperty(View):
             new_property.double_bed = request.POST.get('double')
             new_property.queen_bed = request.POST.get('queen')
             new_property.king_bed = request.POST.get('king')
+            new_property.price = request.POST.get('price')
             ###### image
             images = request.FILES.getlist('images')
             for i in range(len(images)):
+                #print(images[i], type(images[i]))
                 if i == 0:
                     new_property.image = images[i]
+                    print(new_property.image.url)
                     new_property.save()
                 else:
+                    #new_Inspection = Inspection.objects.get(property_id=new_property.id)
                     new_Inspection = Inspection()
-                    new_Inspection.property = new_property.id
+                    new_Inspection.property = Property.objects.get(pk=new_property.id)
                     new_Inspection.image = images[i]
                     new_Inspection.save()
             response['code'] = 0

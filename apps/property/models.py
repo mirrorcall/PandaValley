@@ -14,8 +14,8 @@ class Property(models.Model):
     suburb = models.CharField(max_length=15)
     address = models.CharField(max_length=30)
     # x y on the google map
-    latitude = models.FloatField()
-    longitude = models.FloatField()
+    latitude = models.FloatField(default=0)
+    longitude = models.FloatField(default=0)
     property_type = models.CharField(max_length=15)
     description = models.TextField()
     # property state
@@ -32,16 +32,17 @@ class Property(models.Model):
     # 2 decimal place
     price = models.DecimalField(max_digits=8, decimal_places=2)
     amenities = models.TextField()
-    rating = models.DecimalField(max_digits=8, decimal_places=2)
-    cleaning_fee = models.DecimalField(max_digits=8, decimal_places=2)
+    rating = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    cleaning_fee = models.DecimalField(max_digits=8, decimal_places=2, default=50)
     # need change later on
-    image = models.ImageField()
+    image = models.FileField(upload_to='images')
 
     def __str__(self):
         return str(self.host_id) + ' ' + str(self.host_name)
 
 
 class Booking(models.Model):
+    #property id
     host = models.ForeignKey(Property, on_delete=models.CASCADE)
     start_date = models.DateField()
     end_date = models.DateField()
@@ -51,4 +52,5 @@ class Booking(models.Model):
 
 class Inspection(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    image = models.ImageField()
+    image = models.FileField(upload_to='images')
+
