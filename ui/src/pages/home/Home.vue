@@ -1,31 +1,6 @@
 <template>
   <div class="home">
-    <table>
-      <tr>
-        <th>1</th>
-        <th>2</th>
-        <th>3</th>
-        <th>4</th>
-      </tr>
-      <tr>
-        <th>1</th>
-        <th>2</th>
-        <th>3</th>
-        <th>4</th>
-      </tr>
-      <tr>
-        <th>1</th>
-        <th>2</th>
-        <th>3</th>
-        <th>4</th>
-      </tr>
-      <tr>
-        <th>1</th>
-        <th>2</th>
-        <th>3</th>
-        <th>4</th>
-      </tr>
-    </table>
+    <search></search>
   </div>
 </template>
 
@@ -38,8 +13,12 @@
 </style>
 
 <script>
+import Search from '../../components/Search'
 export default {
   name: 'Home.vue',
+  components: {
+    Search
+  },
   data () {
     return {
     }

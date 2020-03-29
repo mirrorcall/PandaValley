@@ -11,6 +11,8 @@ from ..user.models import UserProfile
 class AddProperty(View):
     def post(self, request):
         response = {}
+        print(request.POST)
+        print(request.FILES)
         try:
             new_property = Property()
             # can not just write new_property.host = request.POST.get('email')
@@ -19,47 +21,57 @@ class AddProperty(View):
             # user = UserProfile.objects.get(email=host).first_name
             new_property.host_name = UserProfile.objects.get(email=new_property.host).first_name
             new_property.suburb = request.POST.get('suburb')
-            new_property.address = request.POST.get('address')
+            new_property.street = request.POST.get('street')
+            new_property.postcode = request.POST.get('postcode')
             # new_property.latitude = request.POST.get('latitude')
             # new_property.longitude = request.POST.get('longitude')
-            new_property.property_type = request.POST.get('property_type')
-            new_property.description = request.POST.get('description')
-            new_property.guests = request.POST.get('guests')
-            #room info
-            new_property.bathrooms = request.POST.get('bathrooms')
+            # new_property.description = request.POST.get('description')
+            # new_property.guests = request.POST.get('guests')
+            # room info
+            # new_property.amenities = request.POST.get('amenities')
+            new_property.room_type = request.POST.get('room_type')
+            new_property.bathrooms = request.POST.get('bathroom')
             new_property.bedrooms = request.POST.get('bedrooms')
-            new_property.single_bed = request.POST.get('single')
-            new_property.double_bed = request.POST.get('double')
-            new_property.queen_bed = request.POST.get('queen')
-            new_property.king_bed = request.POST.get('king')
+            new_property.single_bed = request.POST.get('single_bed')
+            new_property.double_bed = request.POST.get('double_bed')
+            new_property.queen_bed = request.POST.get('queen_bed')
+            new_property.king_bed = request.POST.get('king_bed')
             new_property.price = request.POST.get('price')
-            ###### image
-            images = request.FILES.getlist('images')
-            for i in range(len(images)):
-                #print(images[i], type(images[i]))
-                if i == 0:
-                    new_property.image = images[i]
-                    print(new_property.image.url)
-                    new_property.save()
-                else:
-                    #new_Inspection = Inspection.objects.get(property_id=new_property.id)
-                    new_Inspection = Inspection()
-                    new_Inspection.property = Property.objects.get(pk=new_property.id)
-                    new_Inspection.image = images[i]
-                    new_Inspection.save()
-            response['code'] = 0
-            response['msg'] = 'Property information saved.'
+            # image
+            images = request.FILES.getlist('image')
+            if not images:
+                response['code'] = 1
+                response['msg'] = 'Lacking of inspection images/views'
+            else:
+                for i in range(len(images)):
+                    #print(images[i], type(images[i]))
+                    if i == 0:
+                        new_property.image = images[i]
+                        print(new_property.image.url)
+                        new_property.save()
+                    else:
+                        #new_Inspection = Inspection.objects.get(property_id=new_property.id)
+                        new_Inspection = Inspection()
+                        new_Inspection.property = Property.objects.get(pk=new_property.id)
+                        new_Inspection.image = images[i]
+                        new_Inspection.save()
+                response['code'] = 0
+                response['msg'] = 'Property information saved.'
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
+        print(response)
         return JsonResponse(response)
 
 
 class SearchPropertyView(View):
     def get(self, request):
+        print(request.GET)
         response = {}
         try:
             location = request.GET.get('location')
+            location = location.replace('number_of_people=', '')
+            print('==========', location)
             start_date = request.GET.get('start_date').split('/')
             end_date = request.GET.get('end_date').split('/')
             start_date = [int(i) for i in start_date]
@@ -72,7 +84,7 @@ class SearchPropertyView(View):
             max_price = request.GET.get('max_price', None)
             page = request.GET.get('page', 1)
             res = Property.objects \
-                .filter(Q(address__icontains=location) | Q(title__icontains=location) | Q(suburb__icontains=location)) \
+                .filter(Q(street__icontains=location) | Q(title__icontains=location) | Q(suburb__icontains=location)) \
                 .order_by(order).distinct()
 
             if guests:
@@ -92,8 +104,8 @@ class SearchPropertyView(View):
                 for each in res.iterator():
                     # temp = {}
                     if not Booking.objects.filter(host=each['id']) \
-                            .filter(Q(start_date__lte=datetime.date(end_date[0], end_date[1], end_date[2])),
-                                    Q(end_date__gte=datetime.date(start_date[0], start_date[1], start_date[2]))):
+                            .filter(Q(start_date__lte=datetime.date(end_date[2], end_date[1], end_date[0])),
+                                    Q(end_date__gte=datetime.date(start_date[2], start_date[1], start_date[0]))):
                         result.append(each)
             #add paginator  later check but works
             # result_paginator = Paginator(result, page)
@@ -105,6 +117,7 @@ class SearchPropertyView(View):
             #     result_post = result_paginator.page(result_paginator.num_pages)
             response['code'] = 0
             response['msg'] = 'Return search information.'
+            response['total'] = len(result)
             if page == 1:
                 response['body'] = result[0:8]
             else:
@@ -112,5 +125,5 @@ class SearchPropertyView(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-
+        print(response)
         return JsonResponse(response)

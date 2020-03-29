@@ -55,6 +55,7 @@ export default {
         .then((response) => {
           console.log(response.data)
           // TODO Check response if the email has been registered with response['code']=101
+          this.$router.push({path: '/'})
         })
         .catch(function (error) {
           console.log(error)

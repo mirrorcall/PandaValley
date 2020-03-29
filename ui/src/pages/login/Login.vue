@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import bus from '../../assets/eventBus'
 export default {
   name: 'Login',
   data () {
@@ -34,9 +35,14 @@ export default {
       let data = this.$qs.stringify(this.user)
       this.$axios.post('/api/login', data)
         .then((response) => {
+          this.$store.commit('$_setStorage', response.data.email)
           if (response.data.code === 0) {
             console.log('login successfully')
-            this.$store.commit('$_setStorage', response.data.email)
+            this.$axios.get('/api/pass_user_info?email=' + this.$store.getters.getStorage)
+              .then((response) => {
+                console.log(response)
+                bus.$emit('displayUserAvatar', response.data.avatar_url)
+              })
             this.$router.push({name: 'Home'})
           } else if (response.data.code === 1) { // TODO handle incorrect password
             console.log(response.data.msg)

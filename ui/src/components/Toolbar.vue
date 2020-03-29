@@ -5,7 +5,7 @@
         <el-row :gutter="20">
           <el-col :span="4" :offset="1">
             <div class="top-logo">
-              <img @click="linkToBack" src="@/assets/panda.png" alt="render failure"
+              <img @click="linkToBack" src="@/assets/pandavalley.png" alt="render failure"
                    style="width: 60px; height: 60px; cursor: pointer">
             </div>
           </el-col>
@@ -71,6 +71,7 @@ export default {
       .then((response) => {
         if (response.data.code === 0) {
           this.imageUrl = response.data.avatar_url
+          console.log(this.imageUrl)
         }
       })
       .catch(function (error) {
@@ -79,6 +80,9 @@ export default {
     bus.$on('updateUserAvatar', (params) => {
       this.imageUrl = params
       console.log(params)
+    })
+    bus.$on('displayUserAvatar', (params) => {
+      this.imageUrl = params
     })
   },
   methods: {

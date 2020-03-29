@@ -5,6 +5,9 @@ import Home from '@/pages/home/Home'
 import Signup from '@/pages/singup/Signup'
 import Login from '@/pages/login/Login'
 import Profile from '@/pages/profile/Profile'
+import AddProperty from '@/pages/property/AddProperty'
+import PropertyList from '@/pages/property/PropertyList'
+import FilterProperty from '@/pages/property/FilterProperty'
 
 Vue.use(Router)
 
@@ -32,6 +35,21 @@ export default new Router({
       //   requireAuth: true,
       // },
       component: Profile
+    },
+    {
+      path: '/property_list',
+      name: 'ProperList',
+      component: PropertyList
+    },
+    {
+      path: '/add_property',
+      name: 'AddProperty',
+      component: AddProperty
+    },
+    {
+      path: '/filter',
+      name: 'Filter',
+      component: FilterProperty
     }
   ]
 })

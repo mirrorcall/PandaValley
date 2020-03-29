@@ -147,7 +147,7 @@ class PassUserInfoView(View):
             if user.avatar.name:
                 response['avatar_url'] = user.avatar.url
             else:
-                response['avatar_url'] = ''
+                response['avatar_url'] = 'https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/avatar/default_avatar.png'
             response['c_time'] = str(user.c_time).split('-')[0]
             response['first_name'] = user.first_name
             response['last_name'] = user.last_name
@@ -169,7 +169,6 @@ class UploadAvatarView(View):
             email = request.POST.get('email')
             user = UserProfile.objects.get(email=email)
             user.avatar = request.FILES.get('avatar')
-            print(user.avatar.url)
             user.save()
             response['avatar_url'] = user.avatar.url
             response['code'] = 0

@@ -12,15 +12,16 @@ class Property(models.Model):
     title = models.CharField(max_length=50)
     host_name = models.CharField(max_length=15)
     suburb = models.CharField(max_length=15)
-    address = models.CharField(max_length=30)
+    street = models.CharField(max_length=30)
+    postcode = models.CharField(max_length=4)
+    room_type = models.CharField(max_length=10)
     # x y on the google map
-    latitude = models.FloatField(default=0)
-    longitude = models.FloatField(default=0)
-    property_type = models.CharField(max_length=15)
-    description = models.TextField()
+    # latitude = models.FloatField(default=0)
+    # longitude = models.FloatField(default=0)
+    description = models.TextField(null=True)
     # property state
     # avaiable = models.BooleanField(default=True)
-    guests = models.IntegerField()
+    # guests = models.IntegerField()
     bedrooms = models.IntegerField()
     bathrooms = models.IntegerField()
     single_bed = models.IntegerField(default=0)
@@ -31,7 +32,7 @@ class Property(models.Model):
 
     # 2 decimal place
     price = models.DecimalField(max_digits=8, decimal_places=2)
-    amenities = models.TextField()
+    # amenities = models.TextField()
     rating = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     cleaning_fee = models.DecimalField(max_digits=8, decimal_places=2, default=50)
     # need change later on
