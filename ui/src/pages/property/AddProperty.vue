@@ -146,6 +146,27 @@
               >
                 <el-input placeholder="please type the number of bathroom" v-model="dynamicValidateForm.number_of_bathroom" type="number" ><template slot="append">bath room</template></el-input>
               </el-form-item>
+              <el-form-item
+                prop="description"
+                style="width: 600px"
+                label="description"
+                :rules="[
+      { required: true, message: 'please type the description', trigger: 'blur' },
+      { message: 'please type the description', trigger: ['blur', 'change'] }
+    ]">
+                <el-input placeholder="please type the description" v-model="dynamicValidateForm.description" type="textarea" ><template slot="append">description</template></el-input>
+              </el-form-item>
+              <el-form-item
+                prop="guests"
+                style="width: 600px"
+                label="guests"
+                :rules="[
+      { required: true, message: 'please type the guests', trigger: 'blur' },
+      { message: 'please type the guests', trigger: ['blur', 'change'] }
+    ]"
+              >
+                <el-input placeholder="please type the number of guests" v-model="dynamicValidateForm.guests" type="number" ><template slot="append">guests</template></el-input>
+              </el-form-item>
               <el-form-item style="margin-left: -500px">
                 <el-button type="primary" @click="submitForm(dynamicValidateForm)">next page</el-button>
                 <!--                <el-button @click="addDomain">add bedroom</el-button>-->
@@ -235,7 +256,9 @@ export default {
         number_of_single_bed: '',
         number_of_double_bed: '',
         number_of_king_bed: '',
-        number_of_queen_bed: ''
+        number_of_queen_bed: '',
+        description: '',
+        guests: ''
       },
       activateIndex: '0',
       radio: '1',
@@ -271,8 +294,8 @@ export default {
       },
       value: '',
       options: [{
-        value: 'Moscot',
-        label: 'Moscot'
+        value: 'Mascot',
+        label: 'Mascot'
       }, {
         value: 'Zetland',
         label: 'Zetland'
@@ -301,7 +324,7 @@ export default {
           'Content-Type': 'multipart/form-data'
         }
       }
-      // TODO: add guests/description/amenities
+      // TODO: add amenities
       this.formData.append('title', this.addForm.title)
       this.formData.append('suburb', this.addForm.value)
       this.formData.append('street', this.addForm.location)
@@ -314,10 +337,16 @@ export default {
       this.formData.append('king_bed', this.dynamicValidateForm.number_of_king_bed)
       this.formData.append('queen_bed', this.dynamicValidateForm.number_of_queen_bed)
       this.formData.append('bathroom', this.dynamicValidateForm.number_of_bathroom)
-      // this.formData.append('guests', '')
+      this.formData.append('guests', this.dynamicValidateForm.number_of_bathroom)
+      this.formData.append('description', this.dynamicValidateForm.description)
       // TODO: send formData altogether
       this.$axios.post('api/add_property', this.formData, config).then(res => {
-        console.log(res)
+        if (res.code === 0) {
+          this.$message({
+            message: 'Upload successfully.',
+            type: 'success'
+          })
+        }
       }).catch(res => {
         console.log(res)
       })

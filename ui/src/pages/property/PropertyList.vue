@@ -4,7 +4,7 @@
     <ul>
       <li v-for="item in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">
         <div class="wishlist" ><i class="custom-icon el-icon-star-off" v-show="seen"></i></div>
-        <img :src="item.image" alt />
+        <img v-if="imageUrl!==''" :src="item.imageUrl" class="avatar" alt="">
         <div class="group_icon">
           <i class="icon iconfont iconrenshu"><span>{{item.guests}}</span></i>
           <el-divider direction="vertical"></el-divider>
@@ -49,115 +49,14 @@
 <script>
 
 export default {
-  name: 'Property_list',
+  name: 'PropertyList',
   props: ['list'],
   data: function () {
     return {
-      queryInfo: {
-        query: '',
-        pagenum: 1,
-        pagesize: 10
-      },
-      seen: false,
-      // the property list
-      goodslist: [
-        {
-          product_id: '1',
-          product_name: '1',
-          product_title: 'zetland cozy room with 2 bedroom and 1 bathroom',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '100',
-          value: 3.7
-        },
-        {
-          product_id: '2',
-          product_name: '1',
-          product_title: '1',
-          product_selling_price: '1',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '1',
-          value: 3.8
-        },
-        {
-          product_id: '3',
-          product_name: '1',
-          product_title: '1',
-          product_selling_price: '1',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '1',
-          value: 4.0
-        },
-        {
-          product_id: '4',
-          product_name: '1',
-          product_title: '1',
-          product_selling_price: '1',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '1',
-          value: 3.7
-        },
-        {
-          product_id: '5',
-          product_name: '1',
-          product_title: '1',
-          product_selling_price: '1',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '1',
-          value: 3.7
-        },
-        {
-          product_id: '6',
-          product_name: '1',
-          product_title: '1',
-          product_selling_price: '1',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '1',
-          value: 3.7
-        },
-        {
-          product_id: '7',
-          product_name: '1',
-          product_title: '1',
-          product_selling_price: '1',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '1',
-          value: 3.7
-        },
-        {
-          product_id: '8',
-          product_name: '1',
-          product_title: '1',
-          product_selling_price: '1',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '1',
-          value: 3.7
-        },
-        {
-          product_id: '9',
-          product_name: '1',
-          product_title: '1',
-          product_selling_price: '1',
-          product_picture: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-          product_price: '1',
-          value: 3.7
-        }
-      ]
-      // total number of the properties
-      // total: 0,
-      // pageSize: 8,
-      // start_date: '',
-      // end_date: '',
-      // location: '',
-      // number_of_people: 0
+      seen: false
+      // imageUrl: 'https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/avatar/default_avatar.png'
     }
   },
-  // created () {
-  //   this.start_date = this.$route.query.start_date
-  //   this.end_date = this.$route.query.end_date
-  //   this.location = this.$route.query.location
-  //   this.number_of_people = this.$route.query.number_of_people
-  //   this.getPropertylist()
-  // },
   methods: {
     enter () {
       this.seen = true

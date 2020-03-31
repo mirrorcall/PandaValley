@@ -48,8 +48,9 @@
                 <el-date-picker
                   v-model="form.date1"
                   type="daterange"
-                  value-format="d/M/yyyy"
                   range-separator="To"
+                  format="dd/MM/yyyy"
+                  value-format="dd/MM/yyyy"
                   start-placeholder="Check-in date"
                   end-placeholder="Checkout date" :picker-options="pickerOptions">
                 </el-date-picker>
@@ -130,15 +131,18 @@ export default {
       //   date: this.form.date1
       // })
       // document.write(this.form.date1.split(',')[0])
-      var sd = new Date(this.form.date1[0])
-      var ed = new Date(this.form.date1[1])
+      // var sd = new Date(this.form.date1[0])
+      // var ed = new Date(this.form.date1[1])
       this.$router.push(
         {
           path: '/filter',
           query:
             {
-              start_date: sd.toLocaleDateString('en-AU'),
-              end_date: ed.toLocaleDateString('en-AU'),
+              // format dd/mm/yy
+              // start_date: sd.toLocaleDateString('en-AU'),
+              // end_date: ed.toLocaleDateString('en-AU'),
+              start_date: this.form.date1[0],
+              end_date: this.form.date1[1],
               location: this.form.location,
               number_of_people: this.form.people
             }

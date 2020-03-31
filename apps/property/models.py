@@ -21,7 +21,7 @@ class Property(models.Model):
     description = models.TextField(null=True)
     # property state
     # avaiable = models.BooleanField(default=True)
-    # guests = models.IntegerField()
+    guests = models.IntegerField()
     bedrooms = models.IntegerField()
     bathrooms = models.IntegerField()
     single_bed = models.IntegerField(default=0)
@@ -37,6 +37,7 @@ class Property(models.Model):
     cleaning_fee = models.DecimalField(max_digits=8, decimal_places=2, default=50)
     # need change later on
     image = models.FileField(upload_to='images')
+    imageUrl = models.URLField(null=True)
 
     def __str__(self):
         return str(self.host_id) + ' ' + str(self.host_name)

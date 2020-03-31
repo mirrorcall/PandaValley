@@ -8,9 +8,10 @@
               v-model="date"
               type="daterange"
               range-separator="To"
-              value-format="d/M/yyyy"
+              format="dd/MM/yyyy"
+              value-format="dd/MM/yyyy"
               :start-placeholder= start_date
-              :end-placeholder= end_date :picker-options="pickerOptions" :default-value="[start_date, end_date]" @change="dateChange">
+              :end-placeholder= end_date :picker-options="pickerOptions" :default-value="[d1,d2]" @change="dateChange">
           </el-date-picker>
         </el-col>
         <el-col :span="7">
@@ -106,7 +107,7 @@
     <!-- 主要内容区 -->
     <div class="main">
       <div class="list">
-        <Property_list :list="product" v-if="product.length>0"></Property_list>
+        <PropertyList :list="product" v-if="total>0"></PropertyList>
         <div v-else class="none-product">no result</div>
       </div>
       <!-- 分页 -->
@@ -136,6 +137,8 @@ export default {
         }
       },
       date: '',
+      d1: '',
+      d2: '',
       start_date: '',
       end_date: '',
       number_of_people: 0,
@@ -144,51 +147,10 @@ export default {
       type: 'All',
       bedrooms: 1,
       bathrooms: 1,
-      order: '-rating',
-      product: [
-        // {
-        //   id: '1',
-        //   name: '1',
-        //   title: 'zetland cozy room with 2 bedroom and 1 bathroom',
-        //   image: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        //   price: '100',
-        //   bedrooms: '2',
-        //   bathrooms: '2',
-        //   rating: 3.7
-        // },
-        // {
-        //   id: '2',
-        //   name: '2',
-        //   title: 'zetland cozy room with 2 bedroom and 1 bathroom',
-        //   image: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        //   price: '100',
-        //   bedrooms: '2',
-        //   bathrooms: '2',
-        //   rating: 3.7
-        // },
-        // {
-        //   id: '3',
-        //   name: '3',
-        //   title: 'zetland cozy room with 2 bedroom and 1 bathroom',
-        //   image: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        //   price: '100',
-        //   bedrooms: '2',
-        //   bathrooms: '2',
-        //   rating: 3.7
-        // },
-        // {
-        //   id: '4',
-        //   name: '4',
-        //   title: 'zetland cozy room with 2 bedroom and 1 bathroom',
-        //   image: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-        //   price: '100',
-        //   bedrooms: '2',
-        //   bathrooms: '2',
-        //   rating: 3.7
-        // }
-      ], // 商品列表
+      order: '',
+      product: '', // 商品列表
       productList: '',
-      total: 4, // 商品总量
+      total: 8, // 商品总量
       pageSize: 1, // 每页显示的商品数量
       page: 1, // 当前页码
       search: '' // 搜索条件
@@ -198,6 +160,8 @@ export default {
     // 获取列表
     this.start_date = this.$route.query.start_date
     this.end_date = this.$route.query.end_date
+    this.d1 = this.start_date.split('/')[1] + '/' + this.start_date.split('/')[0] + '/' + this.start_date.split('/')[2]
+    this.d2 = this.end_date.split('/')[1] + '/' + this.end_date.split('/')[0] + '/' + this.end_date.split('/')[2]
     this.location = this.$route.query.location
     this.number_of_people = this.$route.query.number_of_people
     this.getPropertylist()
@@ -278,7 +242,7 @@ export default {
     },
     handleCommand2 (command) {
       if (command === '+') {
-        this.order = '+price'
+        this.order = 'price'
       }
       if (command === '-') {
         this.order = '-price'
@@ -288,12 +252,10 @@ export default {
       this.getProductBySearch()
     },
     getPropertylist () {
-      this.$axios.get('/api/search_property?start_date=' + this.start_date + '&end_date=' + this.end_date + '&location=' + this.location + 'number_of_people=' + this.number_of_people)
+      this.$axios.get('/api/search_property?start_date=' + this.start_date + '&end_date=' + this.end_date + '&location=' + this.location + '&number_of_people=' + this.number_of_people)
         .then((response) => {
-          if (response.code === 0) {
-            this.product = response.body
-            this.total = response.total
-          }
+          this.product = response.data.body
+          this.total = response.data.total
         })
         .catch(function (error) {
           console.log(error)
@@ -357,22 +319,39 @@ export default {
     // ,
     // 通过搜索条件向后端请求商品数据
     getProductBySearch () {
-      let data = this.$qs.stringify({
-        start_date: this.start_date,
-        end_date: this.end_date,
-        number_of_people: this.number_of_people,
-        min_price: this.min_price,
-        max_price: this.max_price,
-        bedrooms: this.bedrooms,
-        bathrooms: this.bathrooms,
-        order: this.order,
-        page: this.page
-      })
+      // let data = this.$qs.stringify({
+      //   start_date: this.start_date,
+      //   end_date: this.end_date,
+      //   number_of_people: this.number_of_people,
+      //   min_price: this.min_price,
+      //   max_price: this.max_price,
+      //   bedrooms: this.bedrooms,
+      //   bathrooms: this.bathrooms,
+      //   order: this.order,
+      //   page: this.page
+      // })
+      this.search = 'start_date=' + this.start_date + '&end_date=' + this.end_date + '&location=' + this.location + '&number_of_people=' + this.number_of_people
+      if (this.min_price > 0) {
+        this.search = this.search + '&min_price=' + this.min_price
+      }
+      if (this.max_price < 10000) {
+        this.search = this.search + '&max_price=' + this.max_price
+      }
+      if (this.bedrooms !== '') {
+        this.search = this.search + '&bedrooms=' + this.bedrooms
+      }
+      if (this.bathrooms !== '') {
+        this.search = this.search + '&bathrooms=' + this.bathrooms
+      }
+      if (this.order !== '') {
+        this.search = this.search + '&order=' + this.order
+      }
+      // type
       this.$axios
-        .post('/api/search', data)
+        .get('/api/search_property?' + this.search + '&page=' + this.page)
         .then(res => {
-          this.product = res.body
-          this.total = res.total
+          this.product = res.data.body
+          this.total = res.data.total
         })
         .catch(function (error) {
           console.log(error)
