@@ -1,15 +1,18 @@
 import datetime
+import decimal
+
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.generic.base import View
 
-from .models import Property, Inspection, Booking
+from .models import Property, Inspection, Booking, Reviews
 
-from ..user.models import UserProfile
-
-
+from ..user.models import UserProfile, WishList
+#from django.forms.models import model_to_dict
+from django.core.mail import send_mail
 class AddProperty(View):
     def post(self, request):
+        response = {}
         response = {}
         print(request.POST)
         print(request.FILES)
@@ -29,8 +32,8 @@ class AddProperty(View):
             new_property.guests = request.POST.get('guests')
             # room info
             # new_property.amenities = request.POST.get('amenities')
-            new_property.room_type = request.POST.get('room_type')
-            new_property.bathrooms = request.POST.get('bathroom')
+            new_property.property_type = request.POST.get('property_type')
+            new_property.bathrooms = request.POST.get('bathrooms')
             new_property.bedrooms = request.POST.get('bedrooms')
             new_property.single_bed = request.POST.get('single_bed')
             new_property.double_bed = request.POST.get('double_bed')
@@ -44,7 +47,7 @@ class AddProperty(View):
                 response['msg'] = 'Lacking of inspection images/views'
             else:
                 for i in range(len(images)):
-                    #print(images[i], type(images[i]))
+                    # print(images[i], type(images[i]))
                     if i == 0:
                         new_property.image = images[i]
                         print(new_property.image.url)
@@ -52,7 +55,7 @@ class AddProperty(View):
                         new_property.imageUrl = new_property.image.url
                         new_property.save()
                     else:
-                        #new_Inspection = Inspection.objects.get(property_id=new_property.id)
+                        # new_Inspection = Inspection.objects.get(property_id=new_property.id)
                         new_Inspection = Inspection()
                         new_Inspection.property = Property.objects.get(pk=new_property.id)
                         new_Inspection.image = images[i]
@@ -65,15 +68,12 @@ class AddProperty(View):
         print(response)
         return JsonResponse(response)
 
-
 class SearchPropertyView(View):
     def get(self, request):
-        print(request.GET)
         response = {}
         try:
             location = request.GET.get('location')
-            location = location.replace('number_of_people=', '')
-            print('==========', location)
+            user = request.GET.get('email', None)
             start_date = request.GET.get('start_date').split('/')
             end_date = request.GET.get('end_date').split('/')
             start_date = [int(i) for i in start_date]
@@ -81,8 +81,6 @@ class SearchPropertyView(View):
             bed = request.GET.get('bedrooms', None)
             bathroom = request.GET.get('bathrooms', None)
             guests = request.GET.get('number_of_people', None)
-            print(guests)
-            print(type(guests))
             order = request.GET.get('order', '-rating')
             min_price = request.GET.get('min_price', None)
             max_price = request.GET.get('max_price', None)
@@ -104,6 +102,8 @@ class SearchPropertyView(View):
                 res = res.filter(price__gte=min_price)
 
             result = []
+            #print('res',type(res))
+            #res <class 'django.db.models.query.QuerySet'>
             res = res.values()
             if res.exists():
                 for each in res.iterator():
@@ -111,8 +111,13 @@ class SearchPropertyView(View):
                     if not Booking.objects.filter(host=each['id']) \
                             .filter(Q(start_date__lte=datetime.date(end_date[2], end_date[1], end_date[0])),
                                     Q(end_date__gte=datetime.date(start_date[2], start_date[1], start_date[0]))):
+                        if user:
+                            each['saved'] = False
+                            state = WishList.objects.filter(user=user, property=each['id'])
+                            if state:
+                                each['saved'] = True
                         result.append(each)
-            #add paginator  later check but works
+            # add paginator  later check but works
             # result_paginator = Paginator(result, page)
             # try:
             #     result_post = result_paginator.page(page)
@@ -136,5 +141,282 @@ class SearchPropertyView(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-        print(response)
+
+        return JsonResponse(response)
+
+############# you wenti ???????
+class VerifyReserveView(View):
+    def post(self, request):
+        response = {}
+        try:
+            # property id
+            prop_id = request.POST.get('property')
+            start_date = request.POST.get('start_date')
+            end_date = request.POST.get('end_date')
+            start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y")
+            end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y")
+            response['state'] = False
+            # check if avaiable
+            if not Booking.objects.filter(host=prop_id) \
+                    .filter(Q(start_date__lte=end_date), Q(end_date__gte=start_date)):
+                response['state'] = True # true can book
+            response['msg'] = 'Return booking state.'
+            response['code'] = 0
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+
+        return JsonResponse(response)
+
+
+class ShowPropertyView(View):
+    def get(self, request):
+        response = {}
+        try:
+            # property id
+            prop_id = request.GET.get('property')
+            start_date = request.GET.get('start_date')
+            end_date = request.GET.get('end_date')
+            prop = Property.objects.get(pk=prop_id)
+            period = datetime.datetime.strptime(end_date,"%d/%m/%Y")- \
+                     datetime.datetime.strptime(start_date, "%d/%m/%Y")
+            period = period.days
+            ##images
+            images = []
+            images.append(prop.image.url)
+            img = Inspection.objects.filter(property=prop_id)
+            if img.exists():
+                for i in range(len(img)):
+                    images.append(img[i].image.url)
+            res = dict()
+            res['title'] = prop.title
+            res['host_name'] = prop.host.first_name
+            res['property_type'] = prop.property_type
+            res['description'] = prop.description
+            res['guests'] = prop.guests
+            res['bedrooms'] = prop.bedrooms
+            res['bathrooms'] = prop.bathrooms
+            res['single_bed'] = prop.single_bed
+            res['double_bed'] = prop.double_bed
+            res['queen_bed'] = prop.queen_bed
+            res['king_bed'] = prop.king_bed
+            res['price'] = prop.price
+            res['amenities'] = prop.amenities
+            res['rating'] = prop.rating
+            res['cleaning_fee'] = prop.cleaning_fee
+            res['image'] = images
+            res['period'] = period
+            res['total_cost'] = period*prop.price + prop.cleaning_fee
+            # res['num_review'] = prop.num_review
+            # res['num_review'] = prop.num_review
+
+            # x y on the google map
+            # latitude = models.FloatField(default=0)
+            # longitude = models.FloatField(default=0)
+
+            response['code'] = 0
+            response['msg'] = 'Return search information.'
+            response['body'] = res
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+
+        return JsonResponse(response)
+
+
+class ShowReviewsView(View):
+    def get(self, request):
+        response = {}
+        try:
+            prop_id = request.GET.get('property')
+            result = Reviews.objects.filter(property=prop_id).values()
+            response['code'] = 0
+            response['msg'] = 'Return review information.'
+            #print(type(result))
+            if result.exists():
+                res = [each for each in result.iterator()]
+                response['body'] = res
+            else:
+                response['body'] = []
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+
+        return JsonResponse(response)
+
+
+class AddReviewView(View):
+    def post(self, request):
+        response = {}
+        try:
+            prop_id = request.POST.get('property')
+            user_id = request.POST.get('email')
+            comment = request.POST.get('context')
+            ## float
+            rating = decimal.Decimal(request.POST.get('rating'))
+            #print(type(rating))
+            new_review = Reviews()
+            new_review.property = Property.objects.get(pk=prop_id)
+            new_review.user = UserProfile.objects.get(pk=user_id)
+            new_review.context = comment
+            new_review.username = new_review.user.first_name
+            new_review.rating = rating
+            new_review.property.rating = (new_review.property.num_review * new_review.property.rating + rating)\
+                                         /(new_review.property.num_review + 1)
+            new_review.property.num_review += 1
+            new_review.save()
+            new_review.property.save()
+
+            response['code'] = 0
+            response['msg'] = 'Save review information.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+
+        return JsonResponse(response)
+
+
+class ShowWishListView(View):
+    def get(self, request):
+        response = {}
+        try:
+            email = request.GET.get('email')
+            res = WishList.objects.filter(user=email).values()
+            res = [each['property_id'] for each in res.iterator()]
+            res = Property.objects.filter(id__in=res).values()
+            res = [each for each in res]
+            response['code'] = 0
+            response['msg'] = 'Return wish list information.'
+            response['body'] = res
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class AddWishListView(View):
+    def post(self, request):
+        response = {}
+        try:
+            email = request.POST.get('email')
+            prop = request.POST.get('property')
+            new = WishList()
+            new.user = UserProfile.objects.get(pk=email)
+            new.property = Property.objects.get(pk=prop)
+            new.save()
+            response['code'] = 0
+            response['msg'] = 'Added into wish list.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+#email
+class DeleteWishListView(View):
+    def post(self, request):
+        response = {}
+        try:
+            #property_id
+            temp = request.POST.get('wishlist_id')
+            WishList.objects.get(pk=temp).delete()
+            response['code'] = 0
+            response['msg'] = 'Delete current property from wish list.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class ReserveView(View):
+    def post(self, request):
+        response = {}
+        try:
+            email = request.POST.get('email')
+            prop_id = request.POST.get('property_id')
+            start_date = request.POST.get('start_date')
+            end_date = request.POST.get('end_date')
+            period = request.POST.get('period')
+            cost = request.POST.get('total_cost')
+            #print(email,prop_id,start_date,end_date)
+            start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y")
+            end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y")
+            # NEW BOOKING
+            new_booking = Booking()
+            new_booking.guest = UserProfile.objects.get(pk=email)
+            new_booking.host = Property.objects.get(pk=prop_id)
+            new_booking.start_date = start_date
+            new_booking.end_date = end_date
+            new_booking.days = period
+            new_booking.total_cost = decimal.Decimal(cost)
+            new_booking.save()
+
+            if UserProfile.objects.get(email=email):
+                # encryption
+                mail_title = 'Thank you for your booking with PandaValley'
+                mail_body = \
+                    f"Dear {new_booking.guest.first_name},\n\n" +\
+                    f"We are pleased to inform you that your booking at {new_booking.host.address} is confirmed.\n\n"+ \
+                    f"Your check-in : {new_booking.start_date.date()}\n" +\
+                    f"Your checkout : {new_booking.end_date.date()}\n\n" +\
+                    "Reservation details:\n\n" +\
+                    f"Room type: {new_booking.host.property_type}\nGuests: {new_booking.host.guests}\n"+\
+                    f"Days: {new_booking.days}\nTotal cost: ${new_booking.total_cost}\n\n"+\
+                    "Sincerely awaiting your visit."
+                send_state = send_mail(mail_title, mail_body, 'pdvalley.official@gmail.com', [email])
+                print(send_state)
+                response['code'] = 0
+                response['msg'] = 'Sent email.'
+            response['code'] = 0
+            response['msg'] = 'New booking saved.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class DeleteBookingView(View):
+    def post(self, request):
+        response = {}
+        try:
+            booking_id = request.POST.get('booking_id')
+            booking = Booking.objects.get(pk=booking_id)
+            booking.is_deleted = True
+            booking.save()
+            response['code'] = 0
+            response['msg'] = 'Delete current Booking information from My Booking.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class ShowBookingView(View):
+    def get(self, request):
+        response = {}
+        try:
+            email = request.GET.get('email')
+            #order by latest
+            bookings = Booking.objects.filter(guest=email).order_by('-id').values()
+            res = []
+            if bookings.exists():
+                for each in bookings.iterator():
+                    temp = dict()
+                    temp['booking_id'] = each['id']
+                    temp['start_date'] = each['start_date']
+                    temp['end_date'] = each['end_date']
+                    temp['days'] = each['days']
+                    temp['total_cost'] = each['total_cost']
+                    prop = Property.objects.get(pk=each['host_id'])
+                    temp['title'] = prop.title
+                    temp['image'] = prop.imageUrl
+                    temp['bedrooms'] = prop.bedrooms
+                    temp['bathrooms'] = prop.bathrooms
+                    temp['guests'] = prop.guests
+                    res.append(temp)
+
+            response['msg'] = 'Return wish list information.'
+            response['body'] = res
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
         return JsonResponse(response)

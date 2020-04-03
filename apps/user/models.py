@@ -4,7 +4,14 @@ from django.db import models
 
 
 # Create your models here.
+
+# class Manager(models.Manager):
+#     def get_queryset(self):
+#         return super(Manager, self).get_queryset().filter(is_deleted=False)
+#
+
 class UserProfile(AbstractUser):
+
 
     GENDER_CHOICES = (
         ('FEMALE', 'Female'),
@@ -39,3 +46,7 @@ class UserProfile(AbstractUser):
 #     """
 #     user = models.OneToOneField(UserProfile, null=True)
 #     token = models.CharField(max_length=64)
+###
+class WishList(models.Model):
+    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    property = models.ForeignKey('property.Property', on_delete=models.CASCADE, primary_key=True)

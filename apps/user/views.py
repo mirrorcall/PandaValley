@@ -84,7 +84,7 @@ class ForgetPassword(View):
                 code = base64.encodebytes(code)
                 mail_title = 'Forgot password with PandaValley'
                 mail_body = \
-                    'Click the link to rest your password: http://127.0.0.1:8000/api/emailvalidation?token=%s' % \
+                    'Click the link to rest your password: http://localhost:8000/#/resetpassword?token=%s' % \
                     code.decode()
                 send_state = send_mail(mail_title, mail_body, 'pdvalley.official@gmail.com', [email])
                 print(send_state)
@@ -97,6 +97,7 @@ class ForgetPassword(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal failure' + str(e)
+        print(response)
         return JsonResponse(response)
 
 
@@ -127,7 +128,7 @@ class ResetPassword(View):
             email = request.POST.get('email')
             new_password = request.POST.get('new_password')
             user = UserProfile.objects.get(email=email)
-            user.password = new_password
+            user.password = make_password(new_password)
             user.save()
             response['msg'] = 'Successful change the password.'
             response['code'] = 0

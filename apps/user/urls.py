@@ -10,5 +10,6 @@ urlpatterns = [
     re_path(r'reset_password', views.ResetPassword.as_view()),
     re_path(r'upload_avatar', views.UploadAvatarView.as_view()),
     re_path(r'pass_user_info', views.PassUserInfoView.as_view()),
-    re_path(r'modify_user_info', views.ModifyProfileView.as_view())
+    re_path(r'modify_user_info', views.ModifyProfileView.as_view()),
+    re_path(r'emailvalidation', views.EmailValidation.as_view())
 ]

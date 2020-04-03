@@ -1,12 +1,12 @@
 <template>
   <el-container>
-    <el-header style="font-size: 20px; height: 100px; border-bottom: 1px solid rgb(220, 223, 230)">
+    <el-header style="font-size: 20px; height: 70px; border-bottom: 1px solid rgb(220, 223, 230)">
       <div class="top-navigator">
         <el-row :gutter="20">
           <el-col :span="2" :offset="1">
             <div class="top-logo">
               <img @click="linkToBack" src="@/assets/logosimple.png" alt="render failure"
-                   style="width: 100px; height: 100px; cursor: pointer">
+                   style="width: 60px; height:60px; cursor: pointer">
             </div>
           </el-col>
           <!--
@@ -30,7 +30,7 @@
           !-->
           <el-col :span="12" :offset="0">
             <div class="slogan">
-              <h1 style="font-family:Georgia;color: #222222">PANDA VALLEY</h1>
+              <h4 style="font-family:Georgia;color: #222222">PANDA VALLEY</h4>
               <!--
               <img @click="linkToBack" src="@/assets/slogan.png" alt=""
                    style="width: 180px; height: 70px; cursor: pointer">
@@ -127,7 +127,7 @@ export default {
   .top-navigator {
     margin-left: 5%;
     margin-right: 5%;
-    min-height: 90px;
+    min-height: 60px;
   }
   .top-logo {
     text-align: left;
@@ -135,7 +135,7 @@ export default {
   }
   .slogan{
     text-align: left;
-    margin-top: 40px;
+    margin-top: 0px;
   }
   .top-search {
     text-align: left;
@@ -143,7 +143,7 @@ export default {
   }
   .top-action {
     text-align: left;
-    margin-top: 20px;
+    margin-top: 10px;
   }
   .top-user {
     text-align: center;

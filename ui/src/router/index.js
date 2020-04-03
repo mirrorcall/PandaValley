@@ -8,6 +8,7 @@ import Profile from '@/pages/profile/Profile'
 import AddProperty from '@/pages/property/AddProperty'
 import PropertyList from '@/pages/property/PropertyList'
 import FilterProperty from '@/pages/property/FilterProperty'
+import Resetpassword from '../pages/login/Resetpassword'
 
 Vue.use(Router)
 
@@ -50,6 +51,11 @@ export default new Router({
       path: '/filter',
       name: 'Filter',
       component: FilterProperty
+    },
+    {
+      path: '/resetpassword',
+      name: 'RestPassword',
+      component: Resetpassword
     }
   ]
 })

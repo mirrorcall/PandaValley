@@ -330,18 +330,18 @@ export default {
       this.formData.append('street', this.addForm.location)
       this.formData.append('postcode', this.addForm.location1)
       this.formData.append('price', this.addForm.price)
-      this.formData.append('room_type', this.addForm.radio)
+      this.formData.append('property_type', this.addForm.radio)
       this.formData.append('bedrooms', this.dynamicValidateForm.number_of_bedroom)
       this.formData.append('single_bed', this.dynamicValidateForm.number_of_single_bed)
       this.formData.append('double_bed', this.dynamicValidateForm.number_of_double_bed)
       this.formData.append('king_bed', this.dynamicValidateForm.number_of_king_bed)
       this.formData.append('queen_bed', this.dynamicValidateForm.number_of_queen_bed)
-      this.formData.append('bathroom', this.dynamicValidateForm.number_of_bathroom)
+      this.formData.append('bathrooms', this.dynamicValidateForm.number_of_bathroom)
       this.formData.append('guests', this.dynamicValidateForm.number_of_bathroom)
       this.formData.append('description', this.dynamicValidateForm.description)
       // TODO: send formData altogether
       this.$axios.post('api/add_property', this.formData, config).then(res => {
-        if (res.code === 0) {
+        if (res.data.code === 0) {
           this.$message({
             message: 'Upload successfully.',
             type: 'success'
