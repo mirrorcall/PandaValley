@@ -192,6 +192,10 @@ class ShowPropertyView(View):
                         images.append(img[i].image.url)
             else:
                 images.append(prop.image_url)
+                img = Inspection.objects.filter(property=prop_id)
+                if img.exists():
+                    for i in range(len(img)):
+                        images.append(img[i].image_url)
             res = dict()
             res['title'] = prop.title
             res['host_name'] = prop.host.first_name
