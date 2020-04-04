@@ -12,7 +12,6 @@ from django.db import models
 
 class UserProfile(AbstractUser):
 
-
     GENDER_CHOICES = (
         ('FEMALE', 'Female'),
         ('MALE', 'Male'),

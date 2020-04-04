@@ -17,10 +17,11 @@ class Property(models.Model):
     objects = Manager()
 
     host = models.ForeignKey('user.UserProfile', on_delete=models.CASCADE)  # email
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=150)
     host_name = models.CharField(max_length=15)
     suburb = models.CharField(max_length=15)
-    street = models.CharField(max_length=30)
+    street = models.CharField(max_length=50)
+    postcode = models.CharField(max_length=10)
     # x y on the google map
     latitude = models.FloatField(default=0)
     longitude = models.FloatField(default=0)
@@ -43,9 +44,9 @@ class Property(models.Model):
     rating = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     cleaning_fee = models.DecimalField(max_digits=8, decimal_places=2, default=50)
     # need change later on
-    image = models.FileField(upload_to='images')
+    image = models.FileField(upload_to='images', null=True)
 
-    imageUrl = models.URLField(null=True)
+    image_url = models.URLField(null=True)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
@@ -65,6 +66,7 @@ class Booking(models.Model):
 class Inspection(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)
     image = models.FileField(upload_to='images')
+    image_url = models.URLField(null=True)
 
 
 class Reviews(models.Model):

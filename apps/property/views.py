@@ -52,7 +52,7 @@ class AddProperty(View):
                         new_property.image = images[i]
                         print(new_property.image.url)
                         new_property.save()
-                        new_property.imageUrl = new_property.image.url
+                        new_property.image_url = new_property.image.url
                         new_property.save()
                     else:
                         # new_Inspection = Inspection.objects.get(property_id=new_property.id)
@@ -182,12 +182,16 @@ class ShowPropertyView(View):
                      datetime.datetime.strptime(start_date, "%d/%m/%Y")
             period = period.days
             ##images
+            # if automatically injected
             images = []
-            images.append(prop.image.url)
-            img = Inspection.objects.filter(property=prop_id)
-            if img.exists():
-                for i in range(len(img)):
-                    images.append(img[i].image.url)
+            if prop.image.name:
+                images.append(prop.image.url)
+                img = Inspection.objects.filter(property=prop_id)
+                if img.exists():
+                    for i in range(len(img)):
+                        images.append(img[i].image.url)
+            else:
+                images.append(prop.image_url)
             res = dict()
             res['title'] = prop.title
             res['host_name'] = prop.host.first_name
@@ -408,7 +412,7 @@ class ShowBookingView(View):
                     temp['total_cost'] = each['total_cost']
                     prop = Property.objects.get(pk=each['host_id'])
                     temp['title'] = prop.title
-                    temp['image'] = prop.imageUrl
+                    temp['image'] = prop.image_url
                     temp['bedrooms'] = prop.bedrooms
                     temp['bathrooms'] = prop.bathrooms
                     temp['guests'] = prop.guests
