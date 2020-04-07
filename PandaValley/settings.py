@@ -42,7 +42,6 @@ INSTALLED_APPS = [
 
     'apps.user',
     'apps.property',
-    'apps.search',
 ]
 
 MIDDLEWARE = [
