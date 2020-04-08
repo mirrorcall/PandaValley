@@ -1,0 +1,51 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "742357",
+      "name": "景点",
+      "font_class": "jingdian",
+      "unicode": "e6e0",
+      "unicode_decimal": 59104
+    },
+    {
+      "icon_id": "7137928",
+      "name": "ios-cafe",
+      "font_class": "ios-cafe",
+      "unicode": "e7d6",
+      "unicode_decimal": 59350
+    },
+    {
+      "icon_id": "7425024",
+      "name": "Supermarket",
+      "font_class": "Supermarket",
+      "unicode": "e708",
+      "unicode_decimal": 59144
+    },
+    {
+      "icon_id": "8555090",
+      "name": "restaurant-line",
+      "font_class": "restaurant-line",
+      "unicode": "e6ec",
+      "unicode_decimal": 59116
+    },
+    {
+      "icon_id": "12140707",
+      "name": "bank",
+      "font_class": "bank",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "12347529",
+      "name": "local_convenience_store_24px_rounded",
+      "font_class": "local_convenience_store_px_rounded",
+      "unicode": "ed9a",
+      "unicode_decimal": 60826
+    }
+  ]
+}
