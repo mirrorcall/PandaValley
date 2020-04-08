@@ -27,6 +27,8 @@
               </el-form-item>
               <td>
                 <el-form-item label="suburb" prop="location">
+                  <el-input v-model="addForm.suburb" placeholder="suburb"></el-input>
+                  <!--
                   <el-select v-model="addForm.value" placeholder="please choose your suburb">
                     <el-option
                       v-for="item in options"
@@ -35,6 +37,7 @@
                       :value="item.value">
                     </el-option>
                   </el-select>
+                  -->
                 </el-form-item>
               </td>
               <td>
@@ -191,10 +194,174 @@
             <el-row type="flex" :gutter="50" justify="center">
               <el-col :span="6">
                 <el-card shadow="hover">
-                  <el-aside style="text-align:left">WI-FI</el-aside>
+                  <el-aside style="text-align:left">TV</el-aside>
                   <el-switch
                     style="display: block;text-align:center"
-                    v-model="wifi"
+                    v-model="TV"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Garage</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Garage"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Clothes dryer</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Clothes_dryer"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+            </el-row>
+            <el-row type="flex" :gutter="50" justify="center" style="margin-top: 30px">
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Linens provided</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Linens_provided"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Air conditioning</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Air_conditioning"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Microwave</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Microwave"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+            </el-row>
+            <el-row type="flex" :gutter="50" justify="center" style="margin-top: 30px">
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Oven</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Oven"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Parking</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Parking"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">No Smoking</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="No_Smoking"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+            </el-row>
+            <el-row type="flex" :gutter="50" justify="center" style="margin-top: 30px">
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Hair dryer</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Hair_dryer"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Accessible</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Accessible"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Fridge</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Fridge"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+            </el-row>
+            <el-row type="flex" :gutter="50" justify="center" style="margin-top: 30px">
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Wireless Internet</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Wireless_Internet"
                     width="50"
                     height="50"
                     active-color="#13ce66"
@@ -217,10 +384,107 @@
               </el-col>
               <el-col :span="6">
                 <el-card shadow="hover">
-                  <el-aside style="text-align:left">Breakfast</el-aside>
+                  <el-aside style="text-align:left">Heating</el-aside>
                   <el-switch
                     style="display: block;text-align:center"
-                    v-model="Breakfast"
+                    v-model="Heating"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+            </el-row>
+            <el-row type="flex" :gutter="50" justify="center" style="margin-top: 30px">
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Swimming pool</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Swimming_pool"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Hot Tub</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Hot_Tub"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Elevator</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Elevator"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+            </el-row>
+            <el-row type="flex" :gutter="50" justify="center" style="margin-top: 30px">
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Blender</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Blender"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Pets Welcome</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Pets_Welcome"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Toaster</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Toaster"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+            </el-row>
+            <el-row type="flex" :gutter="50" justify="center" style="margin-top: 30px">
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">BBQ</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="BBQ"
                     width="50"
                     height="50"
                     active-color="#13ce66"
@@ -268,7 +532,8 @@ export default {
         title: '',
         value: '',
         radio: '',
-        price: ''
+        price: '',
+        suburb: ''
       },
       addFormRules: {
         title: [{
@@ -326,7 +591,8 @@ export default {
       }
       // TODO: add amenities
       this.formData.append('title', this.addForm.title)
-      this.formData.append('suburb', this.addForm.value)
+      // this.formData.append('suburb', this.addForm.value)
+      this.formData.append('suburb', this.addForm.suburb)
       this.formData.append('street', this.addForm.location)
       this.formData.append('postcode', this.addForm.location1)
       this.formData.append('price', this.addForm.price)

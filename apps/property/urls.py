@@ -12,9 +12,10 @@ urlpatterns = [
     re_path(r'show_wishlist', views.ShowWishListView.as_view()),
     re_path(r'delete_wishlist', views.DeleteWishListView.as_view()),
     re_path(r'add_wishlist', views.AddWishListView.as_view()),
-    re_path(r'show_reviews', views.ReserveView.as_view()),
+    re_path(r'reserve', views.ReserveView.as_view()),
     re_path(r'delete_booking', views.DeleteBookingView.as_view()),
-    re_path(r'show_booking', views.ShowBookingView.as_view())
+    re_path(r'show_booking', views.ShowBookingView.as_view()),
+    re_path(r'my_property', views.ShowHostPropertyView.as_view())
 ]
 
 

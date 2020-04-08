@@ -9,7 +9,7 @@ import locale from 'element-ui/lib/locale/lang/en'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import qs from 'qs'
-import './assets/icon/iconfont.css' // import icon font
+import './assets/font/iconfont.css' // import icon font
 
 Vue.use(Element, { locale })
 

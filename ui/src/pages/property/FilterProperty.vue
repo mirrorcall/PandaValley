@@ -107,7 +107,7 @@
     <!-- 主要内容区 -->
     <div class="main">
       <div class="list">
-        <PropertyList :list="product" v-if="total>0"></PropertyList>
+        <PropertyList :list="product" :start_date="start_date" :end_date="end_date" v-if="total>0"></PropertyList>
         <div v-else class="none-product">no result</div>
       </div>
       <!-- 分页 -->
@@ -150,8 +150,8 @@ export default {
       order: '',
       product: '', // 商品列表
       productList: '',
-      total: 8, // 商品总量
-      pageSize: 1, // 每页显示的商品数量
+      total: 0, // 商品总量
+      pageSize: 8, // 每页显示的商品数量
       page: 1, // 当前页码
       search: '' // 搜索条件
     }
@@ -164,7 +164,8 @@ export default {
     this.d2 = this.end_date.split('/')[1] + '/' + this.end_date.split('/')[0] + '/' + this.end_date.split('/')[2]
     this.location = this.$route.query.location
     this.number_of_people = this.$route.query.number_of_people
-    this.getPropertylist()
+    // this.getPropertylist()
+    this.getProductBySearch()
   },
   // ,
   // activated () {
@@ -345,6 +346,9 @@ export default {
       }
       if (this.order !== '') {
         this.search = this.search + '&order=' + this.order
+      }
+      if (this.$store.getters.getStorage) {
+        this.search = this.search + '&email=' + this.$store.getters.getStorage
       }
       // type
       this.$axios

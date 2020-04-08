@@ -63,6 +63,7 @@ export default {
             this.$store.commit('$_setStorage', response.data.email)
             this.$router.push({name: 'Home'})
           } else if (response.data.code === 1) { // TODO handle incorrect password
+            this.$message.error('Wrong email or password')
             console.log(response.data.msg)
           }
         })

@@ -153,6 +153,7 @@ class VerifyReserveView(View):
             prop_id = request.POST.get('property')
             start_date = request.POST.get('start_date')
             end_date = request.POST.get('end_date')
+            print(datetime.datetime.strptime(start_date, "%d/%m/%Y"))
             start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y")
             end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y")
             response['state'] = False
@@ -178,6 +179,7 @@ class ShowPropertyView(View):
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
             prop = Property.objects.get(pk=prop_id)
+            print(datetime.datetime.strptime(end_date,"%d/%m/%Y"))
             period = datetime.datetime.strptime(end_date,"%d/%m/%Y")- \
                      datetime.datetime.strptime(start_date, "%d/%m/%Y")
             period = period.days
@@ -191,6 +193,8 @@ class ShowPropertyView(View):
             res = dict()
             res['title'] = prop.title
             res['host_name'] = prop.host.first_name
+            res['host_avatar'] = prop.host.avatar.url
+            res['suburb'] = prop.suburb
             res['property_type'] = prop.property_type
             res['description'] = prop.description
             res['guests'] = prop.guests
@@ -220,7 +224,7 @@ class ShowPropertyView(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-
+        print(response)
         return JsonResponse(response)
 
 
@@ -278,19 +282,52 @@ class AddReviewView(View):
 
 class ShowWishListView(View):
     def get(self, request):
+        # response = {}
+        # try:
+        #     email = request.GET.get('email')
+        #     res = WishList.objects.filter(user=email).values()
+        #     res = [each['property_id'] for each in res.iterator()]
+        #     res = Property.objects.filter(id__in=res).values()
+        #     res = [each for each in res]
+        #     response['total'] = len(res)
+        #     response['code'] = 0
+        #     response['msg'] = 'Return wish list information.'
+        #     response['body'] = res
+        # except Exception as e:
+        #     response['code'] = 127
+        #     response['msg'] = 'Internal server failure. ' + str(e)
+        # print(response)
         response = {}
         try:
             email = request.GET.get('email')
             res = WishList.objects.filter(user=email).values()
-            res = [each['property_id'] for each in res.iterator()]
-            res = Property.objects.filter(id__in=res).values()
-            res = [each for each in res]
+            # wishlist_id   property_id
+            res = [(each['id'], each['property_id']) for each in res.iterator()]
+            # res = [each['property_id'] for each in res.iterator()]
+            result = []
+            if res:
+                for each in res:
+                    temp = dict()
+                    prop = Property.objects.get(pk=each[1])
+                    temp['wishlist_id'] = each[0]
+                    temp['property_id'] = prop.id
+                    temp['title'] = prop.title
+                    temp['host_name'] = prop.host.first_name
+                    temp['guests'] = prop.guests
+                    temp['bedrooms'] = prop.bedrooms
+                    temp['bathrooms'] = prop.bathrooms
+                    temp['price'] = prop.price
+                    temp['image'] = prop.imageUrl
+                    temp['wishlist_id'] = each[0]
+                    result.append(temp)
+
             response['code'] = 0
             response['msg'] = 'Return wish list information.'
-            response['body'] = res
+            response['body'] = result
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
+        print(response)
         return JsonResponse(response)
 
 
@@ -337,7 +374,7 @@ class ReserveView(View):
             end_date = request.POST.get('end_date')
             period = request.POST.get('period')
             cost = request.POST.get('total_cost')
-            #print(email,prop_id,start_date,end_date)
+            print(email,prop_id,start_date,end_date,period,cost)
             start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y")
             end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y")
             # NEW BOOKING
@@ -349,13 +386,15 @@ class ReserveView(View):
             new_booking.days = period
             new_booking.total_cost = decimal.Decimal(cost)
             new_booking.save()
+            response['code'] = 0
+            response['msg'] = 'New booking saved.'
 
             if UserProfile.objects.get(email=email):
                 # encryption
                 mail_title = 'Thank you for your booking with PandaValley'
                 mail_body = \
                     f"Dear {new_booking.guest.first_name},\n\n" +\
-                    f"We are pleased to inform you that your booking at {new_booking.host.address} is confirmed.\n\n"+ \
+                    f"We are pleased to inform you that your booking at {new_booking.host.street},{new_booking.host.suburb} is confirmed.\n\n"+ \
                     f"Your check-in : {new_booking.start_date.date()}\n" +\
                     f"Your checkout : {new_booking.end_date.date()}\n\n" +\
                     "Reservation details:\n\n" +\
@@ -412,6 +451,9 @@ class ShowBookingView(View):
                     temp['bedrooms'] = prop.bedrooms
                     temp['bathrooms'] = prop.bathrooms
                     temp['guests'] = prop.guests
+                    temp['host_name'] = prop.host_name
+                    temp['contact'] = prop.host.telephone
+                    temp['email'] = prop.host.email
                     res.append(temp)
 
             response['msg'] = 'Return wish list information.'
@@ -419,4 +461,35 @@ class ShowBookingView(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class ShowHostPropertyView(View):
+    def get(self, request):
+        response = {}
+        print(request)
+        try:
+            host = request.GET.get('email')
+            #order by latest
+            prop = Property.objects.filter(host=host).values()
+            res = []
+            if prop.exists():
+                for each in prop.iterator():
+                    temp = dict()
+                    #prop = Property.objects.get(pk=each['host_id'])
+                    temp['property_id'] = each['id']
+                    temp['title'] = each['title']#prop.title
+                    temp['image'] = each['imageUrl']
+                    temp['bedrooms'] = each['bedrooms']
+                    temp['bathrooms'] = each['bathrooms']
+                    temp['guests'] = each['guests']
+                    temp['price'] = each['price']
+                    res.append(temp)
+            response['code'] = 0
+            response['msg'] = 'Return My Property information.'
+            response['body'] = res
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        print(response)
         return JsonResponse(response)

@@ -59,6 +59,19 @@ class Booking(models.Model):
     start_date = models.DateField()
     end_date = models.DateField()
     guest = models.ForeignKey('user.UserProfile', on_delete=models.CASCADE)
+    state_choices = (
+        #        ('FEMALE', 'Female'),
+        ('UNCOMPLETED', 'uncompleted'),
+        ('CHECKED IN', 'checked in'),
+        ('UNCOMMENTED', 'uncommented'),
+        ('COMPLETED', 'completed'),
+        ('CANCELING', 'canceling'),
+        ('CANCELED', 'canceled'),
+
+    )
+    days = models.IntegerField()
+    total_cost = models.DecimalField(max_digits=18, decimal_places=2)
+    state = models.CharField(max_length=15, choices=state_choices)
     is_deleted = models.BooleanField(default=False)
 
 

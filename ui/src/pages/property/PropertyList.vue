@@ -3,8 +3,11 @@
   <div id="myList" class="myList">
     <ul>
       <li v-for="item in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">
-        <div class="wishlist" ><i class="custom-icon el-icon-star-off" v-show="seen"></i></div>
-        <img v-if="imageUrl!==''" :src="item.imageUrl" class="avatar" alt="">
+        <div class="wishlist">
+          <i class="icon iconfont iconloveaaaaaa" v-if="!item.saved" @click="addTowishlist(item)"></i>
+          <img src="@/assets/heart.png" style="width: 20px;height: 18px" v-if="item.saved" @click="addTowishlist(item)">
+        </div>
+        <img v-if="imageUrl!==''" :src="item.imageUrl" class="image" alt="" @click="gotoDetails(item)">
         <div class="group_icon">
           <i class="icon iconfont iconrenshu"><span>{{item.guests}}</span></i>
           <el-divider direction="vertical"></el-divider>
@@ -47,14 +50,14 @@
 </template>
 
 <script>
-
 export default {
   name: 'PropertyList',
-  props: ['list'],
+  props: ['list', 'start_date', 'end_date'],
   data: function () {
     return {
-      seen: false
+      seen: false,
       // imageUrl: 'https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/avatar/default_avatar.png'
+      property_id: ''
     }
   },
   methods: {
@@ -64,16 +67,6 @@ export default {
     leave () {
       this.seen = false
     },
-    async getGoodlist () {
-      const {data: res} = await this.$http.get('goods', {params: this.queryInfo})
-      if (res.meta.status !== 200) {
-        return this.$message.error('failure to get property list')
-      }
-      this.$message.success('success to get list')
-      console.log(res.data)
-      this.goodslist = res.data.goods
-      this.total = res.data.total
-    },
     handleSizeChange (newSize) {
       this.queryInfo.pagesize = newSize
       this.getGoodlist()
@@ -81,6 +74,52 @@ export default {
     handleCurrentChange (newPage) {
       this.queryInfo.pagenum = newPage
       this.getGoodlist()
+    },
+    gotoDetails (item) {
+      this.$router.push(
+        {
+          path: '/detail',
+          query:
+            {
+              // format dd/mm/yy
+              // start_date: sd.toLocaleDateString('en-AU'),
+              // end_date: ed.toLocaleDateString('en-AU'),
+              // start_date: this.form.date1[0],
+              // end_date: this.form.date1[1],
+              // location: this.form.location,
+              // number_of_people: this.form.people
+              property: item.id,
+              start_date: this.start_date,
+              end_date: this.end_date,
+              email: this.$store.getters.getStorage
+            }
+        }
+      )
+    },
+    addTowishlist (item) {
+      if (!this.$store.getters.getStorage) {
+        alert('login first')
+      } else {
+        if (item.saved === true) {
+          this.$message('already saved')
+        } else {
+          let data = this.$qs.stringify({
+            property: item.id,
+            email: this.$store.getters.getStorage
+          })
+          this.$axios.post('/api/add_wishlist', data)
+            .then((response) => {
+              if (response.data.code === 0) {
+                this.$message('saved to wishlist')
+                console.log('saved to wishlist')
+                item.saved = true
+              } else {
+                this.$message('error')
+                console.log(response.data.msg)
+              }
+            })
+        }
+      }
     }
   }
 }
@@ -88,6 +127,13 @@ export default {
 </script>
 
 <style scoped>
+  .icon {
+    width: 18px;
+    height:18px;
+    fill: currentColor;
+    overflow: hidden;
+    margin: 5px;
+  }
   .box-card {
     width: 320px;
   }
@@ -105,7 +151,6 @@ export default {
     padding: 0;
     float: right;
   }
-
   .image {
     width: 100%;
     display: block;
