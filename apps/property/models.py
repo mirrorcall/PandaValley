@@ -1,6 +1,6 @@
-from django.db import models
-
-
+#from django.db import models
+#change the models
+from django.contrib.gis.db import models
 # Create your models here.
 
 
@@ -23,11 +23,13 @@ class Property(models.Model):
     street = models.CharField(max_length=50)
     postcode = models.CharField(max_length=10)
     # x y on the google map
-    latitude = models.FloatField(default=0)
-    longitude = models.FloatField(default=0)
+    #srid=4326 latitude and longitude geographic coordinates are being used.
+    latitude_longitude = models.PointField(srid=4326)
+    # latitude = models.DecimalField(max_digits=15, decimal_places=7)
+    # longitude = models.DecimalField(max_digits=15, decimal_places=7)
     property_type = models.CharField(max_length=15)
     description = models.TextField()
-    # property state
+    #property state
     # avaiable = models.BooleanField(default=True)
     guests = models.IntegerField()
     bedrooms = models.IntegerField()

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'django.contrib.gis',
     'storages',     # django storage interacting with AWS S3
 
     'apps.user',
@@ -89,7 +89,7 @@ WSGI_APPLICATION = 'PandaValley.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.contrib.gis.db.backends.mysql',
         'NAME': 'pandavalley',
         'USER': 'root',
         'PASSWORD': 'admin123',
