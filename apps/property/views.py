@@ -140,24 +140,14 @@ class SearchPropertyView(View):
                                 temp['saved'] = True
 
                         result.append(temp)
-            # add paginator  later check but works
-            # result_paginator = Paginator(result, page)
-            # try:
-            #     result_post = result_paginator.page(page)
-            # except PageNotAnInteger:
-            #     result_post = result_paginator.page(8)
-            # except EmptyPage:
-            #     result_post = result_paginator.page(result_paginator.num_pages)
+
             response['code'] = 0
             response['msg'] = 'Return search information.'
-            if len(result) % 8 == 0:
-                response['total'] = len(result) // 8
-            else:
-                response['total'] = len(result) // 8 + 1
+            response['total'] = len(result)
             if page == 1:
                 response['body'] = result[0:8]
             else:
-                if 8 * page > len(result):
+                if len(result) - 8 * page > 0:
                     response['body'] = result[8 * (page - 1):8 * (page - 1) + 8]
                 else:
                     response['body'] = result[8 * (page - 1):len(result) + 1]
