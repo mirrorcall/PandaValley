@@ -6,7 +6,7 @@ urlpatterns = [
     re_path(r'add_property', views.AddProperty.as_view()),
     re_path(r'search_property', views.SearchPropertyView.as_view()),
     ###new changes
-    re_path(r'edit_booking', views.VerifyReserveView.as_view()),
+    re_path(r'varify_booking', views.VerifyReserveView.as_view()),
     re_path(r'show_property', views.ShowPropertyView.as_view()),
     re_path(r'show_reviews', views.ShowReviewsView.as_view()),
     re_path(r'add_review', views.AddReviewView.as_view()),
@@ -19,5 +19,7 @@ urlpatterns = [
     re_path(r'my_property', views.ShowHostPropertyView.as_view()),
     re_path(r'canceling', views.ApplyRefundView.as_view()),
     re_path(r'canceled', views.AgreeRefundView.as_view()),
-    re_path(r'my_property_booking', views.ShowHostBookingView.as_view())
+    re_path(r'my_property_booking', views.ShowHostBookingView.as_view()),
+    re_path(r'nearby_property', views.ShowNearbyPropertyView.as_view())
+
 ]
