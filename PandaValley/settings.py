@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'storages',     # django storage interacting with AWS S3
-
     'apps.user',
     'apps.property',
 ]
