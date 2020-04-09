@@ -63,7 +63,7 @@ class Booking(models.Model):
     state_choices = (
         #        ('FEMALE', 'Female'),
         ('UNCOMPLETED', 'uncompleted'),
-        ('CHECKED IN', 'checked in'),
+        ('CHECKED IN','checked in'),
         ('UNCOMMENTED', 'uncommented'),
         ('COMPLETED', 'completed'),
         ('CANCELING', 'canceling'),
@@ -74,7 +74,6 @@ class Booking(models.Model):
     total_cost = models.DecimalField(max_digits=18, decimal_places=2)
     state = models.CharField(max_length=15, choices=state_choices)
     is_deleted = models.BooleanField(default=False)
-
 
 class Inspection(models.Model):
     property = models.ForeignKey(Property, on_delete=models.CASCADE)

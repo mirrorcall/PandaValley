@@ -127,21 +127,19 @@ class SearchPropertyView(View):
             #     result_post = result_paginator.page(result_paginator.num_pages)
             response['code'] = 0
             response['msg'] = 'Return search information.'
-            if len(result)%8 == 0:
-                response['total'] = len(result)//8
-            else:
-                response['total'] = len(result) // 8 + 1
+            response['total'] = len(result)
             if page == 1:
                 response['body'] = result[0:8]
             else:
-                if 8*page > len(result):
+                if len(result) - 8*page > 0:
+                    print('aaa')
                     response['body'] = result[8*(page-1):8*(page-1)+8]
                 else:
+                    print('bbb')
                     response['body'] = result[8*(page-1):len(result)+1]
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-
         return JsonResponse(response)
 
 ############# you wenti ???????
@@ -153,16 +151,23 @@ class VerifyReserveView(View):
             prop_id = request.POST.get('property')
             start_date = request.POST.get('start_date')
             end_date = request.POST.get('end_date')
-            print(datetime.datetime.strptime(start_date, "%d/%m/%Y"))
             start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y")
             end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y")
             response['state'] = False
+            period = end_date - start_date
+            period = period.days
             # check if avaiable
             if not Booking.objects.filter(host=prop_id) \
                     .filter(Q(start_date__lte=end_date), Q(end_date__gte=start_date)):
-                response['state'] = True # true can book
-            response['msg'] = 'Return booking state.'
+                response['state'] = True  # true can book
+            res = dict()
+            prop = Property.objects.get(pk=prop_id)
+
+            res['period'] = period
+            res['total_cost'] = prop.price * period + prop.cleaning_fee
             response['code'] = 0
+            response['msg'] = 'Return booking state.'
+            response['body'] = res
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
@@ -290,21 +295,6 @@ class AddReviewView(View):
 
 class ShowWishListView(View):
     def get(self, request):
-        # response = {}
-        # try:
-        #     email = request.GET.get('email')
-        #     res = WishList.objects.filter(user=email).values()
-        #     res = [each['property_id'] for each in res.iterator()]
-        #     res = Property.objects.filter(id__in=res).values()
-        #     res = [each for each in res]
-        #     response['total'] = len(res)
-        #     response['code'] = 0
-        #     response['msg'] = 'Return wish list information.'
-        #     response['body'] = res
-        # except Exception as e:
-        #     response['code'] = 127
-        #     response['msg'] = 'Internal server failure. ' + str(e)
-        # print(response)
         response = {}
         try:
             email = request.GET.get('email')
@@ -325,7 +315,7 @@ class ShowWishListView(View):
                     temp['bedrooms'] = prop.bedrooms
                     temp['bathrooms'] = prop.bathrooms
                     temp['price'] = prop.price
-                    temp['image'] = prop.imageUrl
+                    temp['image'] = prop.image_url
                     temp['wishlist_id'] = each[0]
                     result.append(temp)
 
@@ -382,7 +372,7 @@ class ReserveView(View):
             end_date = request.POST.get('end_date')
             period = request.POST.get('period')
             cost = request.POST.get('total_cost')
-            print(email,prop_id,start_date,end_date,period,cost)
+            # print(email,prop_id,start_date,end_date)
             start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y")
             end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y")
             # NEW BOOKING
@@ -393,33 +383,37 @@ class ReserveView(View):
             new_booking.end_date = end_date
             new_booking.days = period
             new_booking.total_cost = decimal.Decimal(cost)
+            new_booking.state = 'uncompleted'
             new_booking.save()
+            response['state'] = False
+            if not Booking.objects.filter(host=prop_id) \
+                    .filter(Q(start_date__lte=end_date), Q(end_date__gte=start_date)):
+                response['state'] = True  # true can book
+            response['msg'] = 'Return booking state.'
             response['code'] = 0
-            response['msg'] = 'New booking saved.'
-
-            if UserProfile.objects.get(email=email):
+            if response['state'] and UserProfile.objects.get(email=email):
                 # encryption
                 mail_title = 'Thank you for your booking with PandaValley'
                 mail_body = \
-                    f"Dear {new_booking.guest.first_name},\n\n" +\
-                    f"We are pleased to inform you that your booking at {new_booking.host.street},{new_booking.host.suburb} is confirmed.\n\n"+ \
-                    f"Your check-in : {new_booking.start_date.date()}\n" +\
-                    f"Your checkout : {new_booking.end_date.date()}\n\n" +\
-                    "Reservation details:\n\n" +\
-                    f"Room type: {new_booking.host.property_type}\nGuests: {new_booking.host.guests}\n"+\
-                    f"Days: {new_booking.days}\nTotal cost: ${new_booking.total_cost}\n\n"+\
+                    f"Dear {new_booking.guest.first_name},\n\n" + \
+                    f"We are pleased to inform you that your booking at {new_booking.host.street} is confirmed.\n\n" + \
+                    f"Your check-in : {new_booking.start_date.date()}\n" + \
+                    f"Your checkout : {new_booking.end_date.date()}\n\n" + \
+                    "Reservation details:\n\n" + \
+                    f"Room type: {new_booking.host.property_type}\nGuests: {new_booking.host.guests}\n" + \
+                    f"Days: {new_booking.days}\nTotal cost: ${new_booking.total_cost}\n\n" + \
                     "Sincerely awaiting your visit."
                 send_state = send_mail(mail_title, mail_body, 'pdvalley.official@gmail.com', [email])
-                print(send_state)
+                #print(send_state)
                 response['code'] = 0
-                response['msg'] = 'Sent email.'
-            response['code'] = 0
-            response['msg'] = 'New booking saved.'
+                response['msg'] = 'Sent email,new booking saved'
+            else:
+                response['code'] = 1
+                response['msg'] = 'The booking dates are not available.'
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
         return JsonResponse(response)
-
 
 class DeleteBookingView(View):
     def post(self, request):
@@ -438,31 +432,51 @@ class DeleteBookingView(View):
 
 
 class ShowBookingView(View):
+    ### user side
     def get(self, request):
         response = {}
         try:
             email = request.GET.get('email')
-            #order by latest
+            # order by latest
             bookings = Booking.objects.filter(guest=email).order_by('-id').values()
-            res = []
+            res = dict()
+            res['uncompleted'] = []
+            res['checked in'] = []
+            res['completed'] = []
+            res['uncommented'] = []
+            res['canceling'] = []
+            res['canceled'] = []
+
             if bookings.exists():
                 for each in bookings.iterator():
                     temp = dict()
                     temp['booking_id'] = each['id']
+                    temp['property_id'] = each['host_id']
                     temp['start_date'] = each['start_date']
                     temp['end_date'] = each['end_date']
                     temp['days'] = each['days']
                     temp['total_cost'] = each['total_cost']
+                    current_time = datetime.datetime.now().date()
+
+                    # print(temp['state'])
+                    if each['state'] not in ['completed', 'canceling', 'canceled']:
+                        if current_time < each['start_date']:
+                            each['state'] = 'uncompleted'
+                        elif current_time < each['end_date']:
+                            each['state'] = 'checked in'
+                        else:
+                            each['state'] = 'uncommented'
                     prop = Property.objects.get(pk=each['host_id'])
                     temp['title'] = prop.title
-                    temp['image'] = prop.image_url
+                    # if automatically injected
                     temp['bedrooms'] = prop.bedrooms
                     temp['bathrooms'] = prop.bathrooms
                     temp['guests'] = prop.guests
                     temp['host_name'] = prop.host_name
                     temp['contact'] = prop.host.telephone
-                    temp['email'] = prop.host.email
-                    res.append(temp)
+                    temp['image'] = prop.image_url
+                    res[each['state']].append(temp)
+                    # print('333333333333333')
 
             response['msg'] = 'Return wish list information.'
             response['body'] = res
@@ -471,33 +485,126 @@ class ShowBookingView(View):
             response['msg'] = 'Internal server failure. ' + str(e)
         return JsonResponse(response)
 
-
-class ShowHostPropertyView(View):
+class ShowHostBookingView(View):
+    # show bookings from users
     def get(self, request):
         response = {}
-        print(request)
+        try:
+            print(request)
+            host = request.GET.get('property_id')
+            prop = Property.objects.get(pk=host)
+            res = Booking.objects.filter(host=prop).order_by('-id').values()
+            result = []
+            if res.exists():
+                for each in res.iterator():
+                    result.append(each)
+            response['body'] = result
+            response['msg'] = 'Applied for cancel booking.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class ShowHostPropertyView(View):
+    # show property
+    def get(self, request):
+        response = {}
+        #print(request)
         try:
             host = request.GET.get('email')
-            #order by latest
-            prop = Property.objects.filter(host=host).values()
+            # order by latest
+            prop = Property.objects.filter(host=host).order_by('-id').values()
             res = []
             if prop.exists():
                 for each in prop.iterator():
                     temp = dict()
-                    #prop = Property.objects.get(pk=each['host_id'])
+                    # prop = Property.objects.get(pk=each['host_id'])
                     temp['property_id'] = each['id']
-                    temp['title'] = each['title']#prop.title
-                    temp['image'] = each['imageUrl']
+                    temp['title'] = each['title']  # prop.title
+                    temp['image'] = each['image_url']
                     temp['bedrooms'] = each['bedrooms']
                     temp['bathrooms'] = each['bathrooms']
                     temp['guests'] = each['guests']
                     temp['price'] = each['price']
+                    temp['suburb'] = each['suburb']
+                    temp['street'] = each['street']
+                    temp['postcode'] = each['postcode']
+                    # temp['longitude'] = prop.host.email
+                    temp['property_type'] = each['property_type']
+                    temp['description'] = each['description']
+                    temp['email'] = each['postcode']
+                    temp['single_bed'] = each['single_bed']
+                    temp['double_bed'] = each['double_bed']
+                    temp['queen_bed'] = each['queen_bed']
+                    temp['king_bed'] = each['king_bed']
+                    temp['amenities'] = each['amenities']
+                    temp['cleaning_fee'] = each['cleaning_fee']
+                    images = []
+                    prop = Property.objects.get(pk=each['id'])
+                    if prop.image.name:
+                        images.append(prop.image.url)
+                        img = Inspection.objects.filter(property=each['id'])
+                        if img.exists():
+                            for i in range(len(img)):
+                                images.append(img[i].image.url)
+                    else:
+                        images.append(prop.image_url)
+                        img = Inspection.objects.filter(property=each['id'])
+                        if img.exists():
+                            for i in range(len(img)):
+                                images.append(img[i].image_url)
                     res.append(temp)
+                    temp['image'] = images
             response['code'] = 0
             response['msg'] = 'Return My Property information.'
             response['body'] = res
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-        print(response)
+        return JsonResponse(response)
+
+
+class ApplyRefundView(View):
+    def post(self, request):
+        response = {}
+        try:
+            booking = request.POST.get('booking_id')
+            record = Booking.objects.get(pk=booking)
+            record.state = 'canceling'
+            record.save()
+            # print(record.state)
+            response['code'] = 0
+            response['msg'] = 'Applied for cancel booking.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class AgreeRefundView(View):
+    #after canceled send the email
+    def post(self, request):
+        response = {}
+        try:
+            booking = request.POST.get('booking_id')
+            record = Booking.objects.get(pk=booking)
+            record.state = 'canceled'
+            record.save()
+            mail_title = 'Your booking has been canceled.'
+            mail_body = \
+                f"Dear {record.guest.first_name},\n\n" + \
+                f"We are pleased to inform you that your booking at {record.host.street} has been canceled.\n\n" + \
+                f"Your check-in : {record.start_date.date()}\n" + \
+                f"Your checkout : {record.end_date.date()}\n\n" + \
+                "Reservation details:\n\n" + \
+                f"Room type: {record.host.property_type}\nGuests: {record.host.guests}\n" + \
+                f"Days: {record.days}\nRefund: ${record.total_cost}\n\n"
+            send_state = send_mail(mail_title, mail_body, 'pdvalley.official@gmail.com', [email])
+            # print(record.state)
+            response['code'] = 0
+            response['msg'] = 'The booking has been canceled.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
         return JsonResponse(response)

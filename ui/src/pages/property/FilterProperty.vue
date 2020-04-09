@@ -167,71 +167,6 @@ export default {
     // this.getPropertylist()
     this.getProductBySearch()
   },
-  // ,
-  // activated () {
-  //   this.activeName = '-1' // 初始化分类列表当前选中的id为-1
-  //   this.total = 0 // 初始化商品总量为0
-  //   this.currentPage = 1 // 初始化当前页码为1
-  //   // 如果路由没有传递参数，默认为显示全部商品
-  //   if (Object.keys(this.$route.query).length == 0) {
-  //     this.categoryID = []
-  //     this.activeName = '0'
-  //     return
-  //   }
-  //   // 如果路由传递了categoryID，则显示对应的分类商品
-  //   if (this.$route.query.categoryID != undefined) {
-  //     this.categoryID = this.$route.query.categoryID
-  //     if (this.categoryID.length == 1) {
-  //       this.activeName = '' + this.categoryID[0]
-  //     }
-  //     return
-  //   }
-  //   // 如果路由传递了search，则为搜索，显示对应的分类商品
-  //   if (this.$route.query.search != undefined) {
-  //     this.search = this.$route.query.search
-  //   }
-  // },
-  // watch: {
-  //   // 监听点击了哪个分类标签，通过修改分类id，响应相应的商品
-  //   activeName: function (val) {
-  //     if (val == 0) {
-  //       this.categoryID = []
-  //     }
-  //     if (val > 0) {
-  //       this.categoryID = [Number(val)]
-  //     }
-  //     // 初始化商品总量和当前页码
-  //     this.total = 0
-  //     this.currentPage = 1
-  //     // 更新地址栏链接，方便刷新页面可以回到原来的页面
-  //     this.$router.push({
-  //       path: '/goods',
-  //       query: { categoryID: this.categoryID }
-  //     })
-  //   },
-  //   // 监听搜索条件，响应相应的商品
-  //   search: function (val) {
-  //     if (val != '') {
-  //       this.getProductBySearch(val)
-  //     }
-  //   },
-  //   // 监听分类id，响应相应的商品
-  //   categoryID: function () {
-  //     this.getData()
-  //     this.search = ''
-  //   },
-  //   // 监听路由变化，更新路由传递了搜索条件
-  //   $route: function (val) {
-  //     if (val.path == '/goods') {
-  //       if (val.query.search != undefined) {
-  //         this.activeName = '-1'
-  //         this.currentPage = 1
-  //         this.total = 0
-  //         this.search = val.query.search
-  //       }
-  //     }
-  //   }
-  // },
   methods: {
     // 返回顶部
     dateChange () {
@@ -368,6 +303,7 @@ export default {
 <style scoped>
   .goods {
     background-color: #f5f5f5;
+    padding-top: 20px;
   }
   /* 面包屑CSS */
   .el-tabs--card .el-tabs__header {

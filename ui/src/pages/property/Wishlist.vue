@@ -7,7 +7,7 @@
           <div class="wishlist">
             <el-button type="danger" icon="el-icon-delete" size="mini" @click="deletewishlist(item,index)"></el-button>
           </div>
-          <img v-if="imageUrl!==''" :src="item.image" class="image" alt="" @click="gotoDetails(item)">
+          <img :src="item.image" class="image" alt="" @click="gotoDetails(item)">
           <div class="group_icon">
             <i class="icon iconfont iconrenshu"><span>{{item.guests}}</span></i>
             <el-divider direction="vertical"></el-divider>
@@ -85,6 +85,26 @@ export default {
         .catch((res) => {
           console.log('error ', res)
         })
+    },
+    gotoDetails (item) {
+      let day1 = new Date()
+      day1.setTime(day1.getTime())
+      let s1 = day1.getDate() + '/' + (day1.getMonth() + 1) + '/' + day1.getFullYear()
+      let day2 = new Date()
+      day2.setTime(day2.getTime() + 24 * 60 * 60 * 1000)
+      let s2 = day2.getDate() + '/' + (day2.getMonth() + 1) + '/' + day1.getFullYear()
+      this.$router.push(
+        {
+          path: '/detail',
+          query:
+            {
+              property: item.property_id,
+              start_date: s1,
+              end_date: s2,
+              email: this.$store.getters.getStorage
+            }
+        }
+      )
     }
   }
 }

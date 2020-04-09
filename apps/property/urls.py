@@ -15,7 +15,8 @@ urlpatterns = [
     re_path(r'reserve', views.ReserveView.as_view()),
     re_path(r'delete_booking', views.DeleteBookingView.as_view()),
     re_path(r'show_booking', views.ShowBookingView.as_view()),
-    re_path(r'my_property', views.ShowHostPropertyView.as_view())
+    re_path(r'my_property', views.ShowHostPropertyView.as_view()),
+    re_path(r'canceling', views.ApplyRefundView.as_view()),
+    re_path(r'canceled', views.AgreeRefundView.as_view()),
+    re_path(r'my_property_booking', views.ShowHostBookingView.as_view())
 ]
-
-

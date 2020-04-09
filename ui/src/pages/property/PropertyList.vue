@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div class="border">
   <div id="myList" class="myList">
     <ul>
       <li v-for="item in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">
         <div class="wishlist">
           <i class="icon iconfont iconloveaaaaaa" v-if="!item.saved" @click="addTowishlist(item)"></i>
-          <img src="@/assets/heart.png" style="width: 20px;height: 18px" v-if="item.saved" @click="addTowishlist(item)">
+          <img src="@/assets/heart.png" style="width: 20px;height: 18px;margin-top: 0px" v-if="item.saved" @click="addTowishlist(item)">
         </div>
-        <img v-if="imageUrl!==''" :src="item.imageUrl" class="image" alt="" @click="gotoDetails(item)">
+        <img :src="item.image_url" class="image" alt="" @click="gotoDetails(item)">
         <div class="group_icon">
           <i class="icon iconfont iconrenshu"><span>{{item.guests}}</span></i>
           <el-divider direction="vertical"></el-divider>
@@ -98,7 +98,7 @@ export default {
     },
     addTowishlist (item) {
       if (!this.$store.getters.getStorage) {
-        alert('login first')
+        alert('Please login')
       } else {
         if (item.saved === true) {
           this.$message('already saved')

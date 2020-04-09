@@ -509,9 +509,28 @@ export default {
       email_detail: '',
       multiple: true,
       formData: '',
-      wifi: true,
-      Washing_machine: true,
-      Breakfast: true,
+      TV: false,
+      Garage: false,
+      Clothes_dryer: false,
+      Linens_provided: false,
+      Air_conditioning: false,
+      Microwave: false,
+      Oven: false,
+      Parking: false,
+      No_Smoking: false,
+      Hair_dryer: false,
+      Accessible: false,
+      Fridge: false,
+      Wireless_Internet: false,
+      Washing_machine: false,
+      Heating: false,
+      Swimming_pool: false,
+      Hot_Tub: false,
+      Elevator: false,
+      Blender: false,
+      Pets_Welcome: false,
+      Toaster: false,
+      BBQ: false,
       previewPath: '',
       previewVisible: false,
       dynamicValidateForm: {
@@ -584,6 +603,73 @@ export default {
       // let data = this.$qs.stringify(formName.number_of_bedroom)
       // let formData = new FormData()
       // this.$refs.upload.submit()
+      let am = ''
+      if (this.Garage) {
+        am = am + '#Garage'
+      }
+      if (this.TV) {
+        am = am + '#TV'
+      }
+      if (this.Clothes_dryer) {
+        am = am + '#Clothes dryer'
+      }
+      if (this.Linens_provided) {
+        am = am + '#Linens provided'
+      }
+      if (this.Air_conditioning) {
+        am = am + '#Air conditioning'
+      }
+      if (this.Microwave) {
+        am = am + '#Microwave'
+      }
+      if (this.Oven) {
+        am = am + '#Oven'
+      }
+      if (this.Parking) {
+        am = am + '#Parking'
+      }
+      if (this.No_Smoking) {
+        am = am + '#No Smoking'
+      }
+      if (this.Hair_dryer) {
+        am = am + '#Hair dryer'
+      }
+      if (this.Accessible) {
+        am = am + '#Accessible'
+      }
+      if (this.Fridge) {
+        am = am + '#Fridge'
+      }
+      if (this.Wireless_Internet) {
+        am = am + '#Wireless Internet'
+      }
+      if (this.Washing_machine) {
+        am = am + '#Washing machine'
+      }
+      if (this.Heating) {
+        am = am + '#Heating'
+      }
+      if (this.Swimming_pool) {
+        am = am + '#Swimming pool'
+      }
+      if (this.Hot_Tub) {
+        am = am + '#Hot Tub'
+      }
+      if (this.Elevator) {
+        am = am + '#Elevator'
+      }
+      if (this.Blender) {
+        am = am + '#Blender'
+      }
+      if (this.Pets_Welcome) {
+        am = am + '#Pets Welcome'
+      }
+      if (this.Toaster) {
+        am = am + '#Toaster'
+      }
+      if (this.BBQ) {
+        am = am + '#BBQ'
+      }
       let config = {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -605,6 +691,8 @@ export default {
       this.formData.append('bathrooms', this.dynamicValidateForm.number_of_bathroom)
       this.formData.append('guests', this.dynamicValidateForm.number_of_bathroom)
       this.formData.append('description', this.dynamicValidateForm.description)
+      this.formData.append('description', this.dynamicValidateForm.description)
+      this.formData.append('amenities', am)
       // TODO: send formData altogether
       this.$axios.post('api/add_property', this.formData, config).then(res => {
         if (res.data.code === 0) {

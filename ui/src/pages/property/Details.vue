@@ -8,7 +8,15 @@
           <h1>{{title}}</h1>
         </el-row>
         <el-row>
-          <i class="el-icon-location-information"></i>{{suburb}}, NSW
+          <el-col :span="18"><i class="el-icon-location-information"></i>{{suburb}}, NSW</el-col>
+          <el-col :span="6"><el-rate
+            v-model="rate"
+            disabled
+            show-score
+            text-color="#ff9900"
+            score-template="{value}">
+          </el-rate>
+          </el-col>
         </el-row>
       </el-col>
     </el-main>
@@ -50,7 +58,7 @@
             <h3 style="margin-top: 10px;margin-bottom: -30px"><el-col :span="10">total</el-col><el-row>{{total}}</el-row></h3>
           </el-form-item>
           <el-form-item style="margin-top: -10px">
-            <el-button style="margin-left: -100px" type="primary" @click="submitForm('ruleForm')">reserve</el-button>
+            <el-button style="margin-left: -100px" type="primary" @click="submitForm('ruleForm')">Reserve</el-button>
           </el-form-item>
         </el-form>
 
@@ -227,6 +235,7 @@ export default {
   props: {},
   data () {
     return {
+      rate: '',
       title: 'titkl',
       suburb: '',
       description: 'djnakjsnkjasndasmdnms',
@@ -326,6 +335,7 @@ export default {
           this.host_avatar = res.data.body.host_avatar
           this.suburb = res.data.body.suburb
           this.property_type = res.data.body.property_type
+          this.rate = res.data.body.rating
         })
         .catch(function (error) {
           console.log(error)

@@ -12,6 +12,7 @@ import qs from 'qs'
 import './assets/icon/iconfont.css' // import icon font
 import './assets/micon/iconfont.css'
 import * as VueGoogleMaps from 'vue2-google-maps'
+import './assets/font/iconfont.css' // import icon font
 
 Vue.use(Element, { locale })
 Vue.use(VueGoogleMaps, {
