@@ -4,20 +4,26 @@ import decimal
 from django.db.models import Q
 from django.http import JsonResponse
 from django.views.generic.base import View
-
+from django.contrib.gis.geos import GEOSGeometry
 from .models import Property, Inspection, Booking, Reviews
 
 from ..user.models import UserProfile, WishList
 #from django.forms.models import model_to_dict
 from django.core.mail import send_mail
+
+
 class AddProperty(View):
     def post(self, request):
         response = {}
         response = {}
-        print(request.POST)
-        print(request.FILES)
+        #print(request.POST)
+        #print(request.FILES)
         try:
-            new_property = Property()
+            try:
+                prop_id = request.POST.get('property_id')
+                new_property = Property.objects.get(pk=prop_id)
+            except:
+                new_property = Property()
             # can not just write new_property.host = request.POST.get('email')
             new_property.host = UserProfile.objects.get(email=request.POST.get('email'))
             new_property.title = request.POST.get('title')
@@ -26,8 +32,11 @@ class AddProperty(View):
             new_property.suburb = request.POST.get('suburb')
             new_property.street = request.POST.get('street')
             new_property.postcode = request.POST.get('postcode')
-            # new_property.latitude = request.POST.get('latitude')
-            # new_property.longitude = request.POST.get('longitude')
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
+            ##new changes
+            point = f'POINT({latitude} {longitude})'
+            new_property.latitude_longitude = GEOSGeometry(point, srid=4326)
             new_property.description = request.POST.get('description')
             new_property.guests = request.POST.get('guests')
             # room info
@@ -50,7 +59,7 @@ class AddProperty(View):
                     # print(images[i], type(images[i]))
                     if i == 0:
                         new_property.image = images[i]
-                        print(new_property.image.url)
+                        # print(new_property.image.url)
                         new_property.save()
                         new_property.image_url = new_property.image.url
                         new_property.save()
@@ -65,8 +74,9 @@ class AddProperty(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-        print(response)
+        #print(response)
         return JsonResponse(response)
+
 
 class SearchPropertyView(View):
     def get(self, request):
@@ -102,8 +112,8 @@ class SearchPropertyView(View):
                 res = res.filter(price__gte=min_price)
 
             result = []
-            #print('res',type(res))
-            #res <class 'django.db.models.query.QuerySet'>
+            # print('res',type(res))
+            # res <class 'django.db.models.query.QuerySet'>
             res = res.values()
             if res.exists():
                 for each in res.iterator():
@@ -111,36 +121,43 @@ class SearchPropertyView(View):
                     if not Booking.objects.filter(host=each['id']) \
                             .filter(Q(start_date__lte=datetime.date(end_date[2], end_date[1], end_date[0])),
                                     Q(end_date__gte=datetime.date(start_date[2], start_date[1], start_date[0]))):
+
+                        temp = dict()
+                        temp['property_id'] = each['id']
+                        temp['title'] = each['title']  # prop.title
+                        temp['image'] = each['image_url']
+                        temp['bedrooms'] = each['bedrooms']
+                        temp['bathrooms'] = each['bathrooms']
+                        temp['guests'] = each['guests']
+                        temp['price'] = each['price']
+                        temp['suburb'] = each['suburb']
+                        temp['street'] = each['street']
+
                         if user:
-                            each['saved'] = False
+                            temp['saved'] = False
                             state = WishList.objects.filter(user=user, property=each['id'])
                             if state:
-                                each['saved'] = True
-                        result.append(each)
-            # add paginator  later check but works
-            # result_paginator = Paginator(result, page)
-            # try:
-            #     result_post = result_paginator.page(page)
-            # except PageNotAnInteger:
-            #     result_post = result_paginator.page(8)
-            # except EmptyPage:
-            #     result_post = result_paginator.page(result_paginator.num_pages)
+                                temp['saved'] = True
+
+                        result.append(temp)
+
             response['code'] = 0
             response['msg'] = 'Return search information.'
             response['total'] = len(result)
             if page == 1:
                 response['body'] = result[0:8]
             else:
-                if len(result) - 8*page > 0:
-                    response['body'] = result[8*(page-1):8*(page-1)+8]
+                if len(result) - 8 * page > 0:
+                    response['body'] = result[8 * (page - 1):8 * (page - 1) + 8]
                 else:
-                    response['body'] = result[8*(page-1):len(result)+1]
+                    response['body'] = result[8 * (page - 1):len(result) + 1]git
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
+
         return JsonResponse(response)
 
-############# you wenti ???????
+
 class VerifyReserveView(View):
     def post(self, request):
         response = {}
@@ -602,6 +619,53 @@ class AgreeRefundView(View):
             # print(record.state)
             response['code'] = 0
             response['msg'] = 'The booking has been canceled.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class ShowNearbyPropertyView(View):
+    def get(self, request):
+        response = {}
+        #print(request)
+        try:
+            # LocationsNearMe = Property.objects.filter(latitude__gte=(the minimal lat from distance()),
+            #                   latitude__lte = (the minimal lat from distance()),
+            prop_id = request.GET.get('property_id')
+            start_date = request.GET.get('start_date')
+            end_date = request.GET.get('end_date')
+            start_date = datetime.datetime.strptime(start_date, "%d/%m/%Y")
+            end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y")
+            prop = Property.objects.get(pk=prop_id)
+            #within the range
+            res = Property.objects.filter(latitude_longitude__distance_lte=(prop.latitude_longitude, 3)).exclude(pk=prop_id).values()
+            result = []
+            count = 0
+            if res.exists():
+                for each in res.iterator():
+                    if count == 5:
+                        break
+                    if not Booking.objects.filter(host=each['id']) \
+                            .filter(Q(start_date__lte=end_date),
+                                    Q(end_date__gte=start_date)):
+                        temp = {}
+                        temp['property_id'] = each['id']
+                        temp['title'] = each['title']  # prop.title
+                        temp['image'] = each['image_url']
+                        temp['bedrooms'] = each['bedrooms']
+                        temp['bathrooms'] = each['bathrooms']
+                        temp['guests'] = each['guests']
+                        temp['price'] = each['price']
+                        temp['suburb'] = each['suburb']
+                        temp['street'] = each['street']
+                        result.append(temp)
+                        count += 1
+
+            response['code'] = 0
+            response['msg'] = 'Return My Property information.'
+            response['body'] = result
+            # response['body'] = res
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
