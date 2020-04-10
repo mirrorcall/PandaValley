@@ -132,10 +132,8 @@ class SearchPropertyView(View):
                 response['body'] = result[0:8]
             else:
                 if len(result) - 8*page > 0:
-                    print('aaa')
                     response['body'] = result[8*(page-1):8*(page-1)+8]
                 else:
-                    print('bbb')
                     response['body'] = result[8*(page-1):len(result)+1]
         except Exception as e:
             response['code'] = 127
