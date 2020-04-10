@@ -48,4 +48,4 @@ class UserProfile(AbstractUser):
 ###
 class WishList(models.Model):
     user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    property = models.ForeignKey('property.Property', on_delete=models.CASCADE, primary_key=True)
+    property = models.ForeignKey('property.Property', on_delete=models.CASCADE)

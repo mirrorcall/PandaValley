@@ -10,6 +10,10 @@ import PropertyList from '@/pages/property/PropertyList'
 import FilterProperty from '@/pages/property/FilterProperty'
 import Resetpassword from '../pages/login/Resetpassword'
 import MapView from '../components/MapView'
+import Mybooking from '../pages/profile/Mybooking'
+import Details from '../pages/property/Details'
+import Wishlist from '../pages/property/Wishlist'
+import Myproperty from '../pages/profile/Myproperty'
 
 Vue.use(Router)
 
@@ -62,6 +66,26 @@ export default new Router({
       path: '/map_view',
       name: 'MapView',
       component: MapView
+    },
+    {
+      path: '/booking',
+      name: 'Mybooking',
+      component: Mybooking
+    },
+    {
+      path: '/detail',
+      name: 'Detail',
+      component: Details
+    },
+    {
+      path: '/wishlist',
+      name: 'Wishlist',
+      component: Wishlist
+    },
+    {
+      path: '/myproperty',
+      name: 'Myproperty',
+      component: Myproperty
     }
   ]
 })

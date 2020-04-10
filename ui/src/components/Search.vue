@@ -82,7 +82,6 @@
           </el-col>
         </el-row>
       </el-form>
-      <router-link :to="{ path: '/add_property' }">Add property</router-link>
     </div>
   </div>
 </template>

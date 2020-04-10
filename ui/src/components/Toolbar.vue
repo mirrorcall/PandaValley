@@ -50,10 +50,10 @@
                 </div>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item @click.native="linkToProfile">Profile</el-dropdown-item>
-                  <el-dropdown-item>My Properties</el-dropdown-item>
-                  <el-dropdown-item>My Bookings</el-dropdown-item>
+                  <el-dropdown-item @click.native="linkToProperty">My Properties</el-dropdown-item>
+                  <el-dropdown-item @click.native="linkToBooking">My Bookings</el-dropdown-item>
                   <el-dropdown-item>Messages</el-dropdown-item>
-                  <el-dropdown-item>Watchlist</el-dropdown-item>
+                  <el-dropdown-item @click.native="linkToWishlist">Watchlist</el-dropdown-item>
                   <el-dropdown-item>English (AU)</el-dropdown-item>
                   <el-dropdown-item>$ AUD</el-dropdown-item>
                   <el-dropdown-item @click.native="logoutAction">Logout</el-dropdown-item>
@@ -111,6 +111,15 @@ export default {
     },
     linkToProfile () {
       this.$router.push({path: '/profile'})
+    },
+    linkToBooking () {
+      this.$router.push({path: '/booking'})
+    },
+    linkToWishlist () {
+      this.$router.push({path: '/wishlist'})
+    },
+    linkToProperty () {
+      this.$router.push({path: '/myproperty'})
     },
     searchAction () {
 
