@@ -3,7 +3,7 @@
     <el-header style="font-size: 20px; height: 70px; border-bottom: 1px solid rgb(220, 223, 230)">
       <div class="top-navigator">
         <el-row :gutter="20">
-          <el-col :span="2" :offset="1">
+          <el-col :span="2">
             <div class="top-logo">
               <img @click="linkToBack" src="@/assets/logosimple.png" alt="render failure"
                    style="width: 60px; height:60px; cursor: pointer">
@@ -28,7 +28,7 @@
             </div>
           </el-col>
           !-->
-          <el-col :span="12" :offset="0">
+          <el-col :span="12">
             <div class="slogan">
               <h4 style="font-family:Georgia;color: #222222">PANDA VALLEY</h4>
               <!--
@@ -37,10 +37,16 @@
                     -->
             </div>
           </el-col>
-          <el-col :span="6" :offset="3">
+          <el-col :span="6" :offset="4">
             <div v-if="!this.$store.state.user" class="top-action">
-              <el-button @click="linkToLogin" style="border: none; width: 100px;" round>Log in</el-button>
-              <el-button @click="linkToSignup" type="primary" style="width: 100px;" round>Sign up</el-button>
+              <el-button @click="linkToLogin" style="border: none; width: 100px;" round>
+                <i class="iconfont icondenglu"></i>
+                <span>Log in</span>
+              </el-button>
+              <el-button @click="linkToSignup" type="primary" style="width: 100px;" round>
+                <i class="iconfont iconzhuce"></i>
+                <span>Sign up</span>
+              </el-button>
             </div>
             <div v-else class="top-user">
               <el-dropdown>
