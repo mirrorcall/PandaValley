@@ -39,8 +39,8 @@
           </el-col>
           <el-col :span="6" :offset="3">
             <div v-if="!this.$store.state.user" class="top-action">
-              <el-button @click="linkToSignup" type="primary" round>Sign up</el-button>
-              <el-button @click="linkToLogin" type="primary" round>Log in</el-button>
+              <el-button @click="linkToLogin" style="border: none; width: 100px;" round>Log in</el-button>
+              <el-button @click="linkToSignup" type="primary" style="width: 100px;" round>Sign up</el-button>
             </div>
             <div v-else class="top-user">
               <el-dropdown>

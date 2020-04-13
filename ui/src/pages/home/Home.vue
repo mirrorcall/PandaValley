@@ -6,9 +6,6 @@
 
 <style scoped>
   .home {
-    margin-top: 100px;
-    margin-left: 40%;
-    margin-right: 60%;
   }
 </style>
 
