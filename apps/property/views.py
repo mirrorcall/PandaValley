@@ -33,15 +33,15 @@ class AddProperty(View):
             new_property.suburb = request.POST.get('suburb')
             new_property.street = request.POST.get('street')
             new_property.postcode = request.POST.get('postcode')
-            # latitude = request.POST.get('latitude')
-            # longitude = request.POST.get('longitude')
+            latitude = request.POST.get('latitude',-35.5863366)
+            longitude = request.POST.get('longitude',148.2947323)
             ##new changes
-            # point = f'POINT({latitude} {longitude})'
-            # new_property.latitude_longitude = GEOSGeometry(point, srid=4326)
+            point = f'POINT({latitude} {longitude})'
+            new_property.latitude_longitude = GEOSGeometry(point, srid=4326)
             new_property.description = request.POST.get('description')
             new_property.guests = request.POST.get('guests')
             # room info
-            # new_property.amenities = request.POST.get('amenities')
+            new_property.amenities = request.POST.get('amenities')
             new_property.property_type = request.POST.get('property_type')
             new_property.bathrooms = request.POST.get('bathrooms')
             new_property.bedrooms = request.POST.get('bedrooms')
@@ -701,8 +701,8 @@ class RefuseRefundView(View):
             mail_body = \
                 f"Dear {record.guest.first_name},\n\n" + \
                 f"We are pleased to inform you that your application for canceling booking at {record.host.street} has been refused.\n\n" + \
-                f"Your check-in : {record.start_date}\n" + \
-                f"Your checkout : {record.end_date}\n\n" + \
+                f"Your check-in : {record.start_date.date()}\n" + \
+                f"Your checkout : {record.end_date.date()}\n\n" + \
                 "Reservation details:\n\n" + \
                 f"Room type: {record.host.property_type}\nGuests: {record.host.guests}\n" + \
                 f"Days: {record.days}\nCost: ${record.total_cost}\n\n"
@@ -720,7 +720,8 @@ class RecommendedPropertyView(View):
     def get(self, request):
         response = {}
         try:
-            res = Property.objects.all().order_by('-rating')[:10].values()
+            # res = Property.objects.all().order_by('-rating')[:10].values()
+            res = Property.objects.all().order_by('-rating')[:8].values()
             result = []
             if res.exists():
                 for each in res.iterator():
