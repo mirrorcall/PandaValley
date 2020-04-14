@@ -205,7 +205,7 @@ class ShowPropertyView(View):
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
             prop = Property.objects.get(pk=prop_id)
-            print(datetime.datetime.strptime(end_date,"%d/%m/%Y"))
+            #print(datetime.datetime.strptime(end_date,"%d/%m/%Y"))
             period = datetime.datetime.strptime(end_date,"%d/%m/%Y")- \
                      datetime.datetime.strptime(start_date, "%d/%m/%Y")
             period = period.days
@@ -245,20 +245,16 @@ class ShowPropertyView(View):
             res['image'] = images
             res['period'] = period
             res['total_cost'] = period*prop.price + prop.cleaning_fee
-            # res['num_review'] = prop.num_review
-            # res['num_review'] = prop.num_review
-
-            # x y on the google map
-            # latitude = models.FloatField(default=0)
-            # longitude = models.FloatField(default=0)
-
+            #It's Lat/Lon on 4326.
+            res['latitude'] = prop.latitude_longitude[0]
+            res['longitude'] = prop.latitude_longitude[1]
             response['code'] = 0
             response['msg'] = 'Return search information.'
             response['body'] = res
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-        print(response)
+        #print(response)
         return JsonResponse(response)
 
 
@@ -352,7 +348,7 @@ class ShowWishListView(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-        print(response)
+        #print(response)
         return JsonResponse(response)
 
 

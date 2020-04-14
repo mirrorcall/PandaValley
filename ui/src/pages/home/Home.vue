@@ -1,23 +1,23 @@
 <template>
   <div class="home">
     <search></search>
+    <advertisement></advertisement>
   </div>
 </template>
 
 <style scoped>
   .home {
-    margin-top: 100px;
-    margin-left: 40%;
-    margin-right: 60%;
   }
 </style>
 
 <script>
 import Search from '../../components/Search'
+import Advertisement from '../../components/Advertisement'
 export default {
   name: 'Home.vue',
   components: {
-    Search
+    Search,
+    Advertisement
   },
   data () {
     return {

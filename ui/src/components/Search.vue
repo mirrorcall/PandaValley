@@ -1,89 +1,99 @@
 <template>
-  <!--
-  <div>
-    <div>please choose a period</div>
-    <div class="block">
-      <span class="demonstration">默认</span>
-      <el-date-picker
-        v-model="value1"
-        type="datetimerange"
-        range-separator="To"
-        start-placeholder="Start date"
-        end-placeholder="End date">
-      </el-date-picker>
+<!--
+    <div>
+      <div>please choose a period</div>
+      <div class="block">
+        <span class="demonstration">默认</span>
+        <el-date-picker
+          v-model="value1"
+          type="datetimerange"
+          range-separator="To"
+          start-placeholder="Start date"
+          end-placeholder="End date">
+        </el-date-picker>
+      </div>
+      <div style="margin-top: 20px;margin-bottom: 20px">
+        <el-form>
+          <el-input
+            placeholder="请输入内容"
+            prefix-icon="el-icon-search"
+            v-model="input2" style="width:360px" clearable>
+          </el-input>
+        </el-form>
+        <span>Adults</span>
+        <el-select v-model="value" placeholder="请选择">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+      </div>
     </div>
-    <div style="margin-top: 20px;margin-bottom: 20px">
-      <el-form>
-        <el-input
-          placeholder="请输入内容"
-          prefix-icon="el-icon-search"
-          v-model="input2" style="width:360px" clearable>
-        </el-input>
-      </el-form>
-      <span>Adults</span>
-      <el-select v-model="value" placeholder="请选择">
-        <el-option
-          v-for="item in options"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value">
-        </el-option>
-      </el-select>
-    </div>
-  </div>
--->
-  <div class="search-background">
-    <div class="search">
-      <el-form ref="form" model="form">
-        <el-row type="flex" class="row-bg" justify="start" :gutter="20">
-          <el-col :span="15">
-            <el-form-item label="Location">
-              <el-input v-model="form.location" placeholder="please enter a location"
-                        prefix-icon="el-icon-search"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">
-            <div class="grid-content bg-purple-light">
-              <el-form-item label="Time">
-                <el-date-picker
-                  v-model="form.date1"
-                  type="daterange"
-                  range-separator="To"
-                  format="dd/MM/yyyy"
-                  value-format="dd/MM/yyyy"
-                  start-placeholder="Check-in date"
-                  end-placeholder="Checkout date" :picker-options="pickerOptions">
-                </el-date-picker>
-              </el-form-item>
-            </div>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="Person">
-              <el-select v-model="form.people" placeholder="Adults">
-                <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <!-- 占位为了对齐-->
-            <el-row style="visibility:hidden" >
-              <el-button type="primary" >SEARCH</el-button>
+    -->
+    <div class="search-bar">
+      <div class="search-background">
+        <div class="search">
+          <el-form ref="form" model="form">
+            <el-row type="flex" class="row-bg" justify="start" :gutter="20">
+              <el-col :span="15">
+                <!-- <el-form-item label="Location"> -->
+                <el-form-item label="">
+                  <el-input v-model="form.location" placeholder="Please enter a location"
+                            prefix-icon="el-icon-location-outline"></el-input>
+                </el-form-item>
+              </el-col>
+              <el-col :span="10">
+                <div class="grid-content bg-purple-light">
+                  <!-- <el-form-item label="Time"> -->
+                  <el-form-item label="">
+                    <el-date-picker
+                      v-model="form.date1"
+                      type="daterange"
+                      range-separator="To"
+                      format="dd/MM/yyyy"
+                      value-format="dd/MM/yyyy"
+                      start-placeholder="Check-in date"
+                      end-placeholder="Checkout date" :picker-options="pickerOptions">
+                    </el-date-picker>
+                  </el-form-item>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <!-- <el-form-item label="Person"> -->
+                <el-form-item label=" ">
+                  <el-select prefix-icon="el-icon-search" v-model="form.people"
+                             placeholder=" Adults">
+                    <template slot="prefix">
+                      <span>&nbsp;</span>
+                      <i class="el-icon-user"></i>
+                    </template>
+                    <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <!-- 占位为了对齐-->
+                <!-- <el-row style="visibility:hidden" > -->
+                <!--   <el-button type="primary" >SEARCH</el-button> -->
+                <!-- </el-row> -->
+                <el-row>
+                  <el-form-item>
+                    <el-button @click="onSubmit" type="primary" round>SEARCH</el-button>
+                  </el-form-item>
+                </el-row>
+              </el-col>
             </el-row>
-            <el-row>
-              <el-form-item>
-                <el-button @click="onSubmit" type="primary" >SEARCH</el-button>
-              </el-form-item>
-            </el-row>
-          </el-col>
-        </el-row>
-      </el-form>
+          </el-form>
+        </div>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -152,22 +162,24 @@ export default {
 }
 </script>
 <style scoped>
+  .search-bar {
+    width: 100%;
+    height: 400px;
+  }
   .search-background{
-    border: #42b983;
+    background-image: url("https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/magic-behind-02-hires.jpg");
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    text-align: center;
   }
   .search{
-    float: left;
-    margin-left :-330px;
-    margin-top :80px;
-    padding: 0;
-    background: #bbbbbb;
+    padding-top: 150px;
+    margin: 0 auto;
     width: 1000px;
-    position: center;
-    align-items:stretch;
-    padding: 10px;
   }
   .search el-form{
-    margin: 10px;
+    /* margin: 10px; */
   }
 
 </style>
