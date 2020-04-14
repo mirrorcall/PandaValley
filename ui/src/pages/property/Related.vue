@@ -1,6 +1,5 @@
 <template>
-  <div class="border">
-  <div id="myList" class="myList">
+  <div class="myList">
     <ul>
       <li v-for="item in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">
         <div class="wishlist">
@@ -34,99 +33,27 @@
         </p>
       </li>
     </ul>
-  </div>
-    <!-- 分页
-    <div class="pagination">
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :page-size="pageSize"
-          :total="total"
-          @current-change="currentChange"
-        ></el-pagination>
     </div>
-    分页END -->
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'PropertyList',
-  props: ['list', 'start_date', 'end_date'],
+  name: 'Related',
   data: function () {
     return {
       seen: false,
       // imageUrl: 'https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/avatar/default_avatar.png'
-      property_id: ''
-    }
-  },
-  methods: {
-    enter () {
-      this.seen = true
-    },
-    leave () {
-      this.seen = false
-    },
-    handleSizeChange (newSize) {
-      this.queryInfo.pagesize = newSize
-      this.getGoodlist()
-    },
-    handleCurrentChange (newPage) {
-      this.queryInfo.pagenum = newPage
-      this.getGoodlist()
-    },
-    gotoDetails (item) {
-      this.$router.push(
-        {
-          path: '/detail',
-          query:
-            {
-              // format dd/mm/yy
-              // start_date: sd.toLocaleDateString('en-AU'),
-              // end_date: ed.toLocaleDateString('en-AU'),
-              // start_date: this.form.date1[0],
-              // end_date: this.form.date1[1],
-              // location: this.form.location,
-              // number_of_people: this.form.people
-              property: item.property_id,
-              start_date: this.start_date,
-              end_date: this.end_date,
-              email: this.$store.getters.getStorage
-            }
-        }
-      )
-    },
-    addTowishlist (item) {
-      if (!this.$store.getters.getStorage) {
-        alert('Please login')
-      } else {
-        if (item.saved === true) {
-          this.$message('already saved')
-        } else {
-          let data = this.$qs.stringify({
-            property: item.property_id,
-            email: this.$store.getters.getStorage
-          })
-          this.$axios.post('/api/add_wishlist', data)
-            .then((response) => {
-              if (response.data.code === 0) {
-                this.$message('saved to wishlist')
-                console.log('saved to wishlist')
-                item.saved = true
-              } else {
-                this.$message('error')
-                console.log(response.data.msg)
-              }
-            })
-        }
-      }
+      property_id: '',
+      list: [{'id': 5, 'guest': 2, 'bedrooms': 2, 'bathrooms': 2, 'title': 'Sea view apartment', 'price': 100}, {'id': 5, 'guest': 2, 'bedrooms': 2, 'bathrooms': 2, 'title': 'Sea view apartment', 'price': 100}]
     }
   }
 }
-
 </script>
 
 <style scoped>
+  .myList{
+    padding-top: 20px;
+  }
   .icon {
     width: 18px;
     height:18px;
@@ -247,5 +174,4 @@ export default {
     position: relative;
     float: right;
   }
-
 </style>

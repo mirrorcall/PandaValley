@@ -24,9 +24,11 @@ class Property(models.Model):
     postcode = models.CharField(max_length=10)
     # x y on the google map
     #srid=4326 latitude and longitude geographic coordinates are being used.
-    latitude_longitude = models.PointField(srid=4326)
+    # latitude_longitude = models.PointField(srid=4326)
     # latitude = models.DecimalField(max_digits=15, decimal_places=7)
     # longitude = models.DecimalField(max_digits=15, decimal_places=7)
+    latitude = models.FloatField(default=0)
+    longitude = models.FloatField(default=0)
     property_type = models.CharField(max_length=15)
     description = models.TextField()
     #property state

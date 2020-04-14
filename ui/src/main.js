@@ -13,6 +13,7 @@ import './assets/icon/iconfont.css' // import icon font
 import './assets/micon/iconfont.css'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import './assets/font/iconfont.css' // import icon font
+import './assets/yao/iconfont.css'
 
 Vue.use(Element, { locale })
 Vue.use(VueGoogleMaps, {
