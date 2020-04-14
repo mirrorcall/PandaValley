@@ -874,14 +874,45 @@
               :end-placeholder= "end_date" :picker-options="pickerOptions" :default-value="[ruleForm.d1,ruleForm.d2]" @change="dateChange"></el-date-picker>
             <h2 style="margin-top: 10px;margin-bottom: 10px">{{period}} nights</h2>
             <el-divider></el-divider>
+<!--            <el-row>-->
+<!--              <h3 style="margin-top: 20px;margin-bottom: 20px">-->
+<!--                <el-col :span="12"><span style="text-align: left">{{price}} * {{period}} nights</span></el-col>-->
+<!--                <el-col :span="12">{{price*period}}</el-col></h3>-->
+<!--            </el-row>-->
+<!--            <el-row>-->
+<!--              <h3 style="margin-top: 20px;margin-bottom: 20px;">-->
+<!--                <el-col :span="12"><span style="text-align: left">cleaning fee</span></el-col>-->
+<!--                <el-col :span="12"><span style="text-align: right">{{cleaning_fee}}</span></el-col></h3>-->
+<!--            </el-row>-->
+<!--            <el-divider></el-divider>-->
             <el-row>
-              <h3 style="margin-top: 20px;margin-bottom: 20px"><el-col :span="12">{{price}} * {{period}} nights</el-col><el-col :span="12">{{price*period}}</el-col></h3>
+              <div style="text-align: left;font-size: medium" >
+              <el-col :span="12">
+                <el-row>
+                  {{price}} * {{period}} nights
+                </el-row>
+                <el-row>
+                  cleaning fee
+                </el-row>
+                <el-row>
+                  <span style="font-weight: bold"> total</span>
+                </el-row>
+              </el-col>
+              </div>
+              <div style="text-align: right">
+              <el-col :span="12">
+                <el-row>
+                  {{price*period}}
+                </el-row>
+                <el-row>
+                  {{cleaning_fee}}
+                </el-row>
+                <el-row>
+                  <span style="font-weight: bold"> {{total}}</span>
+                </el-row>
+              </el-col>
+              </div>
             </el-row>
-            <el-row>
-              <h3 style="margin-top: 20px;margin-bottom: 20px"><el-col :span="12">cleaning fee</el-col><el-col :span="12">{{cleaning_fee}}</el-col></h3>
-            </el-row>
-            <el-divider></el-divider>
-            <h3 style="margin-top: 10px;margin-bottom: -30px"><el-col :span="10">total</el-col><el-row>{{total}}</el-row></h3>
           </el-form-item>
           <el-form-item style="margin-top: -10px">
             <el-button style="margin-left: -100px" type="primary" @click="submitForm('ruleForm')">Reserve</el-button>
@@ -936,7 +967,6 @@
             </el-card>
             <el-card id="bbb">
               <h1>Amenities</h1>
-
               <el-row v-for="item in this.lennum" :key="item">
                 <el-col :span="12" align="left"><i :class="occuam[2*item-2].classname" style="font-size: 25px"><span > {{occuam[2*item-2].name}}</span></i></el-col>
                 <el-col :span="12" align="left"><i :class="occuam[2*item-1].classname" style="font-size: 25px"><span > {{occuam[2*item-1].name}}</span></i>
@@ -1079,7 +1109,7 @@
             </el-card>
             <el-card id="ddd">
               <h1>Map</h1>
-              <MapView></MapView>
+              <mapview></mapview>
             </el-card>
             <div style="border: none;height: 0;width: 0">
             </div>
@@ -1091,6 +1121,7 @@
       <el-main>
         <el-row style="height: 70px"></el-row>
         <el-divider><h3>Related recommendations</h3></el-divider>
+        <related :list="related" :start_date="start_date" :end_date="end_date"></related>
       </el-main>
       <!--        <div id="detail">-->
       <!--        </div>-->
@@ -1100,8 +1131,9 @@
 
 <script>
 // import MapView from './MapView'
+import Related from './Related'
 export default {
-  components: {},
+  components: {Related},
   offsetTop: 0,
   name: 'Details',
   props: {
@@ -1116,7 +1148,7 @@ export default {
   },
   data () {
     return {
-      // reviewdata: [{}],
+      related: '',
       reviewdata: [{'id': 5, 'username': 'Rita', 'Rating': 4.0, 'context': 'Beatiful Places!'}, {'id': 6, 'username': 'Jeff', 'Rating': 5.0, 'context': 'Nice house!'}],
       listshow: '',
       listamen: [
@@ -1138,7 +1170,7 @@ export default {
         {classname: 'el-icon-thirdindoorpool', name: 'Swimming pool'},
         {classname: 'el-icon-thirdBathtub', name: 'Hot Tub'},
         {classname: 'el-icon-thirdicon-test1', name: 'Elevator'},
-        {classname: 'el-icon-el-icon-thirdBlendermixer', name: 'Blender'},
+        {classname: 'el-icon-thirdBlendermixer', name: 'Blender'},
         {classname: 'el-icon-thirdkexiedaichongwu', name: 'Pets Welcome'},
         {classname: 'el-icon-thirdToaster', name: 'Toaster'},
         {classname: 'el-icon-thirdshaokaoqiju', name: 'BBQ'}
@@ -1160,7 +1192,7 @@ export default {
       property: '',
       img_list: ['/static/image/111.png', '/static/image/222.png', '/static/image/333.png'],
       // amenities: 'Microwave#Fridge',
-      amenities: 'Wireless Internet#Oven',
+      amenities: '',
       isFixed: '',
       start_date: '5/12/2020',
       end_date: '6/12/2020',
@@ -1221,21 +1253,53 @@ export default {
     this.start_date = this.$route.query.start_date
     this.end_date = this.$route.query.end_date
     this.property = this.$route.query.property
-    this.getDetails()
+    this.$axios
+      .get('/api/show_property?property=' + this.property + '&start_date=' + this.start_date + '&end_date=' + this.end_date)
+      .then(res => {
+        this.title = res.data.body.title
+        this.description = res.data.body.description
+        this.guests = res.data.body.guests
+        this.bedrooms = res.data.body.bedrooms
+        this.bathrooms = res.data.body.bathrooms
+        this.single_bed = res.data.body.single_bed
+        this.double_bed = res.data.body.double_bed
+        this.queen_bed = res.data.body.queen_bed
+        this.king_bed = res.data.body.king_bed
+        this.period = res.data.body.period
+        this.host_name = res.data.body.host_name
+        this.price = res.data.body.price
+        this.total = res.data.body.total_cost
+        this.cleaning_fee = res.data.body.cleaning_fee
+        this.img_list = res.data.body.image
+        this.amenities = res.data.body.amenities
+        this.host_avatar = res.data.body.host_avatar
+        this.suburb = res.data.body.suburb
+        this.property_type = res.data.body.property_type
+        this.list_amenities = this.amenities.split('#')
+        console.log(this.list_amenities)
+        this.getDetails()
+        this.getAm()
+        this.getReview()
+        this.getNearby()
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    // this.getDetails()
     this.ruleForm.d1 = this.start_date.split('/')[1] + '/' + this.start_date.split('/')[0] + '/' + this.start_date.split('/')[2]
     this.ruleForm.d2 = this.end_date.split('/')[1] + '/' + this.end_date.split('/')[0] + '/' + this.end_date.split('/')[2]
     // eslint-disable-next-line no-unused-vars
     // this.sdata = this.start_date.split('/')[2] + '-' + this.start_date.split('/')[1] + '-' + this.start_date.split('/')[0]
     // this.edata = this.end_date.split('/')[2] + '-' + this.end_date.split('/')[1] + '-' + this.end_date.split('/')[0]
-    if (this.amenities === '') {
-      this.list_amenities = []
-    } else {
-      this.list_amenities = this.amenities.split('#')
-    }
-    this.getAm()
-    this.getReview()
   },
   methods: {
+    getNearby () {
+      this.$axios
+        .get('/api/nearby_property?property_id=' + this.property + '&start_date=' + this.start_date + '&end_date=' + this.end_date)
+        .then(res => {
+          this.related = res.data.body
+        })
+    },
     checkReview () {
       if (this.reviewdata.length > 0) {
         return true
@@ -1310,6 +1374,8 @@ export default {
           this.host_avatar = res.data.body.host_avatar
           this.suburb = res.data.body.suburb
           this.property_type = res.data.body.property_type
+          // this.list_amenities = this.amenities.split('#')
+          // console.log(this.list_amenities)
         })
         .catch(function (error) {
           console.log(error)
@@ -1366,6 +1432,8 @@ export default {
           if (response.data.code === 0) {
             this.start_date = this.ruleForm.data_s
             this.end_date = this.ruleForm.data_e
+            this.period = response.data.body.period
+            this.total = response.data.body.total_cost
           } else {
             this.$message.error('this period is unavailable, please change the date')
             console.log('this period is unavailable')
@@ -1413,7 +1481,7 @@ export default {
       } else {
         this.isFixed = false
       }
-      console.log(this.list_amenities)
+      console.log(this.occuam)
       // this.isFixed = Number(scrollTop) > 600 ? true ; false
       // this.isFixed = false
     },

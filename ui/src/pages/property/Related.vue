@@ -1,12 +1,12 @@
 <template>
   <div class="myList">
     <ul>
-      <li v-for="item in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">
+      <li v-for="item in list" :key="item.id">
         <div class="wishlist">
           <i class="icon iconfont iconloveaaaaaa" v-if="!item.saved" @click="addTowishlist(item)"></i>
           <img src="@/assets/heart.png" style="width: 20px;height: 18px;margin-top: 0px" v-if="item.saved" @click="addTowishlist(item)">
         </div>
-        <img :src="item.image_url" class="image" alt="" @click="gotoDetails(item)">
+        <img :src="item.image" class="image" alt="" @click="gotoDetails(item)">
         <div class="group_icon">
           <i class="icon iconfont iconrenshu"><span>{{item.guests}}</span></i>
           <el-divider direction="vertical"></el-divider>
@@ -39,12 +39,65 @@
 <script>
 export default {
   name: 'Related',
+  props: ['list', 'start_date', 'end_date'],
   data: function () {
     return {
       seen: false,
       // imageUrl: 'https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/avatar/default_avatar.png'
-      property_id: '',
-      list: [{'id': 5, 'guest': 2, 'bedrooms': 2, 'bathrooms': 2, 'title': 'Sea view apartment', 'price': 100}, {'id': 5, 'guest': 2, 'bedrooms': 2, 'bathrooms': 2, 'title': 'Sea view apartment', 'price': 100}]
+      property_id: ''
+    }
+  },
+  watch: {
+    $route (to, from) {
+      this.$router.go(0)
+    }
+  },
+  methods: {
+    gotoDetails (item) {
+      this.$router.push(
+        {
+          path: '/detail',
+          query:
+            {
+              // format dd/mm/yy
+              // start_date: sd.toLocaleDateString('en-AU'),
+              // end_date: ed.toLocaleDateString('en-AU'),
+              // start_date: this.form.date1[0],
+              // end_date: this.form.date1[1],
+              // location: this.form.location,
+              // number_of_people: this.form.people
+              property: item.property_id,
+              start_date: this.start_date,
+              end_date: this.end_date,
+              email: this.$store.getters.getStorage
+            }
+        }
+      )
+    },
+    addTowishlist (item) {
+      if (!this.$store.getters.getStorage) {
+        alert('Please login')
+      } else {
+        if (item.saved === true) {
+          this.$message('already saved')
+        } else {
+          let data = this.$qs.stringify({
+            property: item.property_id,
+            email: this.$store.getters.getStorage
+          })
+          this.$axios.post('/api/add_wishlist', data)
+            .then((response) => {
+              if (response.data.code === 0) {
+                this.$message('saved to wishlist')
+                console.log('saved to wishlist')
+                item.saved = true
+              } else {
+                this.$message('error')
+                console.log(response.data.msg)
+              }
+            })
+        }
+      }
     }
   }
 }
@@ -53,6 +106,7 @@ export default {
 <style scoped>
   .myList{
     padding-top: 20px;
+    padding-left: 40px;
   }
   .icon {
     width: 18px;

@@ -577,22 +577,6 @@ export default {
         }]
       },
       value: '',
-      options: [{
-        value: 'Mascot',
-        label: 'Mascot'
-      }, {
-        value: 'Zetland',
-        label: 'Zetland'
-      }, {
-        value: 'Randwick',
-        label: 'Randwick'
-      }, {
-        value: 'Kingsford',
-        label: 'Kingsford'
-      }, {
-        value: 'Kensington',
-        label: 'Kensington'
-      }],
       indexindex: 0
     }
   },
@@ -690,7 +674,6 @@ export default {
       this.formData.append('queen_bed', this.dynamicValidateForm.number_of_queen_bed)
       this.formData.append('bathrooms', this.dynamicValidateForm.number_of_bathroom)
       this.formData.append('guests', this.dynamicValidateForm.number_of_bathroom)
-      this.formData.append('description', this.dynamicValidateForm.description)
       this.formData.append('description', this.dynamicValidateForm.description)
       this.formData.append('amenities', am)
       // TODO: send formData altogether

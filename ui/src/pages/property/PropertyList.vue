@@ -7,7 +7,7 @@
           <i class="icon iconfont iconloveaaaaaa" v-if="!item.saved" @click="addTowishlist(item)"></i>
           <img src="@/assets/heart.png" style="width: 20px;height: 18px;margin-top: 0px" v-if="item.saved" @click="addTowishlist(item)">
         </div>
-        <img :src="item.image_url" class="image" alt="" @click="gotoDetails(item)">
+        <img :src="item.image" class="image" alt="" @click="gotoDetails(item)">
         <div class="group_icon">
           <i class="icon iconfont iconrenshu"><span>{{item.guests}}</span></i>
           <el-divider direction="vertical"></el-divider>

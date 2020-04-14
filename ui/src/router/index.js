@@ -86,11 +86,6 @@ export default new Router({
       path: '/myproperty',
       name: 'Myproperty',
       component: Myproperty
-    },
-    {
-      path: '/myorder',
-      name: 'Myorder',
-      component: Myorder
     }
   ]
 })

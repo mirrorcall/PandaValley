@@ -1,5 +1,6 @@
 <template>
   <div class="myproperty">
+    <h1 style="text-align: center">Manage My Properties</h1>
     <el-card shadow="hover" v-for="(item,index) in list" :key="item.id">
       <el-row>
         <el-col :span="5">
@@ -37,14 +38,14 @@
               <el-row><el-button type="warning" round @click="checkProperty (item)">Check</el-button></el-row>
               <el-dialog title="Orders" :visible.sync="dialogTableVisible" customClass="customWidth">
                   <el-table :data="list_order">
-                    <el-table-column property="id" label="BookingID"></el-table-column>
-                    <el-table-column property="guest_id" label="Guest"></el-table-column>
-                    <el-table-column property="start_date" label="Start"></el-table-column>
-                    <el-table-column property="end_date" label="End"></el-table-column>
-                    <el-table-column property="days" label="Days"></el-table-column>
-                    <el-table-column property="total_cost" label="Cost"></el-table-column>
-                    <el-table-column property="state" label="State"></el-table-column>
-                    <el-table-column label="Operations">
+                    <el-table-column property="id" label="BookingID" width="100"></el-table-column>
+                    <el-table-column property="guest_id" label="Guest" width="180"></el-table-column>
+                    <el-table-column property="start_date" label="Start" width="150"></el-table-column>
+                    <el-table-column property="end_date" label="End" width="150"></el-table-column>
+                    <el-table-column property="days" label="Days" width="100"></el-table-column>
+                    <el-table-column property="total_cost" label="Cost" width="150"></el-table-column>
+                    <el-table-column property="state" label="State" width="150"></el-table-column>
+                    <el-table-column label="Operations" >
                       <template slot-scope="scope">
                         <div v-show="scope.row.state==='canceling'">
                         <el-button type="primary" icon="el-icon-circle-check" @click="agreeCancellation(scope.row.state, scope.row.id)">Agree</el-button>
