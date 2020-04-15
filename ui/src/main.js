@@ -19,7 +19,7 @@ Vue.use(Element, { locale })
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyDbbgvDvB4iowCBQRxei4ET9CickmaU7PY',
-    libraries: 'places',
+    libraries: 'places,geometry',
     installComponents: true
   }
 })

@@ -33,12 +33,14 @@
                 {{ item.bathrooms }}
                 BA
               </div>
-              <div style="font-weight: 700; font-size: 17px; float: left; padding-left: 275px">
-                AU$
-                {{ item.price }}
+              <div style="width: 170px; height: auto; text-align: center; margin: auto">
+                <div style="font-weight: 700; font-size: 17px; float: left; height: auto;">
+                  AU$
+                  {{ item.price }}
+                </div>
+                <div style="font-size: 13px; float: left; height: auto;">&nbsp;avg/night</div>
+                <div style="clear: both"></div>
               </div>
-              <div style="font-size: 13px; float: left; padding-top: 5px">&nbsp;avg/night</div>
-              <div style="clear: both"></div>
             </div>
           </el-carousel-item>
         </el-carousel>
@@ -165,6 +167,9 @@ export default {
   opacity: 0.75;
   line-height: 200px;
   margin: 0;
+}
+>>> .el-carousel__arrow {
+  margin-top: -40px;
 }
 .prop-overview {
   width: 100%;

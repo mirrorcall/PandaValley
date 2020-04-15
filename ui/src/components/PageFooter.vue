@@ -2,9 +2,9 @@
   <div>
     <div class="icon-banner">
       <div class="icons">
-        <i class="iconfont iconfacebook icon"></i>
-        <i class="iconfont icontwitter icon"></i>
-        <i class="iconfont iconpinterest icon"></i>
+        <a href="https://www.facebook.com/" target="_blank"><i class="iconfont iconfacebook icon"></i></a>
+        <a href="https://twitter.com/explore" target="_blank"><i class="iconfont icontwitter icon"></i></a>
+        <a href="https://www.pinterest.com.au/" target="_blank"><i class="iconfont iconpinterest icon"></i></a>
       </div>
     </div>
     <div class="brand-banner">
@@ -12,25 +12,25 @@
         <el-row class="banner-row">
           <el-col :span="8">
             <el-row class="banner-title">EXPLORE PANDAVALLEY</el-row>
-            <el-row class="banner-text">Travel extras</el-row>
-            <el-row class="banner-text">Travel ideas</el-row>
+            <el-row class="banner-text">Travel Extras</el-row>
+            <el-row class="banner-text">Travel Ideas</el-row>
             <el-row class="banner-text">Trust & Safety</el-row>
             <el-row class="banner-text">Help & Support</el-row>
-            <el-row class="banner-text">List your property</el-row>
-            <el-row class="banner-text">Booking management software</el-row>
-            <el-row class="banner-text">Travel guides</el-row>
+            <el-row class="banner-text">List Your Property</el-row>
+            <el-row class="banner-text">Booking Management Software</el-row>
+            <el-row class="banner-text">Travel Guides</el-row>
           </el-col>
           <el-col :span="8">
             <el-row class="banner-title">COMPANY</el-row>
             <el-row class="banner-text">Careers</el-row>
-            <el-row class="banner-text">Terms & conditions</el-row>
+            <el-row class="banner-text">Terms & Conditions</el-row>
             <el-row class="banner-text">Privacy Policy</el-row>
             <el-row class="banner-text">Media Center</el-row>
-            <el-row class="banner-text">Media sales</el-row>
+            <el-row class="banner-text">Media Sales</el-row>
           </el-col>
           <el-col :span="8">
             <el-row class="banner-title">ABOUT US</el-row>
-            <el-row class="banner-text">The PandaValley history</el-row>
+            <el-row class="banner-text">The PandaValley History</el-row>
             <el-row class="banner-text">PandaValley in Australia</el-row>
           </el-col>
         </el-row>
@@ -81,6 +81,7 @@ export default {
   margin-left: 50px;
   text-align: left;
 }
+a { color: inherit; }
 .icon {
   padding-left: 20px;
 }
@@ -88,7 +89,7 @@ export default {
   background-color: #ededed;
   text-align: left;
   width: 100%;
-  height: 450px;
+  height: 480px;
 }
 .brand-relate {
   margin-left: 50px;
@@ -98,6 +99,7 @@ export default {
 }
 .banner-title {
   font-weight: 800;
+  font-size: 20px;
 }
 .banner-text {
   padding-top: 10px;

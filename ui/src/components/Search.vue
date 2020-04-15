@@ -167,7 +167,7 @@ export default {
     height: 400px;
   }
   .search-background{
-    background-image: url("https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/magic-behind-02-hires.jpg");
+    background-image: url("https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/9425_Fantastic-summer-holiday-in-Bora-Bora-Pool-party.jpg");
     width: 100%;
     height: 100%;
     background-size: cover;
