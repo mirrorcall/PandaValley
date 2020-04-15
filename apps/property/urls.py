@@ -20,6 +20,7 @@ urlpatterns = [
     re_path(r'canceling', views.ApplyRefundView.as_view()),
     re_path(r'canceled', views.AgreeRefundView.as_view()),
     re_path(r'my_property_booking', views.ShowHostBookingView.as_view()),
-    re_path(r'nearby_property', views.ShowNearbyPropertyView.as_view())
-
+    re_path(r'nearby_property', views.ShowNearbyPropertyView.as_view()),
+    re_path(r'recommended_best', views.RecommendedPropertyView.as_view()),
+    re_path(r'property_overview', views.PropertyOverView.as_view()),
 ]

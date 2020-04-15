@@ -1,7 +1,7 @@
 import datetime
 import decimal
 
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import JsonResponse
 from django.views.generic.base import View
 from django.contrib.gis.geos import GEOSGeometry
@@ -660,6 +660,54 @@ class ShowNearbyPropertyView(View):
 
             response['code'] = 0
             response['msg'] = 'Return My Property information.'
+            response['body'] = result
+            # response['body'] = res
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class RecommendedPropertyView(View):
+    def get(self, request):
+        response = {}
+        try:
+            res = Property.objects.all().order_by('-rating')[:10].values()
+            result = []
+            if res.exists():
+                for each in res.iterator():
+                    temp = {}
+                    temp['property_id'] = each['id']
+                    temp['title'] = each['title']  # prop.title
+                    temp['image'] = each['image_url']
+                    temp['bedrooms'] = each['bedrooms']
+                    temp['bathrooms'] = each['bathrooms']
+                    temp['guests'] = each['guests']
+                    temp['price'] = each['price']
+                    temp['suburb'] = each['suburb']
+                    temp['street'] = each['street']
+                    temp['rating'] = each['rating']
+                    result.append(temp)
+            response['code'] = 0
+            response['msg'] = 'Return recommended Property information.'
+            response['body'] = result
+            # response['body'] = res
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
+class PropertyOverView(View):
+    def get(self, request):
+        response = {}
+        try:
+            res = Property.objects.all().values('property_type').annotate(total=Count('property_type'))
+            result = []
+            for i in range(len(res)):
+                result.append(res[i])
+            response['code'] = 0
+            response['msg'] = 'Return property type overview information.'
             response['body'] = result
             # response['body'] = res
         except Exception as e:
