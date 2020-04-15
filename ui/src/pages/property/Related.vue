@@ -1,8 +1,7 @@
 <template>
-  <div class="border">
-  <div id="myList" class="myList">
+  <div class="myList">
     <ul>
-      <li v-for="item in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">
+      <li v-for="item in list" :key="item.id">
         <div class="wishlist">
           <i class="icon iconfont iconloveaaaaaa" v-if="!item.saved" @click="addTowishlist(item)"></i>
           <img src="@/assets/heart.png" style="width: 20px;height: 18px;margin-top: 0px" v-if="item.saved" @click="addTowishlist(item)">
@@ -34,24 +33,12 @@
         </p>
       </li>
     </ul>
-  </div>
-    <!-- 分页
-    <div class="pagination">
-        <el-pagination
-          background
-          layout="prev, pager, next"
-          :page-size="pageSize"
-          :total="total"
-          @current-change="currentChange"
-        ></el-pagination>
     </div>
-    分页END -->
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'PropertyList',
+  name: 'Related',
   props: ['list', 'start_date', 'end_date'],
   data: function () {
     return {
@@ -60,21 +47,12 @@ export default {
       property_id: ''
     }
   },
+  watch: {
+    $route (to, from) {
+      this.$router.go(0)
+    }
+  },
   methods: {
-    enter () {
-      this.seen = true
-    },
-    leave () {
-      this.seen = false
-    },
-    handleSizeChange (newSize) {
-      this.queryInfo.pagesize = newSize
-      this.getGoodlist()
-    },
-    handleCurrentChange (newPage) {
-      this.queryInfo.pagenum = newPage
-      this.getGoodlist()
-    },
     gotoDetails (item) {
       this.$router.push(
         {
@@ -123,10 +101,13 @@ export default {
     }
   }
 }
-
 </script>
 
 <style scoped>
+  .myList{
+    padding-top: 20px;
+    padding-left: 40px;
+  }
   .icon {
     width: 18px;
     height:18px;
@@ -247,5 +228,4 @@ export default {
     position: relative;
     float: right;
   }
-
 </style>
