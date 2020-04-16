@@ -282,7 +282,7 @@ export default {
     searchNearBy (type) {
       let request = {
         location: this.center,
-        radius: '230',
+        radius: '250',
         type: [ type ]
       }
       this.$refs.mapRef.$mapPromise.then((map) => {

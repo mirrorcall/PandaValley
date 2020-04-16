@@ -657,7 +657,7 @@ export default {
       } else {
         this.isFixed = false
       }
-      console.log(this.occuam)
+      // console.log(this.occuam)
       // this.isFixed = Number(scrollTop) > 600 ? true ; false
       // this.isFixed = false
     },
