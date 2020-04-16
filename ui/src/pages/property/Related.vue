@@ -106,7 +106,7 @@ export default {
 <style scoped>
   .myList{
     padding-top: 20px;
-    padding-left: 40px;
+    padding-left: 0px;
   }
   .icon {
     width: 18px;
@@ -161,6 +161,7 @@ export default {
     transition: all 0.2s linear;
     position: relative;
     list-style-type:none;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
   }
   .myList ul li:hover {
     z-index: 2;

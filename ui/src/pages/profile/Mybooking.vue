@@ -1,7 +1,7 @@
 <template>
   <div class="mybooking">
     <h1 style="text-align: center">My Booking</h1>
-    <el-tabs v-model="activeName" type="border-card" stretch="true" @tab-click="handleClick">
+    <el-tabs v-model="activeName" type="card" stretch="true" @tab-click="handleClick">
       <el-tab-pane label="Upcoming" name="first">
     <el-card shadow="hover" v-for="item in uncompleted" :key="item.id">
       <el-row>
