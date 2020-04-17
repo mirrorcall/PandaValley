@@ -56,29 +56,6 @@
                 <el-col :span="8">
                   {{item.contact}}
                 </el-col>
-
-<!--                <el-col :span="10">-->
-<!--                  <el-row>-->
-<!--                    <span style="font-weight: bold">Host contact:</span>-->
-<!--                  </el-row>-->
-<!--                  <el-row>-->
-<!--                    <span>{{item.host_name}}</span>-->
-<!--                  </el-row>-->
-<!--                  <el-row>-->
-<!--                    <span>{{item.contact}}</span>-->
-<!--                  </el-row>-->
-<!--                  <el-row>-->
-<!--                    <span>{{item.email}}</span>-->
-<!--                  </el-row>-->
-<!--                </el-col>-->
-<!--                <el-col :span="10">-->
-<!--                  <el-row>-->
-<!--                    <div style="margin-top: 30px">-->
-<!--                      <el-button v-if="test(item)" @click="showcomment(index,item)">write a comment</el-button>-->
-<!--                    </div>-->
-                    <!--<el-button type="text" @click="dialogVisible = true">click to open the Dialog</el-button>-->
-<!--                  </el-row>-->
-<!--                </el-col>-->
               </el-row>
             </div>
           </el-row>
@@ -194,7 +171,7 @@
         </el-card>
       </el-tab-pane>
       <el-tab-pane label="Uncommented" name="third">
-        <el-card shadow="hover" v-for="item in uncompleted" :key="item.id">
+        <el-card shadow="hover" v-for="item in uncommented" :key="item.id">
           <el-row>
             <el-col :span="5">
               <el-image

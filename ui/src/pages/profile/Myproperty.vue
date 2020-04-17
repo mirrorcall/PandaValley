@@ -3,32 +3,42 @@
     <h1 style="text-align: center">Manage My Properties</h1>
     <el-card shadow="hover" v-for="(item,index) in list" :key="item.id">
       <el-row>
-        <el-col :span="5">
+        <el-col :span="8">
           <el-image
             style="width: 300px; height: 200px; margin: 10px"
             :src="item.image"
             :fit="fill"></el-image>
         </el-col>
-        <el-col :span="15">
+        <el-col :span="13">
           <p></p>
           <el-row>
-            <h2>{{item.title}}</h2>
+            <span style="text-align: left;font-size: 20px;font-weight: bold">{{item.title}}</span>
           </el-row>
           <el-row>
             <i class="el-icon-location"></i>
-            <!--            {{item.address}}-->
+                    {{item.street}}, {{item.suburb}}
           </el-row>
           <el-row>
+            <el-col :span="8">
             <p><i class="icon iconfont iconrenshu"></i> Guest: {{item.guests}}</p>
+            </el-col>
+            <el-col :span="8">
+            <p><i class="icon iconfont iconchuang"></i> Bedrooms: {{item.bedrooms}}</p>
+            </el-col>
+            <el-col :span="8">
+              <p><i class="icon iconfont iconyushiyongpin"></i> Bathrooms: {{item.bathrooms}}</p>
+            </el-col>
           </el-row>
           <el-row>
-            <i class="icon iconfont iconchuang"></i> Bedrooms: {{item.bedrooms}}
+            Type: {{item.property_type}}
           </el-row>
           <el-row>
-            <p><i class="icon iconfont iconyushiyongpin"></i> Bathrooms: {{item.bathrooms}}</p>
-          </el-row>
-          <el-row>
-            ${{item.price}} per night
+            <el-col :span="12">
+              <p>Cleaning fee: {{item.cleaning_fee}}</p>
+            </el-col>
+            <el-col :span="12">
+              <p>Price: ${{item.price}} per night</p>
+            </el-col>
           </el-row>
         </el-col>
         <el-col :span="3">
@@ -61,7 +71,7 @@
         </el-col>
       </el-row>
     </el-card>
-    <div style="margin-top: 20px">
+    <div style="margin-top: 20px;text-align: center">
       <el-button type="danger" @click="linktoAdd">Add</el-button>
     </div>
   </div>
@@ -156,6 +166,7 @@ export default {
   .myproperty{
     margin-right: 10%;
     margin-left: 10%;
+    text-align: left;
   }
   .myproperty h2 {
     margin: 0px 10px;

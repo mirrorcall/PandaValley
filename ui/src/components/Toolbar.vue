@@ -58,10 +58,10 @@
                   <el-dropdown-item @click.native="linkToProfile">Profile</el-dropdown-item>
                   <el-dropdown-item @click.native="linkToProperty">My Properties</el-dropdown-item>
                   <el-dropdown-item @click.native="linkToBooking">My Bookings</el-dropdown-item>
-                  <el-dropdown-item>Messages</el-dropdown-item>
+<!--                  <el-dropdown-item>Messages</el-dropdown-item>-->
                   <el-dropdown-item @click.native="linkToWishlist">Watchlist</el-dropdown-item>
-                  <el-dropdown-item>English (AU)</el-dropdown-item>
-                  <el-dropdown-item>$ AUD</el-dropdown-item>
+<!--                  <el-dropdown-item>English (AU)</el-dropdown-item>-->
+<!--                  <el-dropdown-item>$ AUD</el-dropdown-item>-->
                   <el-dropdown-item @click.native="logoutAction">Logout</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>

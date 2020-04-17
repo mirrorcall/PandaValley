@@ -23,6 +23,7 @@
               <el-rate
                 v-model="item.rating"
                 disabled
+                allow-half="true"
                 show-score
                 text-color="#ff9900"
                 score-template="{value}">

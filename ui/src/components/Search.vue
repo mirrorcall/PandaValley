@@ -115,6 +115,9 @@ export default {
       }, {
         value: 5,
         label: '5 Adults'
+      }, {
+        value: 6,
+        label: '6 Adults'
       }],
       pickerOptions: {
         disabledDate: function (time) {
@@ -130,33 +133,30 @@ export default {
   },
   methods: {
     onSubmit: function () {
-      // let formData = new FormData()
-      // formData.append('location', this.form.location)
-      // formData.append('num_of_people', this.form.people)
-      // formData.append('data', this.form.date1)
-      // let data = this.$qs.stringify({
-      //   location: this.form.location,
-      //   number_of_people: this.form.people,
-      //   date: this.form.date1
-      // })
-      // document.write(this.form.date1.split(',')[0])
-      // var sd = new Date(this.form.date1[0])
-      // var ed = new Date(this.form.date1[1])
-      this.$router.push(
-        {
-          path: '/filter',
-          query:
-            {
-              // format dd/mm/yy
-              // start_date: sd.toLocaleDateString('en-AU'),
-              // end_date: ed.toLocaleDateString('en-AU'),
-              start_date: this.form.date1[0],
-              end_date: this.form.date1[1],
-              location: this.form.location,
-              number_of_people: this.form.people
-            }
+      // check
+      if (this.form.date1 === '') {
+        this.$message.error('Dates must be selected')
+      } else {
+        if (this.form.people === '') {
+          this.form.people = 1
         }
-      )
+        this.$router.push(
+          {
+            path: '/filter',
+            query:
+              {
+                // format dd/mm/yy
+                // start_date: sd.toLocaleDateString('en-AU'),
+                // end_date: ed.toLocaleDateString('en-AU'),
+                start_date: this.form.date1[0],
+                end_date: this.form.date1[1],
+                location: this.form.location,
+                number_of_people: this.form.people,
+                property_type: 'All'
+              }
+          }
+        )
+      }
     }
   }
 }
@@ -167,7 +167,7 @@ export default {
     height: 400px;
   }
   .search-background{
-    background-image: url("https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/magic-behind-02-hires.jpg");
+    background-image: url("https://pandavalley-media.s3-ap-southeast-2.amazonaws.com/media/9425_Fantastic-summer-holiday-in-Bora-Bora-Pool-party.jpg");
     width: 100%;
     height: 100%;
     background-size: cover;

@@ -1,7 +1,7 @@
 import datetime
 import decimal
 
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.http import JsonResponse
 from django.views.generic.base import View
 from django.contrib.gis.geos import GEOSGeometry
@@ -10,7 +10,6 @@ from .models import Property, Inspection, Booking, Reviews
 from ..user.models import UserProfile, WishList
 #from django.forms.models import model_to_dict
 from django.core.mail import send_mail
-from django.db.models import Count
 
 
 class AddProperty(View):
@@ -33,8 +32,8 @@ class AddProperty(View):
             new_property.suburb = request.POST.get('suburb')
             new_property.street = request.POST.get('street')
             new_property.postcode = request.POST.get('postcode')
-            latitude = request.POST.get('latitude',-35.5863366)
-            longitude = request.POST.get('longitude',148.2947323)
+            latitude = request.POST.get('latitude')
+            longitude = request.POST.get('longitude')
             ##new changes
             point = f'POINT({latitude} {longitude})'
             new_property.latitude_longitude = GEOSGeometry(point, srid=4326)
@@ -204,6 +203,7 @@ class ShowPropertyView(View):
             prop_id = request.GET.get('property')
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
+            user = request.GET.get('email',None)
             prop = Property.objects.get(pk=prop_id)
             #print(datetime.datetime.strptime(end_date,"%d/%m/%Y"))
             period = datetime.datetime.strptime(end_date,"%d/%m/%Y")- \
@@ -248,13 +248,20 @@ class ShowPropertyView(View):
             #It's Lat/Lon on 4326.
             res['latitude'] = prop.latitude_longitude[0]
             res['longitude'] = prop.latitude_longitude[1]
+            s = False
+            if user:
+                state = WishList.objects.filter(user=user, property=prop_id)
+                print(state)
+                if state:
+                    s = True
+            res['saved'] = s
             response['code'] = 0
             response['msg'] = 'Return search information.'
             response['body'] = res
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-        #print(response)
+        print(response)
         return JsonResponse(response)
 
 
@@ -383,6 +390,7 @@ class DeleteWishListView(View):
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
         return JsonResponse(response)
+
 
 class ReserveView(View):
     def post(self, request):
@@ -522,7 +530,6 @@ class ShowHostBookingView(View):
         try:
             print(request)
             host = request.GET.get('property_id')
-            print(host)
             prop = Property.objects.get(pk=host)
             res = Booking.objects.filter(host=prop).order_by('-id').values()
             result = []
@@ -534,7 +541,6 @@ class ShowHostBookingView(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-        print(response)
         return JsonResponse(response)
 
 
@@ -688,6 +694,7 @@ class ShowNearbyPropertyView(View):
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
         return JsonResponse(response)
+
 
 class RefuseRefundView(View):
     def post(self, request):

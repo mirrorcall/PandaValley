@@ -21,7 +21,7 @@
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <i class="icon iconfont iconrenshu"></i><el-input-number v-model="guests" @change="handleChange" :min="1" :max="10"></el-input-number>
+                <i class="icon iconfont iconrenshu"></i><el-input-number v-model="number_of_people" @change="handleChange" :min="1" :max="10"></el-input-number>
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -43,6 +43,9 @@
               </el-dropdown-item>
               <el-dropdown-item command="House">
                 House
+              </el-dropdown-item>
+              <el-dropdown-item command="Studio">
+                Studio
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -141,7 +144,7 @@ export default {
       d2: '',
       start_date: '',
       end_date: '',
-      number_of_people: 0,
+      number_of_people: '',
       min_price: 0,
       max_price: 10000,
       type: 'All',
@@ -160,6 +163,7 @@ export default {
     // 获取列表
     this.start_date = this.$route.query.start_date
     this.end_date = this.$route.query.end_date
+    this.type = this.$route.query.property_type
     this.d1 = this.start_date.split('/')[1] + '/' + this.start_date.split('/')[0] + '/' + this.start_date.split('/')[2]
     this.d2 = this.end_date.split('/')[1] + '/' + this.end_date.split('/')[0] + '/' + this.end_date.split('/')[2]
     this.location = this.$route.query.location
@@ -170,8 +174,10 @@ export default {
   methods: {
     // 返回顶部
     dateChange () {
-      this.start_date = new Date(this.date[0]).toLocaleDateString('en-AU')
-      this.end_date = new Date(this.date[1]).toLocaleDateString('en-AU')
+      // this.start_date = new Date(this.date[0]).toLocaleDateString('en-AU')
+      // this.end_date = new Date(this.date[1]).toLocaleDateString('en-AU')
+      this.start_date = this.date[0]
+      this.end_date = this.date[1]
     },
     handleCommand (command) {
       this.type = command
@@ -214,58 +220,8 @@ export default {
       this.getProductBySearch()
       this.backtop()
     },
-    // 向后端请求分类列表数据
-    // getCategory () {
-    //   this.$axios
-    //     .post('/api/product/getCategory', {})
-    //     .then(res => {
-    //       const val = {
-    //         category_id: 0,
-    //         category_name: '全部'
-    //       }
-    //       const cate = res.data.category
-    //       cate.unshift(val)
-    //       this.categoryList = cate
-    //     })
-    //     .catch(err => {
-    //       return Promise.reject(err)
-    //     })
-    // },
-    // 向后端请求全部商品或分类商品数据
-    // getData () {
-    //   // 如果分类列表为空则请求全部商品数据，否则请求分类商品数据
-    //   const api =
-    //       this.categoryID.length == 0
-    //         ? '/api/product/getAllProduct'
-    //         : '/api/product/getProductByCategory'
-    //   this.$axios
-    //     .post(api, {
-    //       categoryID: this.categoryID,
-    //       currentPage: this.currentPage,
-    //       pageSize: this.pageSize
-    //     })
-    //     .then(res => {
-    //       this.product = res.data.Product
-    //       this.total = res.data.total
-    //     })
-    //     .catch(err => {
-    //       return Promise.reject(err)
-    //     })
-    // }
-    // ,
     // 通过搜索条件向后端请求商品数据
     getProductBySearch () {
-      // let data = this.$qs.stringify({
-      //   start_date: this.start_date,
-      //   end_date: this.end_date,
-      //   number_of_people: this.number_of_people,
-      //   min_price: this.min_price,
-      //   max_price: this.max_price,
-      //   bedrooms: this.bedrooms,
-      //   bathrooms: this.bathrooms,
-      //   order: this.order,
-      //   page: this.page
-      // })
       this.search = 'start_date=' + this.start_date + '&end_date=' + this.end_date + '&location=' + this.location + '&number_of_people=' + this.number_of_people
       if (this.min_price > 0) {
         this.search = this.search + '&min_price=' + this.min_price
@@ -285,11 +241,19 @@ export default {
       if (this.$store.getters.getStorage) {
         this.search = this.search + '&email=' + this.$store.getters.getStorage
       }
+      if (this.type !== 'All') {
+        this.search = this.search + '&property_type=' + this.type
+      }
       // type
       this.$axios
         .get('/api/search_property?' + this.search + '&page=' + this.page)
         .then(res => {
           this.product = res.data.body
+          this.product.forEach(function (item) {
+            if (item['rating'] === '5.00') {
+              item['rating'] = '5'
+            }
+          })
           this.total = res.data.total
         })
         .catch(function (error) {

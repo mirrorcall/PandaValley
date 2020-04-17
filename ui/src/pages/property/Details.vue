@@ -1,487 +1,3 @@
-<!--<template>-->
-<!--  <div style="margin-left: 40px" class="img_box">-->
-<!--    <el-main>-->
-<!--      <el-col :span="14" style="margin-top: 20px">-->
-<!--        <el-row>-->
-<!--          <h1>{{title}} </h1>-->
-<!--        </el-row>-->
-<!--        <el-row>-->
-<!--          <i class="el-icon-location-information"></i>{{suburb}}, NSW-->
-<!--        </el-row>-->
-<!--      </el-col>-->
-<!--    </el-main>-->
-<!--    <el-row>-->
-<!--      <el-col :span="14" style="margin-top: 20px;margin-left: 20px"><el-container>-->
-<!--        <el-col >-->
-<!--          <div id="banner">-->
-<!--            &lt;!&ndash;动态将图片轮播图的容器高度设置成与图片一致&ndash;&gt;-->
-<!--            <el-carousel :height="bannerHeight + 'px'" interval="1200">-->
-<!--              &lt;!&ndash;遍历图片地址,动态生成轮播图&ndash;&gt;-->
-<!--              <el-carousel-item v-for="item in img_list" :key="item">-->
-<!--                <img :src="item" alt="">-->
-<!--              </el-carousel-item>-->
-<!--            </el-carousel>-->
-<!--          </div>-->
-<!--        </el-col>-->
-<!--      </el-container></el-col>-->
-<!--      <el-col :span="9" ><div class="grid-content bg-purple-light"><el-main><el-container>-->
-
-<!--        <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">-->
-<!--          <el-form-item style="margin-left: -65px;margin-right: 25px; margin-top: 20px">-->
-<!--            <td>-->
-<!--              <el-avatar id="toolbar-avatar" :size="80" :src="host_avatar" style="vertical-align: middle;margin-left: 120px;margin-top: 16px;margin-bottom: 20px"></el-avatar>-->
-<!--              {{host_name}}-->
-<!--            </td>-->
-<!--            <el-date-picker-->
-<!--              v-model="ruleForm.date1"-->
-<!--              type="daterange"-->
-<!--              range-separator="To"-->
-<!--              format="dd/MM/yyyy"-->
-<!--              value-format="dd/MM/yyyy"-->
-<!--              :start-placeholder= "start_date"-->
-<!--              :end-placeholder= "end_date" :picker-options="pickerOptions" :default-value="[ruleForm.d1,ruleForm.d2]" @change="dateChange"></el-date-picker>-->
-<!--            <h2 style="margin-top: 10px;margin-bottom: 10px">{{period}} nights</h2>-->
-<!--            <el-divider></el-divider>-->
-<!--            <el-row>-->
-<!--              <div style="text-align: left;font-size: medium" >-->
-<!--              <el-col :span="12">-->
-<!--                <el-row>-->
-<!--                  {{price}} * {{period}} nights-->
-<!--                </el-row>-->
-<!--                <el-row>-->
-<!--                  cleaning fee-->
-<!--                </el-row>-->
-<!--                <el-row>-->
-<!--                  <span style="font-weight: bold"> total</span>-->
-<!--                </el-row>-->
-<!--              </el-col>-->
-<!--              </div>-->
-<!--              <div style="text-align: right">-->
-<!--              <el-col :span="12">-->
-<!--                <el-row>-->
-<!--                  {{price*period}}-->
-<!--                </el-row>-->
-<!--                <el-row>-->
-<!--                  {{cleaning_fee}}-->
-<!--                </el-row>-->
-<!--                <el-row>-->
-<!--                  <span style="font-weight: bold"> {{total}}</span>-->
-<!--                </el-row>-->
-<!--              </el-col>-->
-<!--              </div>-->
-<!--            </el-row>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item style="margin-top: -10px">-->
-<!--            <el-button style="margin-left: -100px" type="primary" @click="submitForm('ruleForm')">Reserve</el-button>-->
-<!--          </el-form-item>-->
-<!--        </el-form>-->
-
-<!--      </el-container></el-main></div></el-col>-->
-<!--    </el-row>-->
-<!--    &lt;!&ndash;      <el-row>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <el-col :span="12"><div class="grid-content bg-purple"><el-main></el-main></div></el-col>&ndash;&gt;-->
-<!--    &lt;!&ndash;        <el-col :span="12"><div class="grid-content bg-purple-light"><el-main>&ndash;&gt;-->
-<!--    &lt;!&ndash;          bbb&ndash;&gt;-->
-<!--    &lt;!&ndash;          <el-divider></el-divider>&ndash;&gt;-->
-<!--    &lt;!&ndash;        </el-main></div></el-col>&ndash;&gt;-->
-<!--    &lt;!&ndash;      </el-row>&ndash;&gt;-->
-<!--    <el-col :span="14">-->
-<!--      <div class="box_fixed" id="boxFixed" :class="{'is_fixed' :isFixed}">-->
-<!--        <el-col :span="6"><span class="a"  @click="jump ('aaa')" >Overview</span></el-col>-->
-<!--        <el-col :span="6"><span class="a" @click="jump('bbb')">Amenities</span></el-col>-->
-<!--        <el-col :span="6"><span  class="a" @click="jump('ccc')">Reviews</span></el-col>-->
-<!--        <el-col :span="6"><span class="a" @click="jump('ddd')">Map</span></el-col>-->
-<!--      </div>-->
-<!--      <el-tabs v-model="activeName" @tab-click="handleClick" >-->
-<!--        <template>-->
-<!--          <div style="margin-left: 20px;">-->
-<!--            &lt;!&ndash;                <el-card id="photo"></el-card>&ndash;&gt;-->
-<!--            &lt;!&ndash; 内容区域 &ndash;&gt;-->
-<!--            &lt;!&ndash;                <div  style="text-align:left;margin-left: 40px">&ndash;&gt;-->
-
-<!--            <el-card id="aaa" align="left">-->
-<!--              <h1 align="center">Overview</h1>-->
-<!--              <h2><i class = "el-icon-document"></i> Description</h2>-->
-<!--              <el-main>{{description}}</el-main>-->
-<!--              <h2><i class="el-icon-house"></i> Type: {{property_type}}</h2>-->
-<!--              <h2><i class="icon iconfont iconrenshu" style="font-size: 25px"></i> Guests: {{guests}}</h2>-->
-<!--              <el-row style="font-size: 20px">-->
-<!--                <el-col :span="12" align="middle"><span><i class="icon iconfont iconchuang"></i> Bedroom: {{bedrooms}}</span></el-col>-->
-<!--                <el-col :span="12" align="middle"><span><i class="icon iconfont iconyushiyongpin"></i> Bathrooms: {{bathrooms}}</span></el-col>-->
-<!--              </el-row >-->
-<!--              <el-row style="font-size: 20px">-->
-<!--                <el-col :span="6" align="middle"><span>Single bed: {{single_bed}}</span></el-col>-->
-<!--                <el-col :span="6" align="middle"><span>Double bed: {{double_bed}}</span></el-col>-->
-<!--                <el-col :span="12"></el-col>-->
-<!--              </el-row>-->
-<!--              <el-row style="font-size: 20px">-->
-<!--                <el-col :span="6" align="middle"><span>Queen bed: {{queen_bed}}</span></el-col>-->
-<!--                <el-col :span="6" align="middle"><span>King bed: {{king_bed}}</span></el-col>-->
-<!--                <el-col :span="12"></el-col>-->
-<!--              </el-row>-->
-
-<!--              &lt;!&ndash;                    <el-divider></el-divider>&ndash;&gt;-->
-<!--            </el-card>-->
-<!--            <el-card id="bbb">-->
-<!--              <h1>Amenities</h1>-->
-<!--              <el-row v-for="item in this.lennum" :key="item">-->
-<!--                <el-col :span="12" align="left"><i :class="occuam[2*item-2].classname" style="font-size: 25px"><span > {{occuam[2*item-2].name}}</span></i></el-col>-->
-<!--                <el-col :span="12" align="left"><i :class="occuam[2*item-1].classname" style="font-size: 25px"><span > {{occuam[2*item-1].name}}</span></i>-->
-<!--                </el-col>-->
-<!--                 </el-row>-->
-<!--              <el-row v-show="this.oddnum">-->
-<!--                <el-col :span="12" align="left"><i :class="occuam[this.occuam.length-1].classname" style="font-size: 25px"><span > {{occuam[this.occuam.length-1].name}}</span></i></el-col>-->
-<!--                <el-col :span="12" align="left"></el-col>-->
-<!--              </el-row>-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdhongganji" style="font-size: 25px"><span v-if="show_amentities('Clothes dryer')"> Clothes dryer</span><span v-else><del> Clothes dryer</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdbeidangenghuan" style="font-size: 25px"><span v-if="show_amentities('Linens provided')"> Linens provided</span><span v-else><del> Linens provided</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdairconditioning" style="font-size: 25px"><span v-if="show_amentities('Air conditioning')"> Air conditioning</span><span v-else><del> Air conditioning</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdweibolu" style="font-size: 25px"><span v-if="show_amentities('Microwave')"> Microwave</span><span v-else><del> Microwave</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdkaoxiang" style="font-size: 25px"><span v-if="show_amentities('Oven')"> Oven</span><span v-else><del> Oven</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdcarpark" style="font-size: 25px"><span v-if="show_amentities('Parking')"> Parking</span><span v-else><del> Parking</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdicon-test10" style="font-size: 25px"><span v-if="show_amentities('No Smoking')"> No Smoking</span><span v-else><del> No Smoking</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdHairdryer" style="font-size: 25px"><span v-if="show_amentities('Hair dryer')"> Hair dryer</span><span v-else><del> Hair dryer</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdwuzhangaisheshi" style="font-size: 25px"><span v-if="show_amentities('Accessible')"> Accessible</span><span v-else><del> Accessible</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdbingxiang" style="font-size: 25px"><span v-if="show_amentities('Fridge')"> Fridge</span><span v-else><del> Fridge</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdicon-test4" style="font-size: 25px"><span v-if="show_amentities('Wireless Internet')"> Wireless Internet</span><span v-else><del> Wireless Internet</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdWashingmachine" style="font-size: 25px"><span v-if="show_amentities('Washing machine')"> Washing machine</span><span v-else><del> Washing machine</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdnuanqi" style="font-size: 25px"><span v-if="show_amentities('Heating')"> Heating</span><span v-else><del> Heating</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdindoorpool" style="font-size: 25px"><span v-if="show_amentities('Swimming pool')"> Swimming pool</span><span v-else><del> Swimming pool</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdBathtub" style="font-size: 25px"><span v-if="show_amentities('Hot Tub')"> Hot Tub</span><span v-else><del> Hot Tub</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdicon-test1" style="font-size: 25px"><span v-if="show_amentities('Elevator')"> Elevator</span><span v-else><del> Elevator</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdBlendermixer" style="font-size: 25px"><span v-if="show_amentities('Blender')"> Blender</span><span v-else><del> Blender</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdkexiedaichongwu" style="font-size: 25px"><span v-if="show_amentities('Pets Welcome')"> Pets Welcome</span><span v-else><del> Pets Welcome</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                              <el-row>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdToaster" style="font-size: 25px"><span v-if="show_amentities('Toaster')"> Toaster</span><span v-else><del> Toaster</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <el-col :span="12" align="left"><i class="el-icon-thirdshaokaoqiju" style="font-size: 25px"><span v-if="show_amentities('BBQ')"> BBQ</span><span v-else><del> BBQ</del></span></i></el-col>&ndash;&gt;-->
-<!--&lt;!&ndash;                              </el-row>&ndash;&gt;-->
-<!--              &lt;!&ndash;                    <i class="el-icon-thirdicon-test">television</i>       <i class="el-icon-thirdicon-test">television</i>&ndash;&gt;-->
-<!--            </el-card>-->
-<!--            <el-card id="ccc">-->
-<!--              <h1>Review</h1>-->
-<!--              <el-row style="border-top: none;">-->
-<!--                <el-col style="border-top: none;">-->
-<!--                  &lt;!&ndash;                        <el-carousel height="300px" :autoplay="false" indicator-position=none :loop="false">&ndash;&gt;-->
-<!--                  &lt;!&ndash;                          &lt;!&ndash;遍历图片地址,动态生成轮播图&ndash;&gt;&ndash;&gt;-->
-<!--                  &lt;!&ndash;                          <el-carousel-item v-for="item in word_list" :key="item">&ndash;&gt;-->
-<!--                  &lt;!&ndash;                            <el-main align="left">&ndash;&gt;-->
-<!--                  &lt;!&ndash;                              <td><el-avatar id="toolbar-avatar1" :size="50" :src="img0" style="margin-top: 0px"></el-avatar></td>&ndash;&gt;-->
-<!--                  &lt;!&ndash;                              <td>&ndash;&gt;-->
-<!--                  &lt;!&ndash;                                <el-main style="margin-top: 0px">HOSTNAME&ndash;&gt;-->
-<!--                  &lt;!&ndash;                                  December 2019</el-main>&ndash;&gt;-->
-<!--                  &lt;!&ndash;                              </td>{{item}}&ndash;&gt;-->
-<!--                  &lt;!&ndash;                            </el-main>&ndash;&gt;-->
-<!--                  &lt;!&ndash;                          </el-carousel-item>&ndash;&gt;-->
-<!--                  &lt;!&ndash;                        </el-carousel>&ndash;&gt;-->
-<!--                  <div id="example" style="font-size: 20px">-->
-<!--                    &lt;!&ndash; 利用v-if…v-else切换 展开 和 收起 两个画面，template包裹多个元素 &ndash;&gt;-->
-<!--                    <template v-if="isHide">-->
-<!--                      &lt;!&ndash; 只显示摘要的画面 &ndash;&gt;-->
-<!--                      <div class="hideBg">-->
-<!--                        <el-main class="summary" >-->
-<!--                          <div style="text-align: left;padding-left: 20px" v-for="item in this.listshow" :key="item">-->
-<!--                            <el-row type="flex" justify="space-between">-->
-<!--                              <el-col :span="6"><span style="font-weight: bold">{{item.username}}</span></el-col>-->
-<!--                              <el-col :span="6" style="text-align: left"><el-rate-->
-<!--                                v-model="item.rating"-->
-<!--                                disabled-->
-<!--                                show-score-->
-<!--                                text-color="#ff9900"-->
-<!--                                score-template="{value}">-->
-<!--                              </el-rate>-->
-<!--                              </el-col>-->
-<!--                            </el-row>-->
-<!--                            <el-row>-->
-<!--                              <el-col :span="12">{{item.context}}</el-col>-->
-<!--                              <el-col style="height: 20px"></el-col>-->
-<!--                            </el-row>-->
-<!--                          </div>-->
-<!--                        </el-main>-->
-<!--                        <div class="showBtn" >-->
-<!--                          &lt;!&ndash; 绑定点击事件onShow，点击展开全文 &ndash;&gt;-->
-<!--&lt;!&ndash;                          <el-main v-if="this.checkReview">&ndash;&gt;-->
-<!--                            <a  href="#" @click.stop.prevent="onShow">read more&nbsp;-->
-<!--                              &lt;!&ndash; 向下的角箭头符号，用css画 &ndash;&gt;-->
-<!--                              <span class="downArrow"></span>-->
-<!--                            </a>-->
-<!--&lt;!&ndash;                          </el-main>&ndash;&gt;-->
-<!--                        </div>-->
-
-<!--                      </div>-->
-<!--                    </template>-->
-<!--                    <template v-else>-->
-<!--                      &lt;!&ndash; 显示完整内容的画面 &ndash;&gt;-->
-<!--                      <div class="showBg">-->
-<!--                        <div style="text-align: left;padding-left: 20px" v-for="item in this.reviewdata" :key="item">-->
-<!--                          <el-row type="flex" justify="space-between">-->
-<!--                            <el-col :span="6"><span style="font-weight: bold">{{item.username}}</span></el-col>-->
-<!--                            <el-col :span="6" style="text-align: left"><el-rate-->
-<!--                              v-model="item.rating"-->
-<!--                              disabled-->
-<!--                              show-score-->
-<!--                              text-color="#ff9900"-->
-<!--                              score-template="{value}">-->
-<!--                            </el-rate>-->
-<!--                            </el-col>-->
-<!--                          </el-row>-->
-<!--                          <el-row>-->
-<!--                            <el-col :span="12">{{item.context}}</el-col>-->
-<!--                            <el-col style="height: 20px"></el-col>-->
-<!--                          </el-row>-->
-<!--                        </div>-->
-<!--                        &lt;!&ndash;                            <el-row v-for="item in this.word_list" :key="item">&ndash;&gt;-->
-<!--                        &lt;!&ndash;                              {{item['context']}}&ndash;&gt;-->
-<!--                        &lt;!&ndash;                            </el-row>&ndash;&gt;-->
-<!--                        &lt;!&ndash;                            <main>{{ content }}</main>&ndash;&gt;-->
-<!--                        <div class="hideBtn">-->
-<!--                          &lt;!&ndash; 绑定点击事件onHide，点击收起内容 &ndash;&gt;-->
-<!--                          <a href="#" @click.stop.prevent="onHide">hide&nbsp;-->
-<!--                            &lt;!&ndash; 向上的角箭头符号 &ndash;&gt;-->
-<!--                            <span class="upArrow"></span>-->
-<!--                          </a>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </template>-->
-<!--                  </div>-->
-<!--                </el-col>-->
-<!--              </el-row>-->
-<!--            </el-card>-->
-<!--            <el-card id="ddd">-->
-<!--              <h1>Map</h1>-->
-<!--              <mapview></mapview>-->
-<!--            </el-card>-->
-<!--            <div style="border: none;height: 0;width: 0">-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </template>-->
-<!--      </el-tabs>-->
-<!--    </el-col>-->
-<!--    <el-col :span="9">-->
-<!--      <el-main>-->
-<!--        <el-row style="height: 70px"></el-row>-->
-<!--        <el-divider><h3>Related recommendations</h3></el-divider>-->
-<!--        <related :list="related" :start_date="start_date" :end_date="end_date"></related>-->
-<!--      </el-main>-->
-<!--      &lt;!&ndash;        <div id="detail">&ndash;&gt;-->
-<!--      &lt;!&ndash;        </div>&ndash;&gt;-->
-<!--    </el-col>-->
-<!--  </div>-->
-<!--</template>-->
-<!--<template>-->
-<!--  <el-container style="padding: 30px">-->
-<!--    <el-aside width="60%" style="margin-left: 45px">-->
-<!--      <el-row>-->
-<!--&lt;!&ndash;        <el-row>&ndash;&gt;-->
-<!--          <h1>{{title}}</h1>-->
-<!--&lt;!&ndash;        </el-row>&ndash;&gt;-->
-<!--        <el-row>-->
-<!--          <i class="el-icon-location-information"></i>{{suburb}}, NSW-->
-<!--        </el-row>-->
-<!--      </el-row>-->
-<!--      <el-row >-->
-<!--        <div id="banner">-->
-<!--          &lt;!&ndash;动态将图片轮播图的容器高度设置成与图片一致&ndash;&gt;-->
-<!--          <el-carousel :height="bannerHeight + 'px'">-->
-<!--            &lt;!&ndash;遍历图片地址,动态生成轮播图&ndash;&gt;-->
-<!--            <el-carousel-item v-for="item in img_list" :key="item">-->
-<!--              <img :src="item" alt="">-->
-<!--            </el-carousel-item>-->
-<!--          </el-carousel>-->
-<!--        </div>-->
-<!--      </el-row>-->
-<!--        <div class="box_fixed" id="boxFixed" :class="{'is_fixed' :isFixed}">-->
-<!--          <el-col :span="6"><span class="a"  @click="jump ('aaa')" >Overview</span></el-col>-->
-<!--          <el-col :span="6"><span class="a" @click="jump('bbb')">Amenities</span></el-col>-->
-<!--          <el-col :span="6"><span  class="a" @click="jump('ccc')">Reviews</span></el-col>-->
-<!--          <el-col :span="6"><span class="a" @click="jump('ddd')">Map</span></el-col>-->
-<!--        </div>-->
-<!--        <el-tabs v-model="activeName" @tab-click="handleClick">-->
-<!--      <el-row>-->
-<!--        <el-card id="aaa" align="left">-->
-<!--          <h1 align="center">Overview</h1>-->
-<!--          <h2><i class = "el-icon-document"></i> Description</h2>-->
-<!--          <p>{{description}}</p>-->
-<!--          <h2><i class="el-icon-house"></i> Type: {{property_type}}</h2>-->
-<!--          <h2><i class="icon iconfont iconrenshu" style="font-size: 25px"></i> Guests: {{guests}}</h2>-->
-<!--          <el-row style="font-size: 20px">-->
-<!--            <el-col :span="12" align="middle"><span><i class="icon iconfont iconchuang"></i> Bedroom: {{bedrooms}}</span></el-col>-->
-<!--            <el-col :span="12" align="middle"><span><i class="icon iconfont iconyushiyongpin"></i> Bathrooms: {{bathrooms}}</span></el-col>-->
-<!--          </el-row >-->
-<!--          <el-row style="font-size: 20px">-->
-<!--            <el-col :span="6" align="middle"><span>Single bed: {{single_bed}}</span></el-col>-->
-<!--            <el-col :span="6" align="middle"><span>Double bed: {{double_bed}}</span></el-col>-->
-<!--            <el-col :span="12"></el-col>-->
-<!--          </el-row>-->
-<!--          <el-row style="font-size: 20px">-->
-<!--            <el-col :span="6" align="middle"><span>Queen bed: {{queen_bed}}</span></el-col>-->
-<!--            <el-col :span="6" align="middle"><span>King bed: {{king_bed}}</span></el-col>-->
-<!--            <el-col :span="12"></el-col>-->
-<!--          </el-row>-->
-<!--        </el-card>-->
-<!--        <el-card id="bbb">-->
-<!--          <h1>Amenities</h1>-->
-<!--          <el-row v-for="item in this.lennum" :key="item">-->
-<!--            <el-col :span="12" align="left"><i :class="occuam[2*item-2].classname" style="font-size: 25px"><span > {{occuam[2*item-2].name}}</span></i></el-col>-->
-<!--            <el-col :span="12" align="left"><i :class="occuam[2*item-1].classname" style="font-size: 25px"><span > {{occuam[2*item-1].name}}</span></i>-->
-<!--            </el-col>-->
-<!--          </el-row>-->
-<!--          <el-row v-show="this.oddnum">-->
-<!--            <el-col :span="12" align="left"><i :class="occuam[this.occuam.length-1].classname" style="font-size: 25px"><span > {{occuam[this.occuam.length-1].name}}</span></i></el-col>-->
-<!--            <el-col :span="12" align="left"></el-col>-->
-<!--          </el-row>-->
-<!--        </el-card>-->
-<!--        <el-card id="ccc">-->
-<!--          <h1>Review</h1>-->
-<!--          <el-row style="border-top: none;">-->
-<!--            <el-col style="border-top: none;">-->
-<!--              <div id="example" style="font-size: 20px">-->
-<!--                &lt;!&ndash; 利用v-if…v-else切换 展开 和 收起 两个画面，template包裹多个元素 &ndash;&gt;-->
-<!--                <template v-if="isHide">-->
-<!--                  &lt;!&ndash; 只显示摘要的画面 &ndash;&gt;-->
-<!--                  <div class="hideBg">-->
-<!--                    <div style="text-align: left;padding-left: 20px" v-for="item in this.listshow" :key="item">-->
-<!--                      <el-row type="flex" justify="space-between">-->
-<!--                        <el-col :span="6"><span style="font-weight: bold">{{item.username}}</span></el-col>-->
-<!--                        <el-col :span="6" style="text-align: left"><el-rate-->
-<!--                          v-model="item.rating"-->
-<!--                          disabled-->
-<!--                          show-score-->
-<!--                          text-color="#ff9900"-->
-<!--                          score-template="{value}">-->
-<!--                        </el-rate>-->
-<!--                        </el-col>-->
-<!--                      </el-row>-->
-<!--                      <el-row>-->
-<!--                        <el-col :span="12">{{item.context}}</el-col>-->
-<!--                        <el-col style="height: 20px"></el-col>-->
-<!--                      </el-row>-->
-<!--                    </div>-->
-<!--                    <div class="showBtn" >-->
-<!--                      &lt;!&ndash; 绑定点击事件onShow，点击展开全文 &ndash;&gt;-->
-<!--                      <div v-if="this.checkReview">-->
-<!--                        <a  href="#" @click.stop.prevent="onShow">read more&nbsp;-->
-<!--                          &lt;!&ndash; 向下的角箭头符号，用css画 &ndash;&gt;-->
-<!--                          <span class="downArrow"></span>-->
-<!--                        </a>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </template>-->
-<!--                <template v-else>-->
-<!--                  &lt;!&ndash; 显示完整内容的画面 &ndash;&gt;-->
-<!--                  <div class="showBg">-->
-<!--                    <div style="text-align: left;padding-left: 20px" v-for="item in this.reviewdata" :key="item">-->
-<!--                      <el-row type="flex" justify="space-between">-->
-<!--                        <el-col :span="6"><span style="font-weight: bold">{{item.username}}</span></el-col>-->
-<!--                        <el-col :span="6" style="text-align: left"><el-rate-->
-<!--                          v-model="item.rating"-->
-<!--                          disabled-->
-<!--                          show-score-->
-<!--                          text-color="#ff9900"-->
-<!--                          score-template="{value}">-->
-<!--                        </el-rate>-->
-<!--                        </el-col>-->
-<!--                      </el-row>-->
-<!--                      <el-row>-->
-<!--                        <el-col :span="12">{{item.context}}</el-col>-->
-<!--                        <el-col style="height: 20px"></el-col>-->
-<!--                      </el-row>-->
-<!--                    </div>-->
-<!--                    <div class="hideBtn">-->
-<!--                      &lt;!&ndash; 绑定点击事件onHide，点击收起内容 &ndash;&gt;-->
-<!--                      <a href="#" @click.stop.prevent="onHide">hide&nbsp;-->
-<!--                        &lt;!&ndash; 向上的角箭头符号 &ndash;&gt;-->
-<!--                        <span class="upArrow"></span>-->
-<!--                      </a>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </template>-->
-<!--              </div>-->
-<!--            </el-col>-->
-<!--          </el-row>-->
-<!--        </el-card>-->
-<!--        <el-card id="ddd">-->
-<!--          <h1>Map</h1>-->
-<!--          <MapView></MapView>-->
-<!--        </el-card>-->
-<!--      </el-row>-->
-<!--        </el-tabs>-->
-<!--    </el-aside>-->
-<!--    <el-main>-->
-<!--      <el-form :model="ruleForm" ref="ruleForm" label-width="100px" class="demo-ruleForm">-->
-<!--        <el-form-item style="margin-left: -65px;margin-right: 25px; margin-top: 20px">-->
-<!--          <td>-->
-<!--            <el-avatar id="toolbar-avatar" :size="80" :src="host_avatar" style="vertical-align: middle;margin-left: 120px;margin-top: 16px;margin-bottom: 20px"></el-avatar>-->
-<!--            {{host_name}}-->
-<!--          </td>-->
-<!--          <el-date-picker-->
-<!--            v-model="ruleForm.date1"-->
-<!--            type="daterange"-->
-<!--            range-separator="To"-->
-<!--            format="dd/MM/yyyy"-->
-<!--            value-format="dd/MM/yyyy"-->
-<!--            :start-placeholder= "start_date"-->
-<!--            :end-placeholder= "end_date" :picker-options="pickerOptions" :default-value="[ruleForm.d1,ruleForm.d2]" @change="dateChange"></el-date-picker>-->
-<!--          <h2 style="margin-top: 10px;margin-bottom: 10px">{{period}} nights</h2>-->
-<!--          <el-divider></el-divider>-->
-<!--          <el-row>-->
-<!--            <div style="text-align: left;font-size: medium" >-->
-<!--              <el-col :span="12">-->
-<!--                <el-row>-->
-<!--                  {{price}} * {{period}} nights-->
-<!--                </el-row>-->
-<!--                <el-row>-->
-<!--                  cleaning fee-->
-<!--                </el-row>-->
-<!--                <el-row>-->
-<!--                  <span style="font-weight: bold"> total</span>-->
-<!--                </el-row>-->
-<!--              </el-col>-->
-<!--            </div>-->
-<!--            <div style="text-align: right">-->
-<!--              <el-col :span="12">-->
-<!--                <el-row>-->
-<!--                  {{price*period}}-->
-<!--                </el-row>-->
-<!--                <el-row>-->
-<!--                  {{cleaning_fee}}-->
-<!--                </el-row>-->
-<!--                <el-row>-->
-<!--                  <span style="font-weight: bold"> {{total}}</span>-->
-<!--                </el-row>-->
-<!--              </el-col>-->
-<!--            </div>-->
-<!--          </el-row>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item style="margin-top: -10px">-->
-<!--          <el-button style="margin-left: -100px" type="primary" @click="submitForm('ruleForm')">Reserve</el-button>-->
-<!--        </el-form-item>-->
-<!--      </el-form>-->
-<!--      <el-row style="height: 750px"></el-row>-->
-<!--      <el-divider><h3>Related recommendations</h3></el-divider>-->
-<!--      <related :list="related" :start_date="start_date" :end_date="end_date"></related>-->
-<!--    </el-main>-->
-<!--  </el-container>-->
-<!--</template>-->
-
 <template>
   <el-container>
     <el-col :span="15" offset="1">
@@ -586,27 +102,18 @@
                         <el-row>
                           <el-col :span="24">{{item.context}}</el-col>
                         </el-row>
-                        <el-row>
-                          <div style="text-align: right">
-                          <el-col style="height: 20px">
-                            <a  href="#" @click.stop.prevent="onShow">more&nbsp;
-                              <!-- 向下的角箭头符号，用css画 -->
-                              <span class="downArrow"></span>
-                            </a>
-                          </el-col>
-                          </div>
-                        </el-row>
                       </div>
+                      <el-row>
+                      <div style="text-align: right">
+                        <el-col style="height: 20px">
+                          <a  href="#" @click.stop.prevent="onShow">more&nbsp;
+                            <!-- 向下的角箭头符号，用css画 -->
+                            <span class="downArrow"></span>
+                          </a>
+                        </el-col>
+                      </div>
+                      </el-row>
                     </div>
-<!--                    <div class="showBtn" >-->
-<!--                      &lt;!&ndash; 绑定点击事件onShow，点击展开全文 &ndash;&gt;-->
-<!--                      <el-main v-if="this.checkReview">-->
-<!--                        <a  href="#" @click.stop.prevent="onShow">read more&nbsp;-->
-<!--                          &lt;!&ndash; 向下的角箭头符号，用css画 &ndash;&gt;-->
-<!--                          <span class="downArrow"></span>-->
-<!--                        </a>-->
-<!--                      </el-main>-->
-<!--                    </div>-->
                   </div>
                 </template>
                 <template v-else>
@@ -627,27 +134,27 @@
                       <el-row>
                         <el-col :span="24">{{item.context}}</el-col>
                        </el-row>
-                      <el-row>
-                        <el-col style="height: 20px">
-                          <div class="hideBtn">
-                            <!-- 绑定点击事件onHide，点击收起内容 -->
-                            <a href="#" @click.stop.prevent="onHide">hide&nbsp;
-                              <!-- 向上的角箭头符号 -->
-                              <span class="upArrow"></span>
-                            </a>
-                          </div>
-                        </el-col>
-                      </el-row>
                     </div>
+                    <el-row>
+                      <el-col style="height: 20px">
+                        <div class="hideBtn">
+                          <!-- 绑定点击事件onHide，点击收起内容 -->
+                          <a href="#" @click.stop.prevent="onHide">hide&nbsp;
+                            <!-- 向上的角箭头符号 -->
+                            <span class="upArrow"></span>
+                          </a>
+                        </div>
+                      </el-col>
+                    </el-row>
                     </div>
                 </template>
               </div>
             </el-col>
           </el-row>
         </el-card>
-        <el-card id="ddd">
+        <el-card id="ddd" style="padding-left: 0px">
           <h2>Map</h2>
-          <MapView></MapView>
+          <map-view></map-view>
         </el-card>
       </el-row>
 <!--      </el-scrollbar>-->
@@ -655,7 +162,7 @@
     </el-col>
     <el-col :span="8">
     <el-main>
-      <el-card style="margin-top: 112px;height: 450px" shadow="never">
+      <el-card style="margin-top: 110px;height: 450px" shadow="never">
          <el-avatar :size="80" :src="host_avatar" style="vertical-align: middle;margin-top: 16px;margin-bottom: 20px"></el-avatar>
         {{host_name}}
          <el-date-picker
@@ -697,11 +204,7 @@
             </el-col>
           </div>
         </el-row>
-        <!--        </el-form-item>-->
-        <!--        <el-form-item style="margin-top: -10px">-->
         <el-button type="primary" @click="submitForm('ruleForm')">Reserve</el-button>
-        <!--        </el-form-item>-->
-        <!--      </el-form>-->
       </el-card>
       <el-row style="height:50px"></el-row>
       <el-divider><h3>Nearby recommendations</h3></el-divider>
@@ -714,8 +217,9 @@
 <script>
 // import MapView from './MapView'
 import Related from './Related'
+import MapView from '../../components/MapView'
 export default {
-  components: {Related},
+  components: {MapView, Related},
   offsetTop: 0,
   name: 'Details',
   props: {
@@ -730,7 +234,7 @@ export default {
   },
   data () {
     return {
-      saved: true,
+      saved: '',
       rating: '',
       related: '',
       reviewdata: [{'id': 5, 'username': 'Rita', 'Rating': 4.0, 'context': 'Beatiful Places!'}, {'id': 6, 'username': 'Jeff', 'Rating': 5.0, 'context': 'Nice house!'}],
@@ -826,7 +330,7 @@ export default {
     this.end_date = this.$route.query.end_date
     this.property = this.$route.query.property
     this.$axios
-      .get('/api/show_property?property=' + this.property + '&start_date=' + this.start_date + '&end_date=' + this.end_date)
+      .get('/api/show_property?property=' + this.property + '&start_date=' + this.start_date + '&end_date=' + this.end_date + '&email=' + this.$store.getters.getStorage)
       .then(res => {
         this.title = res.data.body.title
         this.description = res.data.body.description
@@ -847,7 +351,11 @@ export default {
         this.host_avatar = res.data.body.host_avatar
         this.suburb = res.data.body.suburb
         this.rating = res.data.body.rating
+        if (this.rating === '5.00') {
+          this.rating = '5'
+        }
         this.property_type = res.data.body.property_type
+        this.saved = res.data.body.saved
         this.list_amenities = this.amenities.split('#')
         console.log(this.list_amenities)
         this.getDetails()
@@ -866,6 +374,31 @@ export default {
     // this.edata = this.end_date.split('/')[2] + '-' + this.end_date.split('/')[1] + '-' + this.end_date.split('/')[0]
   },
   methods: {
+    addTowishlist () {
+      if (!this.$store.getters.getStorage) {
+        alert('Please login')
+      } else {
+        if (this.saved === true) {
+          this.$message('already saved')
+        } else {
+          let data = this.$qs.stringify({
+            property: this.property,
+            email: this.$store.getters.getStorage
+          })
+          this.$axios.post('/api/add_wishlist', data)
+            .then((response) => {
+              if (response.data.code === 0) {
+                this.$message('saved to wishlist')
+                console.log('saved to wishlist')
+                this.saved = true
+              } else {
+                this.$message('error')
+                console.log(response.data.msg)
+              }
+            })
+        }
+      }
+    },
     getNearby () {
       this.$axios
         .get('/api/nearby_property?property_id=' + this.property + '&start_date=' + this.start_date + '&end_date=' + this.end_date)
@@ -888,8 +421,25 @@ export default {
         .get('/api/show_reviews?property=' + this.property)
         .then(res => {
           this.reviewdata = res.data.body
+          this.reviewdata.forEach(function (item) {
+            if (item['rating'] === '5.00') {
+              item['rating'] = '5'
+            }
+            if (item['rating'] === '4.00') {
+              item['rating'] = '4'
+            }
+            if (item['rating'] === '3.00') {
+              item['rating'] = '3'
+            }
+            if (item['rating'] === '2.00') {
+              item['rating'] = '2'
+            }
+            if (item['rating'] === '1.00') {
+              item['rating'] = '1'
+            }
+          })
           this.listshow = this.reviewdata.sort(function (a, b) { return b['context'].length - a['context'].length })
-          this.listshow = this.listshow.slice(0, 3)
+          this.listshow = this.listshow.slice(0, 2)
         })
         .catch(function (error) {
           console.log(error)
@@ -1017,26 +567,30 @@ export default {
         })
     },
     submitForm (formName) {
-      let data = this.$qs.stringify({
-        email: this.$store.getters.getStorage,
-        property_id: this.property,
-        start_date: this.start_date,
-        end_date: this.end_date,
-        period: this.period,
-        total_cost: this.total
-      })
-      this.$axios.post('/api/reserve', data)
-        .then((response) => {
-          if (response.data.code === 0) {
-            this.$message('Successfully booked, a conformation email will be sent later')
-          } else {
-            this.$message.error('this period is unavailable, please change the date')
-            console.log('this period is unavailable')
-          }
+      if (!this.$store.getters.getStorage) {
+        this.$message.error('please login')
+      } else {
+        let data = this.$qs.stringify({
+          email: this.$store.getters.getStorage,
+          property_id: this.property,
+          start_date: this.start_date,
+          end_date: this.end_date,
+          period: this.period,
+          total_cost: this.total
         })
-        .catch((res) => {
-          console.log('error ', res)
-        })
+        this.$axios.post('/api/reserve', data)
+          .then((response) => {
+            if (response.data.code === 0) {
+              this.$message('Successfully booked, a conformation email will be sent later')
+            } else {
+              this.$message.error('this period is unavailable, please change the date')
+              console.log('this period is unavailable')
+            }
+          })
+          .catch((res) => {
+            console.log('error ', res)
+          })
+      }
     },
     resetForm (formName) {
       this.$refs[formName].resetFields()
@@ -1155,180 +709,6 @@ export default {
 }
 </script>
 
-<!--<style scoped>-->
-<!--  /* 内容区的样式 */-->
-<!--  .demo-ruleForm{-->
-<!--    margin-top: 65px;-->
-<!--    /*margin-left: 60px;*/-->
-<!--    /*top: 100px;*/-->
-<!--    /*height: 400px;*/-->
-<!--    border: 2px dashed pink;-->
-<!--    border-radius: 20px;-->
-<!--    position: absolute;-->
-<!--    /*line-height: 20px;*/-->
-<!--    /*background-color: #efefef;*/-->
-<!--  }-->
-<!--  .content {-->
-<!--    /*margin-left: 60px;*/-->
-<!--    /*background-color: white;*/-->
-<!--    width: 700px;-->
-<!--  }-->
-<!--  .content div {-->
-<!--    margin-top: 5px;-->
-<!--    border-width: thin;-->
-<!--    border-style: solid;-->
-<!--    border-left: none;-->
-<!--    border-right: none;-->
-<!--    border-bottom: none;-->
-<!--    width: 100%;-->
-<!--    height: 400px;-->
-<!--    /*font-size: 36px;*/-->
-<!--    /*padding: 20px;*/-->
-<!--    /*background-color: #7ec384;*/-->
-<!--  }-->
-<!--  .content div:nth-child(2n) {-->
-<!--    /*background-color: #847ec3;*/-->
-<!--  }-->
-<!--  /* 导航栏的样式 */-->
-<!--  .navs {-->
-<!--    position: fixed;-->
-<!--    top: 100px;-->
-<!--    left: 200px;-->
-<!--    background-color: #f5f7fa;-->
-<!--  }-->
-<!--  /* 当导航被点亮后改变颜色 */-->
-<!--  .navs .active{-->
-<!--    color: #847ec3;-->
-<!--    background-color: #e2e2e2;-->
-<!--  }-->
-<!--  .el-carousel__item h3 {-->
-<!--    color: #475669;-->
-<!--    font-size: 14px;-->
-<!--    opacity: 0.75;-->
-<!--    line-height: 300px;-->
-<!--    margin: 0;-->
-<!--  }-->
-
-<!--  .el-carousel__item:nth-child(2n) {-->
-<!--    background-color: #99a9bf;-->
-<!--  }-->
-
-<!--  .el-carousel__item:nth-child(2n+1) {-->
-<!--    background-color: #d3dce6;-->
-<!--  }-->
-<!--  img{-->
-<!--    /*设置图片宽度和浏览器宽度一致*/-->
-<!--    width: 100%;-->
-<!--    height: inherit;-->
-<!--  }-->
-<!--  .box_fixed{-->
-<!--    padding-top: 15px;-->
-<!--    padding-bottom: -5px;-->
-<!--    margin-left: 1000px;-->
-<!--    opacity: 0;-->
-<!--    width: 0.01px;-->
-<!--    height: 0.01px;-->
-<!--    /*border: 2px dashed pink;*/-->
-<!--    /*border-radius: 20px;*/-->
-<!--    /*margin: 0 auto;*/-->
-<!--    line-height: 20px;-->
-<!--    background: #f5f7fa;-->
-<!--  }-->
-<!--  .is_fixed{-->
-<!--    padding-top: 15px;-->
-<!--    padding-bottom: -5px;-->
-<!--    width: 900px;-->
-<!--    height: 40px;-->
-<!--    opacity: 100;-->
-<!--    position: fixed;-->
-<!--    top: 0;-->
-<!--    /*left: 50%;*/-->
-<!--    margin-left: 0px;-->
-<!--    z-index: 999;-->
-<!--  }-->
-<!--  .stepBtn{-->
-<!--    margin-bottom: 15px;-->
-<!--  }-->
-<!--  /* 摘要背景板 */-->
-<!--  .hideBg {-->
-<!--    /*width: 500px;*/-->
-<!--    /*background-color: #e9ecef;*/-->
-<!--    /*margin: 1.5rem;*/-->
-<!--    /*padding: 1.5rem;*/-->
-<!--    /*padding-bottom: 0;    !* 方便渐变层遮挡 *!*/-->
-<!--    position: relative;    /* 用于子元素定位 */-->
-<!--  }-->
-<!--  /* 全文背景板，基本与摘要相同 */-->
-<!--  .showBg {-->
-<!--    /*width: 500px;*/-->
-<!--    /*background-color: #e9ecef;*/-->
-<!--    /*margin: 1.5rem;*/-->
-<!--    /*padding: 1.5rem;*/-->
-<!--  }-->
-<!--  /* 摘要内容 */-->
-<!--  .summary {-->
-<!--    overflow: hidden;    /* 隐藏溢出内容 */-->
-<!--    text-overflow: clip;    /* 修剪文本 */-->
-<!--    display: -webkit-box;    /* 弹性布局 */-->
-<!--    -webkit-box-orient: vertical;    /* 从上向下垂直排列子元素 */-->
-<!--    -webkit-line-clamp: 10;    /* 限制文本仅显示前三行 */-->
-<!--  }-->
-<!--  #example p {-->
-<!--    text-indent: 2em;-->
-<!--  }-->
-<!--  /* 展开按钮 */-->
-<!--  .showBtn {-->
-<!--    width: 100%;    /* 与背景宽度一致 */-->
-<!--    height: 10rem;-->
-<!--    position: absolute;    /* 相对父元素定位 */-->
-<!--    top: 10rem;    /* 刚好遮挡在最后两行 */-->
-<!--    left: 0;-->
-<!--    z-index: 0;    /* 正序堆叠，覆盖在p元素上方 */-->
-<!--    text-align: center;-->
-<!--    /*background: linear-gradient(rgba(233,236,239,.5), white);    !* 背景色半透明到白色的渐变层 *!*/-->
-<!--    padding-top: 3rem;-->
-<!--  }-->
-<!--  /* 收起按钮 */-->
-<!--  .hideBtn {-->
-<!--    text-align: right;-->
-<!--  }-->
-<!--  #example a {-->
-<!--    text-decoration: none;    /* 清除链接默认的下划线 */-->
-<!--  }-->
-<!--  /* 向下角箭头 */-->
-<!--  .downArrow {-->
-<!--    display: inline-block;-->
-<!--    width: 8px;    /* 尺寸不超过字号的一半为宜 */-->
-<!--    height: 8px;-->
-<!--    border-right: 1px solid;    /* 画两条相邻边框 */-->
-<!--    border-bottom: 1px solid;-->
-<!--    transform: rotate(45deg);    /* 顺时针旋转45° */-->
-<!--    margin-bottom: 3px;-->
-<!--  }-->
-<!--  /* 向上角箭头，原理与下箭头相同 */-->
-<!--  .upArrow {-->
-<!--    display: inline-block;-->
-<!--    width: 8px;-->
-<!--    height: 8px;-->
-<!--    border-left: 1px solid;-->
-<!--    border-top: 1px solid;-->
-<!--    transform: rotate(45deg);-->
-<!--    margin-top: 3px;-->
-<!--  }-->
-<!--  .a:hover{-->
-<!--    color: orange;-->
-<!--    border-bottom: 1px solid orange;-->
-<!--  }-->
-<!--  /*-->
-<!--  .a:active {-->
-<!--    text-decoration:underline;-->
-<!--  }-->
-<!--  .a:visited {-->
-<!--    text-decoration:underline;-->
-<!--  }-->
-<!--  */-->
-
-<!--</style>-->
 <style scoped>
   /* 内容区的样式 */
   .demo-ruleForm{

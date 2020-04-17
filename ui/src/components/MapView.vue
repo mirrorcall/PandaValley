@@ -107,7 +107,7 @@
         ref="mapRef"
         :center="center"
         :zoom="16"
-        style="width: 640px; height: 400px">
+        style="width: 610px; height: 410px">
         <gmap-info-window
           :options="infoOptions"
           :position="infoWindowPos"
@@ -222,17 +222,13 @@ export default {
   name: 'MapView',
   data () {
     return {
-      center: {
-        lat: 0,
-        lng: 0
-      },
       centerMarker: [
         {
           position: {
             lat: 0,
             lng: 0
           },
-          infoText: 'Property',
+          infoText: 'Panda Valley Property',
           infoAddr: '',
           infoRate: 0
         }
@@ -269,10 +265,8 @@ export default {
       currentMidx: null
     }
   },
-  created () {
-  },
+  props: [ 'center' ],
   mounted () {
-    this.center = {lat: -33.870064, lng: 151.206959}
     this.centerMarker[0].position = this.center
     for (let i = 0; i < this.searchType.length; i++) {
       this.searchNearBy(this.searchType[i])
@@ -288,7 +282,7 @@ export default {
     searchNearBy (type) {
       let request = {
         location: this.center,
-        radius: '230',
+        radius: '250',
         type: [ type ]
       }
       this.$refs.mapRef.$mapPromise.then((map) => {
@@ -374,9 +368,9 @@ export default {
     toggleInfoWindow: function (marker, idx) {
       this.infoWindowPos = marker.position
       this.infoContent = {
-        name: marker.infoText,
-        address: marker.infoAddr,
-        rating: marker.infoRate
+        name: marker.infoText
+        // address: marker.infoAddr,
+        // rating: marker.infoRate
       }
 
       if (this.currentMidx === idx) {
@@ -428,7 +422,6 @@ export default {
 
 <style scoped>
   #map-container {
-    margin: 20px 20%;
   }
   #map-sidebar {
     position: absolute;
@@ -436,7 +429,7 @@ export default {
     width: 300px;
   }
   #map-view {
-    margin-left: 320px;
+    margin-left: 300px;
     width: 640px;
     height: 400px;
   }

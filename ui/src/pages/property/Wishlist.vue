@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div><h2>My Wishlist</h2></div>
+    <div><h1>My Wishlist</h1></div>
     <div id="myList" class="myList">
       <ul>
         <li v-for="(item,index) in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">

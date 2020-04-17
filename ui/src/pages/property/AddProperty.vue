@@ -3,7 +3,7 @@
   <div>
     <el-card style="margin-top: 5px;">
       <el-alert
-        title="upload property information"
+        title="Upload Property Information"
         type="info"
         center
         show-icon
@@ -18,51 +18,60 @@
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px" label-position="left">
         <el-tabs v-model="activateIndex" :tab-position="'left'" style="margin: 20px; margin-left: 80px;margin-right: 80px" >
           <el-tab-pane label="Basic" name="0">
-            <el-form-item label="title" prop="title">
-              <el-input v-model="addForm.title" autosize="true" placeholder="title"></el-input>
+            <el-form-item label="Title" prop="title">
+              <el-input v-model="addForm.title" autosize="true" placeholder="Title"></el-input>
             </el-form-item>
-            <el-form-item label="address" prop="location">
-              <el-form-item label="street" prop="title">
-                <el-input v-model="addForm.location" placeholder="street"></el-input>
+            <el-form-item label="Address" prop="location">
+              <el-form-item label="Street" prop="title">
+                <el-input v-model="addForm.location" placeholder="Street"></el-input>
               </el-form-item>
-              <td>
-                <el-form-item label="suburb" prop="location">
-                  <el-input v-model="addForm.suburb" placeholder="suburb"></el-input>
-                  <!--
-                  <el-select v-model="addForm.value" placeholder="please choose your suburb">
-                    <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
-                    </el-option>
-                  </el-select>
-                  -->
-                </el-form-item>
-              </td>
-              <td>
-                <el-input
-                  placeholder="NSW"
-                  :disabled="true">
-                </el-input>
-              </td>
-              <td>
-                <el-form-item label="postcode" prop="location">
-                  <el-input v-model="addForm.location1" placeholder="postcode">
-                  </el-input>
-                </el-form-item>
+              <td style="padding-top: 20px">
+                <el-row>
+                  <el-col :span="8">
+                    <el-form-item label="Suburb" prop="location">
+                      <el-input v-model="addForm.suburb" placeholder="Suburb"></el-input>
+                      <!--
+                      <el-select v-model="addForm.value" placeholder="please choose your suburb">
+                        <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                        </el-option>
+                      </el-select>
+                      -->
+                    </el-form-item>
+                  </el-col>
+                  <el-col :span="4" :offset="2">
+                    <el-input
+                      placeholder="NSW"
+                      :disabled="true">
+                    </el-input>
+                  </el-col>
+                  <el-col :span="8" :offset="2">
+                    <el-form-item label="Postcode" prop="location">
+                      <el-input v-model="addForm.location1" placeholder="Postcode">
+                      </el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+<!--              </td>-->
+<!--              <td>-->
+<!--              </td>-->
+<!--              <td>-->
               </td>
             </el-form-item>
-            <el-form-item label="price" prop="price" style="text-align:left">
+            <el-form-item label="Price" prop="price" style="text-align:left">
               <el-input v-model="addForm.price" type="number" style="width: 300px;">
-                <template slot="append">/per night</template>
+                <template slot="append">per night</template>
               </el-input>
             </el-form-item>
-            <el-form-item label="roomtype" prop="roomtype">
+            <el-form-item label="Roomtype" prop="roomtype">
               <el-radio-group v-model="addForm.radio" align="left">
-                <el-radio label="apartment">apartment</el-radio>
-                <el-radio label="unit">unit</el-radio>
-                <el-radio label="house">house</el-radio>
+                <el-radio label="apartment">Apartment</el-radio>
+                <el-radio label="unit">Unit</el-radio>
+                <el-radio label="house">House</el-radio>
+                <el-radio label="studio">Studio</el-radio>
               </el-radio-group>
               <el-form-item >
                 <el-button type="primary" @click="submitForm_f1()">next page</el-button>
@@ -74,57 +83,57 @@
               <el-form-item
                 prop="number_of_bedroom"
                 style="text-align:left"
-                label="bedroom"
+                label="Bedroom"
                 :rules="[
-      { required: true, message: 'please type the number of bed room', trigger: 'blur' },
-      { message: 'please type the number of bed room', trigger: ['blur', 'change'] }
+      { required: true, message: 'Please type the number of bed room', trigger: 'blur' },
+      { message: 'Please type the number of bed room', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="please type the number of bedroom" v-model="dynamicValidateForm.number_of_bedroom" type="number" style="width: 500px"><template slot="append">bed room</template></el-input>
+                <el-input placeholder="Please type the number of bedroom" v-model="dynamicValidateForm.number_of_bedroom" type="number" style="width: 500px"><template slot="append">Bed room(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="number_of_single_bed"
                 style="text-align:left"
-                label="single bed"
+                label="Single bed"
                 :rules="[
-      { required: true, message: 'please type the number of single bed', trigger: 'blur' },
-      { message: 'please type the number of single bed', trigger: ['blur', 'change'] }
+      { required: true, message: 'Please type the number of single bed', trigger: 'blur' },
+      { message: 'Please type the number of single bed', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="please type the number of single bed" v-model="dynamicValidateForm.number_of_single_bed" type="number" style="width: 500px"><template slot="append">bed</template></el-input>
+                <el-input placeholder="Please type the number of single bed" v-model="dynamicValidateForm.number_of_single_bed" type="number" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="number_of_double_bed"
                 style="text-align:left"
-                label="double bed"
+                label="Double bed"
                 :rules="[
-      { required: true, message: 'please type the number of double bed', trigger: 'blur' },
-      { message: 'please type the number of double bed', trigger: ['blur', 'change'] }
+      { required: true, message: 'Please type the number of double bed', trigger: 'blur' },
+      { message: 'Please type the number of double bed', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="please type the number of double bed" v-model="dynamicValidateForm.number_of_double_bed" type="number" style="width: 500px"><template slot="append">bed</template></el-input>
+                <el-input placeholder="Please type the number of double bed" v-model="dynamicValidateForm.number_of_double_bed" type="number" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="number_of_king_bed"
                 style="text-align:left"
-                label="king bed"
+                label="King bed"
                 :rules="[
-      { required: true, message: 'please type the number of king bed', trigger: 'blur' },
-      { message: 'please type the number of king bed', trigger: ['blur', 'change'] }
+      { required: true, message: 'Please type the number of king bed', trigger: 'blur' },
+      { message: 'Please type the number of king bed', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="please type the number of king bed" v-model="dynamicValidateForm.number_of_king_bed" type="number" style="width: 500px"><template slot="append">bed</template></el-input>
+                <el-input placeholder="Please type the number of king bed" v-model="dynamicValidateForm.number_of_king_bed" type="number" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="number_of_queen_bed"
                 style="text-align:left"
-                label="queen bed"
+                label="Queen bed"
                 :rules="[
-      { required: true, message: 'please type the number of queen bed', trigger: 'blur' },
-      { message: 'please type the number of queen bed', trigger: ['blur', 'change'] }
+      { required: true, message: 'Please type the number of queen bed', trigger: 'blur' },
+      { message: 'Please type the number of queen bed', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="please type the number of queen bed" v-model="dynamicValidateForm.number_of_queen_bed" type="number" style="width: 500px"><template slot="append">bed</template></el-input>
+                <el-input placeholder="Please type the number of queen bed" v-model="dynamicValidateForm.number_of_queen_bed" type="number" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
               </el-form-item>
               <!--              <el-form-item-->
               <!--                style="width: 600px;"-->
@@ -141,37 +150,37 @@
               <el-form-item
                 prop="number_of_bathroom"
                 style="width: 600px"
-                label="bathroom"
+                label="Bathroom"
                 :rules="[
-      { required: true, message: 'please type the number', trigger: 'blur' },
-      { message: 'please type the number', trigger: ['blur', 'change'] }
+      { required: true, message: 'Please type the number', trigger: 'blur' },
+      { message: 'Please type the number', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="please type the number of bathroom" v-model="dynamicValidateForm.number_of_bathroom" type="number" ><template slot="append">bath room</template></el-input>
+                <el-input placeholder="Please type the number of bathroom" v-model="dynamicValidateForm.number_of_bathroom" type="number" ><template slot="append">Bath room(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="description"
                 style="width: 600px"
-                label="description"
+                label="Description"
                 :rules="[
-      { required: true, message: 'please type the description', trigger: 'blur' },
-      { message: 'please type the description', trigger: ['blur', 'change'] }
+      { required: true, message: 'Please type the description', trigger: 'blur' },
+      { message: 'Please type the description', trigger: ['blur', 'change'] }
     ]">
-                <el-input placeholder="please type the description" v-model="dynamicValidateForm.description" type="textarea" ><template slot="append">description</template></el-input>
+                <el-input placeholder="Please type the description" v-model="dynamicValidateForm.description" type="textarea" ><template slot="append">Description</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="guests"
                 style="width: 600px"
-                label="guests"
+                label="Guests"
                 :rules="[
-      { required: true, message: 'please type the guests', trigger: 'blur' },
-      { message: 'please type the guests', trigger: ['blur', 'change'] }
+      { required: true, message: 'Please type the guests', trigger: 'blur' },
+      { message: 'Please type the guests', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="please type the number of guests" v-model="dynamicValidateForm.guests" type="number" ><template slot="append">guests</template></el-input>
+                <el-input placeholder="Please type the number of guests" v-model="dynamicValidateForm.guests" type="number" ><template slot="append">Guests</template></el-input>
               </el-form-item>
               <el-form-item style="margin-left: -500px">
-                <el-button type="primary" @click="submitForm(dynamicValidateForm)">next page</el-button>
+                <el-button type="primary" @click="submitForm(dynamicValidateForm)">Next Page</el-button>
                 <!--                <el-button @click="addDomain">add bedroom</el-button>-->
               </el-form-item>
             </el-form>
@@ -187,7 +196,7 @@
             >
               <i class="el-icon-plus"></i>
             </el-upload>
-            <el-button @click="subPicForm">提交上传</el-button>
+            <el-button @click="subPicForm" style="margin-top: 20px">Upload</el-button>
           </el-tab-pane>
           <el-tab-pane label="Amenity" name="3">
             <el-header style="text-align:center">Basic Amenity</el-header>
@@ -493,7 +502,7 @@
                 </el-card>
               </el-col>
             </el-row>
-            <el-button type="primary" @click="submitFormAll()" style="margin-top: 50px">submit</el-button>
+            <el-button type="primary" @click="submitFormAll()" style="margin-top: 50px">Submit</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-form>
@@ -502,6 +511,7 @@
 </template>
 
 <script>
+import {gmapApi} from 'vue2-google-maps'
 export default {
   // name: 'Add'
   data () {
@@ -557,22 +567,22 @@ export default {
       addFormRules: {
         title: [{
           required: true,
-          message: 'please type the title',
+          message: 'Please type the title',
           trigger: 'blur'
         }],
         location: [{
           required: true,
-          message: 'please type the address',
+          message: 'Please type the address',
           trigger: 'blur'
         }],
         price: [{
           required: true,
-          message: 'please type the price',
+          message: 'Please type the price',
           trigger: 'blur'
         }],
         roomtype: [{
           required: true,
-          message: 'please choose the roomtype',
+          message: 'Please choose the roomtype',
           trigger: 'blur'
         }]
       },
@@ -580,7 +590,8 @@ export default {
       indexindex: 0
     }
   },
-  mounted: function () {
+  computed: {
+    google: gmapApi
   },
   methods: {
     submitFormAll () {
@@ -654,38 +665,54 @@ export default {
       if (this.BBQ) {
         am = am + '#BBQ'
       }
-      let config = {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-      // TODO: add amenities
-      this.formData.append('title', this.addForm.title)
-      // this.formData.append('suburb', this.addForm.value)
-      this.formData.append('suburb', this.addForm.suburb)
-      this.formData.append('street', this.addForm.location)
-      this.formData.append('postcode', this.addForm.location1)
-      this.formData.append('price', this.addForm.price)
-      this.formData.append('property_type', this.addForm.radio)
-      this.formData.append('bedrooms', this.dynamicValidateForm.number_of_bedroom)
-      this.formData.append('single_bed', this.dynamicValidateForm.number_of_single_bed)
-      this.formData.append('double_bed', this.dynamicValidateForm.number_of_double_bed)
-      this.formData.append('king_bed', this.dynamicValidateForm.number_of_king_bed)
-      this.formData.append('queen_bed', this.dynamicValidateForm.number_of_queen_bed)
-      this.formData.append('bathrooms', this.dynamicValidateForm.number_of_bathroom)
-      this.formData.append('guests', this.dynamicValidateForm.number_of_bathroom)
-      this.formData.append('description', this.dynamicValidateForm.description)
-      this.formData.append('amenities', am)
-      // TODO: send formData altogether
-      this.$axios.post('api/add_property', this.formData, config).then(res => {
-        if (res.data.code === 0) {
-          this.$message({
-            message: 'Upload successfully.',
-            type: 'success'
+
+      // Add google api to store the geocode for current property
+      this.$gmapApiPromiseLazy().then(() => {
+        let gecoder = new this.google.maps.Geocoder()
+        gecoder.geocode({'address': this.addForm.location + ',' + this.addForm.suburb + ',+NSW,+AU'}, (results, status) => {
+          location = results[0].geometry.location.toJSON()
+
+          let config = {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
+          }
+
+          this.formData.append('latitude', location.lat)
+          this.formData.append('longitude', location.lng)
+          this.formData.append('title', this.addForm.title)
+          // this.formData.append('suburb', this.addForm.value)
+          this.formData.append('suburb', this.addForm.suburb)
+          this.formData.append('street', this.addForm.location)
+          this.formData.append('postcode', this.addForm.location1)
+          this.formData.append('price', this.addForm.price)
+          this.formData.append('property_type', this.addForm.radio)
+          this.formData.append('bedrooms', this.dynamicValidateForm.number_of_bedroom)
+          this.formData.append('single_bed', this.dynamicValidateForm.number_of_single_bed)
+          this.formData.append('double_bed', this.dynamicValidateForm.number_of_double_bed)
+          this.formData.append('king_bed', this.dynamicValidateForm.number_of_king_bed)
+          this.formData.append('queen_bed', this.dynamicValidateForm.number_of_queen_bed)
+          this.formData.append('bathrooms', this.dynamicValidateForm.number_of_bathroom)
+          this.formData.append('guests', this.dynamicValidateForm.number_of_bathroom)
+          this.formData.append('description', this.dynamicValidateForm.description)
+          this.formData.append('amenities', am)
+          // TODO: send formData altogether
+          this.$axios.post('api/add_property', this.formData, config).then(res => {
+            if (res.data.code === 0) {
+              this.$message({
+                message: 'Upload successfully.',
+                type: 'success'
+              })
+              this.$router.push(
+                {
+                  path: '/myproperty'
+                }
+              )
+            }
+          }).catch(res => {
+            console.log(res)
           })
-        }
-      }).catch(res => {
-        console.log(res)
+        })
       })
     },
     uploadFile (file) {

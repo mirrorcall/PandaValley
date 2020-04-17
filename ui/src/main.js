@@ -19,7 +19,7 @@ Vue.use(Element, { locale })
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyDbbgvDvB4iowCBQRxei4ET9CickmaU7PY',
-    libraries: 'places',
+    libraries: 'places,geometry',
     installComponents: true
   }
 })
@@ -40,4 +40,13 @@ new Vue({
   store,
   components: { App },
   template: '<App/>'
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'Detail' && from.name === 'Filter') {
+    from.meta.keepAlive = true
+  } else {
+    from.meta.keepAlive = false
+  }
+  next()
 })
