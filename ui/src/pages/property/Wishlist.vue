@@ -63,6 +63,11 @@ export default {
       .then(res => {
         this.list = res.data.body
         this.total = res.data.total
+        this.list.forEach(function (item) {
+          if (item['rating'] === '5.00') {
+            item['rating'] = '5'
+          }
+        })
       })
       .catch(function (error) {
         console.log(error)

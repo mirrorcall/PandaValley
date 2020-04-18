@@ -48,31 +48,32 @@
           <h2 align="center">Overview</h2>
           <h2><i class = "el-icon-document"></i> Description</h2>
           <el-main>{{description}}</el-main>
-          <h2><i class="el-icon-house"></i> Type: {{property_type}}</h2>
+          <h2><i class="el-icon-house"></i> Type: {{property_type | capitalize}}</h2>
           <h2><i class="icon iconfont iconrenshu" style="font-size: 25px"></i> Guests: {{guests}}</h2>
-          <el-row style="font-size: 20px">
-            <el-col :span="12" align="middle"><span><i class="icon iconfont iconchuang"></i> Bedroom: {{bedrooms}}</span></el-col>
-            <el-col :span="12" align="middle"><span><i class="icon iconfont iconyushiyongpin"></i> Bathrooms: {{bathrooms}}</span></el-col>
+          <el-row style="font-size: 20px; padding-bottom: 10px">
+            <el-col :offset="1"><div><i class="iconfont iconfangjian"></i><span>Rooms</span></div></el-col>
+            <el-col :span="10" align="left" :offset="2"><span><i class="icon iconfont iconchuang" style="font-size: 23px"></i> Bedroom: {{bedrooms}}</span></el-col>
+            <el-col :span="12" align="left"><span><i class="icon iconfont iconyushiyongpin" style="font-size: 23px"></i> Bathrooms: {{bathrooms}}</span></el-col>
           </el-row >
-          <el-row style="font-size: 20px">
-            <el-col :span="6" align="middle"><span>Single bed: {{single_bed}}</span></el-col>
-            <el-col :span="6" align="middle"><span>Double bed: {{double_bed}}</span></el-col>
-            <el-col :span="12"></el-col>
+          <el-row style="font-size: 20px;">
+            <el-col :offset="1"><div><i class="iconfont iconic_bedroom"></i><span>Beds</span></div></el-col>
+            <el-col :span="10" align="left" :offset="2"><i class="iconfont icondanrenchuang"></i><span>Single bed: {{single_bed}}</span></el-col>
+            <el-col :span="12" align="left"><i class="iconfont iconshuangrenchuang"></i><span>Double bed: {{double_bed}}</span></el-col>
           </el-row>
-          <el-row style="font-size: 20px">
-            <el-col :span="6" align="middle"><span>Queen bed: {{queen_bed}}</span></el-col>
-            <el-col :span="6" align="middle"><span>King bed: {{king_bed}}</span></el-col>
-            <el-col :span="12"></el-col>
+          <el-row style="font-size: 20px; text-align: left;">
+            <el-col><div><span></span></div></el-col>
+            <el-col :span="10" align="left" :offset="2"><i class="iconfont iconshuangrenchuang"></i><span>Queen bed: {{queen_bed}}</span></el-col>
+            <el-col :span="12" align="left"><i class="iconfont iconshuangrenchuang"></i><span>King bed: {{king_bed}}</span></el-col>
           </el-row>
         </el-card>
         <el-card id="bbb" style="padding-left: 20px">
           <h2>Amenities</h2>
-          <el-row v-for="item in this.lennum" :key="item">
+          <el-row v-for="item in this.lennum" :key="item" style="padding-bottom: 10px">
             <el-col :span="12" align="left"><i :class="occuam[2*item-2].classname" style="font-size: 25px"><span > {{occuam[2*item-2].name}}</span></i></el-col>
             <el-col :span="12" align="left"><i :class="occuam[2*item-1].classname" style="font-size: 25px"><span > {{occuam[2*item-1].name}}</span></i>
             </el-col>
           </el-row>
-          <el-row v-show="this.oddnum">
+          <el-row v-show="this.oddnum" style="padding-bottom: 10px">
             <el-col :span="12" align="left"><i :class="occuam[this.occuam.length-1].classname" style="font-size: 25px"><span > {{occuam[this.occuam.length-1].name}}</span></i></el-col>
             <el-col :span="12" align="left"></el-col>
           </el-row>
@@ -88,7 +89,7 @@
                   <div class="hideBg">
                     <div class="summary" >
                       <div style="text-align: left;padding-left: 20px" v-for="item in this.listshow" :key="item">
-                        <el-row type="flex" justify="space-between">
+                        <el-row type="flex" justify="space-between" style="padding-bottom: 10px">
                           <el-col :span="12"><span style="font-weight: bold">{{item.username}}</span></el-col>
                           <el-col :span="12" style="text-align: right"><el-rate
                             v-model="item.rating"
@@ -99,14 +100,14 @@
                           </el-rate>
                           </el-col>
                         </el-row>
-                        <el-row>
+                        <el-row style="padding-bottom: 25px">
                           <el-col :span="24">{{item.context}}</el-col>
                         </el-row>
                       </div>
                       <el-row>
                       <div style="text-align: right">
                         <el-col style="height: 20px">
-                          <a  href="#" @click.stop.prevent="onShow">more&nbsp;
+                          <a  href="#" @click.stop.prevent="onShow">More&nbsp;
                             <!-- 向下的角箭头符号，用css画 -->
                             <span class="downArrow"></span>
                           </a>
@@ -139,7 +140,7 @@
                       <el-col style="height: 20px">
                         <div class="hideBtn">
                           <!-- 绑定点击事件onHide，点击收起内容 -->
-                          <a href="#" @click.stop.prevent="onHide">hide&nbsp;
+                          <a href="#" @click.stop.prevent="onHide">Hide&nbsp;
                             <!-- 向上的角箭头符号 -->
                             <span class="upArrow"></span>
                           </a>
@@ -154,7 +155,7 @@
         </el-card>
         <el-card id="ddd" style="padding-left: 0px">
           <h2>Map</h2>
-          <map-view></map-view>
+          <map-view :center="center"></map-view>
         </el-card>
       </el-row>
 <!--      </el-scrollbar>-->
@@ -174,7 +175,7 @@
           size="medium"
           :start-placeholder= "start_date"
           :end-placeholder= "end_date" :picker-options="pickerOptions" :default-value="[ruleForm.d1,ruleForm.d2]" @change="dateChange"></el-date-picker>
-        <h2 style="margin-top: 10px;margin-bottom: 10px">{{period}} nights</h2>
+        <h2 style="margin-top: 10px;margin-bottom: 10px">{{period}} Nights</h2>
         <el-divider></el-divider>
         <el-row>
           <div style="text-align: left;font-size: medium" >
@@ -183,23 +184,30 @@
                 <span>{{price}} * {{period}} nights</span>
               </el-row>
               <el-row>
-                <div style="margin-top: 10px">cleaning fee</div>
+                <div style="margin-top: 10px">Cleaning fee</div>
               </el-row>
               <el-row>
-                <div style="margin-top: 10px;font-weight: bold"> total</div>
+                <div style="margin-top: 10px;font-weight: bold"> Total</div>
               </el-row>
             </el-col>
           </div>
           <div style="text-align: right">
             <el-col :span="12">
               <el-row>
+                $
                 {{price*period}}
               </el-row>
               <el-row>
-                <div style="margin-top: 10px">{{cleaning_fee}}</div>
+                <div style="margin-top: 10px">
+                  $
+                  {{cleaning_fee}}
+                </div>
               </el-row>
               <el-row>
-                <div style="margin-top: 10px;font-weight: bold;margin-bottom: 20px">{{total}}</div>
+                <div style="margin-top: 10px;font-weight: bold;margin-bottom: 20px">
+                  $
+                  {{total}}
+                </div>
               </el-row>
             </el-col>
           </div>
@@ -317,7 +325,11 @@ export default {
       // 图片父容器高度
       bannerHeight: 1000,
       // 浏览器宽度
-      screenWidth: 0
+      screenWidth: 0,
+      center: {
+        lat: '',
+        lng: ''
+      }
     }
   },
   destroy () {
@@ -351,13 +363,17 @@ export default {
         this.host_avatar = res.data.body.host_avatar
         this.suburb = res.data.body.suburb
         this.rating = res.data.body.rating
+        this.center = {
+          lat: res.data.body.latitude,
+          lng: res.data.body.longitude
+        }
         if (this.rating === '5.00') {
           this.rating = '5'
         }
         this.property_type = res.data.body.property_type
         this.saved = res.data.body.saved
         this.list_amenities = this.amenities.split('#')
-        console.log(this.list_amenities)
+        // console.log(this.list_amenities)
         this.getDetails()
         this.getAm()
         this.getReview()
@@ -372,6 +388,13 @@ export default {
     // eslint-disable-next-line no-unused-vars
     // this.sdata = this.start_date.split('/')[2] + '-' + this.start_date.split('/')[1] + '-' + this.start_date.split('/')[0]
     // this.edata = this.end_date.split('/')[2] + '-' + this.end_date.split('/')[1] + '-' + this.end_date.split('/')[0]
+  },
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
   },
   methods: {
     addTowishlist () {
@@ -389,11 +412,11 @@ export default {
             .then((response) => {
               if (response.data.code === 0) {
                 this.$message('saved to wishlist')
-                console.log('saved to wishlist')
+                // console.log('saved to wishlist')
                 this.saved = true
               } else {
                 this.$message('error')
-                console.log(response.data.msg)
+                // console.log(response.data.msg)
               }
             })
         }
@@ -449,7 +472,7 @@ export default {
       // }
     },
     check_len (item) {
-      if (this.occuam.length > 2 * item) {
+      if (this.ccuam.length > 2 * item) {
         return true
       } else {
         return false
@@ -608,7 +631,7 @@ export default {
       } else {
         this.isFixed = false
       }
-      console.log(this.occuam)
+      // console.log(this.occuam)
       // this.isFixed = Number(scrollTop) > 600 ? true ; false
       // this.isFixed = false
     },

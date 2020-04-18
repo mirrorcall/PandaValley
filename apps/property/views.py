@@ -347,6 +347,7 @@ class ShowWishListView(View):
                     temp['price'] = prop.price
                     temp['image'] = prop.image_url
                     temp['wishlist_id'] = each[0]
+                    temp['rating'] = prop.rating
                     result.append(temp)
 
             response['code'] = 0

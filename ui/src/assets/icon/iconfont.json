@@ -6,6 +6,34 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "4734117",
+      "name": "床",
+      "font_class": "ic_bedroom",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "6224914",
+      "name": "单人床",
+      "font_class": "danrenchuang",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    },
+    {
+      "icon_id": "6224920",
+      "name": "双人床",
+      "font_class": "shuangrenchuang",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "6901605",
+      "name": "房间",
+      "font_class": "fangjian",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
       "icon_id": "401192",
       "name": "twitter",
       "font_class": "twitter",

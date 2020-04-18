@@ -13,17 +13,18 @@
     <div class="recommend">
       <h2>Recommended the best for you</h2>
       <div class="carousel">
-        <el-carousel :interval="4000" type="card" height="400px">
-          <el-carousel-item v-for="item in bestTen" :key="item">
+        <el-carousel :interval="4000" type="card" height="420px">
+          <el-carousel-item v-for="(item, i) in bestTen" :key="i">
             <div class="carousel-explain"  @click="goDetails(item)">
               <el-image
                 class="prop-overview"
                 :src="item.image"
-                fir="contain"></el-image>
+                fir="contain"
+                style="height: 320px"></el-image>
             </div>
             <div class="explian-text" style="text-align: center">
               <div style="font-weight: 700; font-size: 17px">{{ item.title | simplify }}</div>
-              <div style="font-weight: 300; color: #acacac">
+              <div style="font-weight: 300; color: #949494">
                 Sleeps
                 {{ item.guests }}
                 |
@@ -51,8 +52,8 @@
       <div class="carousel">
         <el-carousel :interval="4000" type="card" height="300px">
           <el-carousel-item
-            v-for="item in propOverview"
-            :key="item">
+            v-for="(item, i) in propOverview"
+            :key="i">
             <div class="carousel-explain" @click="goList(item)">
               <el-image
                 class="prop-overview"

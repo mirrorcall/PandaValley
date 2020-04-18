@@ -74,7 +74,7 @@
                 <el-radio label="studio">Studio</el-radio>
               </el-radio-group>
               <el-form-item >
-                <el-button type="primary" @click="submitForm_f1()">next page</el-button>
+                <el-button type="primary" @click="submitForm_f1()">Next Page</el-button>
               </el-form-item>
             </el-form-item>
           </el-tab-pane>
@@ -666,20 +666,18 @@ export default {
         am = am + '#BBQ'
       }
 
-      // Add google api to store the geocode for current property
       this.$gmapApiPromiseLazy().then(() => {
         let gecoder = new this.google.maps.Geocoder()
         gecoder.geocode({'address': this.addForm.location + ',' + this.addForm.suburb + ',+NSW,+AU'}, (results, status) => {
-          location = results[0].geometry.location.toJSON()
-
+          console.log(status)
+          let pCenter = results[0].geometry.location.toJSON()
           let config = {
             headers: {
               'Content-Type': 'multipart/form-data'
             }
           }
-
-          this.formData.append('latitude', location.lat)
-          this.formData.append('longitude', location.lng)
+          this.formData.append('latitude', pCenter.lat)
+          this.formData.append('longitude', pCenter.lng)
           this.formData.append('title', this.addForm.title)
           // this.formData.append('suburb', this.addForm.value)
           this.formData.append('suburb', this.addForm.suburb)

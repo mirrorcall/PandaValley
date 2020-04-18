@@ -29,7 +29,7 @@
         <el-col :span="7">
           <el-dropdown :placement="bottom" @command = "handleCommand">
             <el-button round type="primary">
-              Type: {{type}}<i class="el-icon-arrow-down el-icon--right"></i>
+              Type: {{type | capitalize}}<i class="el-icon-arrow-down el-icon--right"></i>
             </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="All">
@@ -170,6 +170,13 @@ export default {
     this.number_of_people = this.$route.query.number_of_people
     // this.getPropertylist()
     this.getProductBySearch()
+  },
+  filters: {
+    capitalize: function (value) {
+      if (!value) return ''
+      value = value.toString()
+      return value.charAt(0).toUpperCase() + value.slice(1)
+    }
   },
   methods: {
     // 返回顶部
