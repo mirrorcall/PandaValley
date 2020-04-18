@@ -8,6 +8,7 @@ urlpatterns = [
     ###new changes
     re_path(r'varify_booking', views.VerifyReserveView.as_view()),
     re_path(r'show_property', views.ShowPropertyView.as_view()),
+    re_path(r'drop_property', views.DeletePropertyView.as_view()),
     re_path(r'show_reviews', views.ShowReviewsView.as_view()),
     re_path(r'add_review', views.AddReviewView.as_view()),
     re_path(r'show_wishlist', views.ShowWishListView.as_view()),

@@ -1,42 +1,42 @@
 <template>
   <div class="border">
-  <div id="myList" class="myList">
-    <ul>
-      <li v-for="item in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">
-        <div class="wishlist">
-<!--          <i class="icon iconfont iconloveaaaaaa" v-if="!item.saved" @click="addTowishlist(item)"></i>-->
-          <img src="@/assets/whiteheart.png" style="width: 20px;height: 18px;margin-top: 0px;" v-if="!item.saved" @click="addTowishlist(item)">
-          <img src="@/assets/heart.png" style="width: 20px;height: 18px;margin-top: 0px;" v-if="item.saved" @click="addTowishlist(item)">
-        </div>
-        <img :src="item.image" class="image" alt="" @click="gotoDetails(item)">
-        <div class="group_icon">
-          <i class="icon iconfont iconrenshu"><span>{{item.guests}}</span></i>
-          <el-divider direction="vertical"></el-divider>
-          <i class="icon iconfont iconchuang"><span>{{item.bedrooms}}</span></i>
-          <el-divider direction="vertical"></el-divider>
-          <i class="icon iconfont iconyushiyongpin"><span>{{item.bathrooms}}</span></i>
-        </div>
-        <h2>{{item.title}}</h2>
-        <p>
-          <el-row type="flex" justify="space-between">
-            <el-col>
-              <el-rate
-                v-model="item.rating"
-                disabled
-                allow-half="true"
-                show-score
-                text-color="#ff9900"
-                score-template="{value}">
-              </el-rate>
-            </el-col >
-            <el-col>
-              ${{item.price}}/night
-            </el-col>
-          </el-row>
-        </p>
-      </li>
-    </ul>
-  </div>
+    <div id="myList" class="myList">
+      <ul>
+        <li v-for="item in list" :key="item.id" @mouseenter="enter()" @mouseleave="leave()">
+          <div class="wishlist">
+  <!--          <i class="icon iconfont iconloveaaaaaa" v-if="!item.saved" @click="addTowishlist(item)"></i>-->
+            <img src="@/assets/whiteheart.png" style="width: 20px;height: 18px;margin-top: 0px;" v-if="!item.saved" @click="addTowishlist(item)">
+            <img src="@/assets/heart.png" style="width: 20px;height: 18px;margin-top: 0px;" v-if="item.saved" @click="addTowishlist(item)">
+          </div>
+          <img :src="item.image" class="image" alt="" @click="gotoDetails(item)">
+          <div class="group_icon">
+            <i class="icon iconfont iconrenshu"><span>{{item.guests}}</span></i>
+            <el-divider direction="vertical"></el-divider>
+            <i class="icon iconfont iconchuang"><span>{{item.bedrooms}}</span></i>
+            <el-divider direction="vertical"></el-divider>
+            <i class="icon iconfont iconyushiyongpin"><span>{{item.bathrooms}}</span></i>
+          </div>
+          <h2>{{item.title}}</h2>
+          <p>
+            <el-row type="flex" justify="space-between">
+              <el-col>
+                <el-rate
+                  v-model="item.rating"
+                  disabled
+                  allow-half="true"
+                  show-score
+                  text-color="#ff9900"
+                  score-template="{value}">
+                </el-rate>
+              </el-col >
+              <el-col>
+                ${{item.price}}/night
+              </el-col>
+            </el-row>
+          </p>
+        </li>
+      </ul>
+    </div>
     <!-- 分页
     <div class="pagination">
         <el-pagination

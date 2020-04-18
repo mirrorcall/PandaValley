@@ -6,7 +6,7 @@
         <el-col :span="8">
           <el-image
             style="width: 300px; height: 200px; margin: 10px"
-            :src="item.image"
+            :src="item.image[0]"
             :fit="fill"></el-image>
         </el-col>
         <el-col :span="13">
@@ -99,8 +99,19 @@ export default {
   },
   methods: {
     deleteProperty (item, index) {
-      this.list.splice(index, 1)
-      console.log(this.list)
+      this.$axios.post('/api/drop_property', this.$qs.stringify({
+        property_id: item.property_id
+      }))
+        .then((response) => {
+          if (response.data.code === 1) {
+            this.$message.error('You are not allowed to delete the property while it is under booking now.')
+          } else if (response.data.code === 127) {
+            this.$message.error('Internal server failure. Please contact the administration.')
+          } else {
+            this.list.splice(index, 1)
+            this.$message.success('Operating successfully.')
+          }
+        })
     },
     linktoAdd () {
       this.$router.push({path: '/add_property'})

@@ -27,7 +27,7 @@
       <el-row >
         <div id="banner" style="margin-top: 10px">
           <!--动态将图片轮播图的容器高度设置成与图片一致-->
-          <el-carousel :height="bannerHeight + 'px'" interval="1200">
+          <el-carousel height="450px">
             <!--遍历图片地址,动态生成轮播图-->
             <el-carousel-item v-for="item in img_list" :key="item">
               <img :src="item" alt="">
@@ -164,18 +164,22 @@
     <el-col :span="8">
     <el-main>
       <el-card style="margin-top: 110px;height: 450px" shadow="never">
-         <el-avatar :size="80" :src="host_avatar" style="vertical-align: middle;margin-top: 16px;margin-bottom: 20px"></el-avatar>
-        {{host_name}}
-         <el-date-picker
-          v-model="ruleForm.date1"
-          type="daterange"
-          range-separator="To"
-          format="dd/MM/yyyy"
-          value-format="dd/MM/yyyy"
-          size="medium"
-          :start-placeholder= "start_date"
-          :end-placeholder= "end_date" :picker-options="pickerOptions" :default-value="[ruleForm.d1,ruleForm.d2]" @change="dateChange"></el-date-picker>
-        <h2 style="margin-top: 10px;margin-bottom: 10px">{{period}} Nights</h2>
+        <el-row>
+          <el-avatar :size="80" :src="host_avatar" style="vertical-align: middle;margin-top: 16px;margin-bottom: 20px"></el-avatar>
+          {{host_name}}
+        </el-row>
+        <el-row>
+          <el-date-picker
+            v-model="ruleForm.date1"
+            type="daterange"
+            range-separator="To"
+            format="dd/MM/yyyy"
+            value-format="dd/MM/yyyy"
+            size="medium"
+            :start-placeholder= "start_date"
+            :end-placeholder= "end_date" :picker-options="pickerOptions" :default-value="[ruleForm.d1,ruleForm.d2]" @change="dateChange"></el-date-picker>
+        </el-row>
+        <h2 style="margin-top: 10px;margin-bottom: 10px; padding-top: 10px;">{{period}} Nights</h2>
         <el-divider></el-divider>
         <el-row>
           <div style="text-align: left;font-size: medium" >
@@ -714,20 +718,21 @@ export default {
     scrollTo(1)
   },
   mounted () {
-    window.addEventListener('scroll', this.initHeight)
-    this.$nextTick(() => {
-      this.offsetTop = document.querySelector('#boxFixed').offsetTop
-    })
-    // 监听滚动事件
-    window.addEventListener('scroll', this.onScroll, false)
-    // 首次加载时,需要调用一次
-    this.screenWidth = window.innerWidth
-    this.setSize()
-    // 窗口大小发生改变时,调用一次
-    window.onresize = () => {
-      this.screenWidth = window.innerWidth
-      this.setSize()
-    }
+    // window.addEventListener('scroll', this.initHeight)
+    // this.$nextTick(() => {
+    //   this.offsetTop = document.querySelector('#boxFixed').offsetTop
+    // })
+    // // 监听滚动事件
+    // window.addEventListener('scroll', this.onScroll, false)
+    // // 首次加载时,需要调用一次
+    // this.screenWidth = window.innerWidth
+    // this.setSize()
+    // // 窗口大小发生改变时,调用一次
+    // window.onresize = () => {
+    //   this.screenWidth = window.innerWidth
+    //   this.setSize()
+    // }
+    document.documentElement.style.overflowY = 'scroll'
   }
 }
 </script>

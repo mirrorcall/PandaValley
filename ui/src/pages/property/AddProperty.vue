@@ -203,36 +203,36 @@
             <el-row type="flex" :gutter="50" justify="center">
               <el-col :span="6">
                 <el-card shadow="hover">
-                  <el-aside style="text-align:left">TV</el-aside>
-                  <el-switch
-                    style="display: block;text-align:center"
-                    v-model="TV"
-                    width="50"
-                    height="50"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949">
-                  </el-switch>
-                </el-card>
-              </el-col>
-              <el-col :span="6">
-                <el-card shadow="hover">
-                  <el-aside style="text-align:left">Garage</el-aside>
-                  <el-switch
-                    style="display: block;text-align:center"
-                    v-model="Garage"
-                    width="50"
-                    height="50"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949">
-                  </el-switch>
-                </el-card>
-              </el-col>
-              <el-col :span="6">
-                <el-card shadow="hover">
                   <el-aside style="text-align:left">Clothes dryer</el-aside>
                   <el-switch
                     style="display: block;text-align:center"
                     v-model="Clothes_dryer"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">BBQ</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="BBQ"
+                    width="50"
+                    height="50"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949">
+                  </el-switch>
+                </el-card>
+              </el-col>
+              <el-col :span="6">
+                <el-card shadow="hover">
+                  <el-aside style="text-align:left">Toaster</el-aside>
+                  <el-switch
+                    style="display: block;text-align:center"
+                    v-model="Toaster"
                     width="50"
                     height="50"
                     active-color="#13ce66"
@@ -473,34 +473,8 @@
                   </el-switch>
                 </el-card>
               </el-col>
-              <el-col :span="6">
-                <el-card shadow="hover">
-                  <el-aside style="text-align:left">Toaster</el-aside>
-                  <el-switch
-                    style="display: block;text-align:center"
-                    v-model="Toaster"
-                    width="50"
-                    height="50"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949">
-                  </el-switch>
-                </el-card>
-              </el-col>
             </el-row>
             <el-row type="flex" :gutter="50" justify="center" style="margin-top: 30px">
-              <el-col :span="6">
-                <el-card shadow="hover">
-                  <el-aside style="text-align:left">BBQ</el-aside>
-                  <el-switch
-                    style="display: block;text-align:center"
-                    v-model="BBQ"
-                    width="50"
-                    height="50"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949">
-                  </el-switch>
-                </el-card>
-              </el-col>
             </el-row>
             <el-button type="primary" @click="submitFormAll()" style="margin-top: 50px">Submit</el-button>
           </el-tab-pane>
@@ -599,12 +573,6 @@ export default {
       // let formData = new FormData()
       // this.$refs.upload.submit()
       let am = ''
-      if (this.Garage) {
-        am = am + '#Garage'
-      }
-      if (this.TV) {
-        am = am + '#TV'
-      }
       if (this.Clothes_dryer) {
         am = am + '#Clothes dryer'
       }
@@ -665,6 +633,9 @@ export default {
       if (this.BBQ) {
         am = am + '#BBQ'
       }
+
+      am.replace('#', '')
+      console.log(am)
 
       this.$gmapApiPromiseLazy().then(() => {
         let gecoder = new this.google.maps.Geocoder()

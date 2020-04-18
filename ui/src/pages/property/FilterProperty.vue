@@ -113,6 +113,7 @@
         <PropertyList :list="product" :start_date="start_date" :end_date="end_date" v-if="total>0"></PropertyList>
         <div v-else class="none-product">no result</div>
       </div>
+      <div style=""></div>
       <!-- 分页 -->
       <div class="pagination">
         <el-pagination

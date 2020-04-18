@@ -78,6 +78,33 @@ class AddProperty(View):
         return JsonResponse(response)
 
 
+class DeletePropertyView(View):
+    def post(self, request):
+        response = {}
+        try:
+            prop_id = request.POST.get('property_id')
+            prop = Property.objects.get(pk=prop_id)
+            bookings = Booking.objects.filter(host=prop).values()
+            state = True
+            if bookings.exists():
+                for each in bookings.iterator():
+                    if each['end_date'] > datetime.datetime.now().date():
+                        state = False
+                        break
+            if state:
+                prop.is_deleted = state
+                prop.save()
+                response['code'] = 0
+                response['msg'] = 'The property has been deleted.'
+            else:
+                response['code'] = 1
+                response['msg'] = 'There still have bookings not finished, can not delete the property.'
+        except Exception as e:
+            response['code'] = 127
+            response['msg'] = 'Internal server failure. ' + str(e)
+        return JsonResponse(response)
+
+
 class SearchPropertyView(View):
     def get(self, request):
         response = {}
