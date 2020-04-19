@@ -47,7 +47,7 @@
         <el-card id="aaa" align="left" style="padding-left: 20px">
           <h2 align="center">Overview</h2>
           <h2><i class = "el-icon-document"></i> Description</h2>
-          <el-main>{{description}}</el-main>
+          <el-main><span style="white-space: pre-line">{{description}}</span></el-main>
           <h2><i class="el-icon-house"></i> Type: {{property_type | capitalize}}</h2>
           <h2><i class="icon iconfont iconrenshu" style="font-size: 25px"></i> Guests: {{guests}}</h2>
           <el-row style="font-size: 20px; padding-bottom: 10px">
