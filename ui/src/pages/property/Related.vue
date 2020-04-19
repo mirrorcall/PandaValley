@@ -3,8 +3,8 @@
     <ul>
       <li v-for="item in list" :key="item.id">
         <div class="wishlist">
-          <i class="icon iconfont iconloveaaaaaa" v-if="!item.saved" @click="addTowishlist(item)"></i>
-          <img src="@/assets/heart.png" style="width: 20px;height: 18px;margin-top: 0px" v-if="item.saved" @click="addTowishlist(item)">
+          <img src="@/assets/whiteheart.png" style="width: 20px;height: 18px;margin-top: 0px;" v-if="!item.saved" @click="addTowishlist(item)">
+          <img src="@/assets/heart.png" style="width: 20px;height: 18px;margin-top: 0px;" v-if="item.saved" @click="addTowishlist(item)">
         </div>
         <img :src="item.image" class="image" alt="" @click="gotoDetails(item)">
         <div class="group_icon">

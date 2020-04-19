@@ -78,9 +78,8 @@ export default {
       this.$axios.post('/api/forget_password', data)
         .then((response) => {
           if (response.data.code === 0) {
-            this.$message('Please check your email to get details')
+            this.$message('The confirmation email has been sent to your email address.')
             console.log('email is correct')
-            this.$router.push({name: 'Home'})
           } else if (response.data.code === 1) {
             this.$message('Your email is incorrect')
             console.log(response.data.msg)

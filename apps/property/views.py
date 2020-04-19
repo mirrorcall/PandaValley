@@ -686,6 +686,7 @@ class ShowNearbyPropertyView(View):
         try:
             # LocationsNearMe = Property.objects.filter(latitude__gte=(the minimal lat from distance()),
             #                   latitude__lte = (the minimal lat from distance()),
+            user = request.GET.get('email')
             prop_id = request.GET.get('property_id')
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
@@ -714,6 +715,14 @@ class ShowNearbyPropertyView(View):
                         temp['price'] = each['price']
                         temp['suburb'] = each['suburb']
                         temp['street'] = each['street']
+                        temp['rating'] = each['rating']
+                        # wishlist
+                        s = False
+                        if user:
+                            state = WishList.objects.filter(user=user, property=each['id'])
+                            if state:
+                                s = True
+                        temp['saved'] = s
                         result.append(temp)
                         count += 1
 
