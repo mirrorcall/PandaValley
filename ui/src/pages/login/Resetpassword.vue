@@ -26,7 +26,7 @@
           </el-button>
         </div>
         <div class="cancel">
-          <el-button type="info" style="width: 100%; height: 100%" @click="cancel">cancel</el-button>
+          <el-button type="info" style="width: 100%; height: 100%" @click="cancel">Cancel</el-button>
         </div>
       </div>
     </div>
