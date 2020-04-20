@@ -87,7 +87,7 @@ export default {
       } else if (value.length > 20) {
         callback(new Error('Too long ! enter no more than 20 characters'))
       } else if (!password) {
-        callback(new Error('must contain at least one numeric digit, one uppercase and one lowercase letter'))
+        callback(new Error('Must contain at least one numeric digit, one uppercase and one lowercase letter'))
       } else {
         if (this.user.password2 !== '') {
           this.$refs.user.validateField('checkPass')
@@ -110,7 +110,7 @@ export default {
       if (value === '') {
         callback(new Error('Please enter the phone number'))
       } else if (!phone) {
-        callback(new Error('invalid phone number'))
+        callback(new Error('Invalid phone number'))
       } else {
         callback()
       }
@@ -126,19 +126,19 @@ export default {
         password2: ''
       },
       rules: {
-        email: [{ required: true, message: 'please enter the email', trigger: 'blur' }, { validator: isEmail, trigger: 'blur' }],
+        email: [{ required: true, message: 'Please enter the email', trigger: 'blur' }, { validator: isEmail, trigger: 'blur' }],
         password: [{ validator: validatePass, trigger: 'blur' }],
         password2: [{ validator: validatePass2, trigger: 'blur' }],
         firstName: [{ required: true, trigger: 'blur' }],
         lastName: [{ required: true, trigger: 'blur' }],
-        telephone: [{ required: true, message: 'please enter the telephone', trigger: 'blur' }, { validator: validatePhone, trigger: 'blur' }]
+        telephone: [{ required: true, message: 'Please enter the telephone', trigger: 'blur' }, { validator: validatePhone, trigger: 'blur' }]
       }
     }
     function isEmail (rule, value, callback) {
       const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
       const email = reg.test(value)
       if (!email) {
-        callback(new Error('invalid email format'))
+        callback(new Error('Invalid email format'))
       } else {
         callback()
       }
@@ -147,7 +147,7 @@ export default {
   methods: {
     signupAction () {
       if (this.user.email === '' || this.user.firstName === '' || this.user.lastName === '' || this.user.telephone === '' || this.user.password === '') {
-        this.$message.error('please enter each input.')
+        this.$message.error('Please enter each input.')
       } else {
         let data = this.$qs.stringify({
           email: this.user.email,

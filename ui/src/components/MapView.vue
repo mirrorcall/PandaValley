@@ -2,20 +2,20 @@
   <div id="map-container">
     <div id="map-sidebar" style="text-align: left">
       <el-scrollbar style="height: 400px; width: 100%">
-      <el-menu>
+      <el-menu unique-opened="true">
         <el-submenu index="1">
           <template slot="title">
             <i class="iconfont icon-bank"></i>
             <span>Banks</span>
           </template>
-          <el-menu-item v-if="atmMarkers.length===0">0 Result</el-menu-item>
+          <el-menu-item v-if="bankMarkers.length===0">0 Result</el-menu-item>
           <el-menu-item
             :key="index + 'menu' + 'bank'"
             v-for="(m,index) in bankMarkers">
             <div @mouseover="highlightMarker(1, index)" @mouseleave="dehighlightMarker(1, index)">
               <div style="height: 30px; font-weight: 500">{{ m.infoText }}</div>
               <div style="height: 30px">{{ m.infoAddr }}</div>
-              <div style="height: 30px">{{ m.infoRate }}</div>
+              <div style="height: 30px">{{ m.infoRate | normalize }}</div>
             </div>
           </el-menu-item>
         </el-submenu>
@@ -31,7 +31,7 @@
             <div @mouseover="highlightMarker(2, index)" @mouseleave="dehighlightMarker(2, index)">
               <div style="height: 30px; font-weight: 500">{{ m.infoText }}</div>
               <div style="height: 30px">{{ m.infoAddr }}</div>
-              <div style="height: 30px">{{ m.infoRate }}</div>
+              <div style="height: 30px">{{ m.infoRate | normalize }}</div>
             </div>
           </el-menu-item>
         </el-submenu>
@@ -47,7 +47,7 @@
             <div @mouseover="highlightMarker(3, index)" @mouseleave="dehighlightMarker(3, index)">
               <div style="height: 30px; font-weight: 500">{{ m.infoText }}</div>
               <div style="height: 30px">{{ m.infoAddr }}</div>
-              <div style="height: 30px">{{ m.infoRate }}</div>
+              <div style="height: 30px">{{ m.infoRate | normalize }}</div>
             </div>
           </el-menu-item>
         </el-submenu>
@@ -63,7 +63,7 @@
             <div @mouseover="highlightMarker(4, index)" @mouseleave="dehighlightMarker(4, index)">
               <div style="height: 30px; font-weight: 500">{{ m.infoText }}</div>
               <div style="height: 30px">{{ m.infoAddr }}</div>
-              <div style="height: 30px">{{ m.infoRate }}</div>
+              <div style="height: 30px">{{ m.infoRate | normalize }}</div>
             </div>
           </el-menu-item>
         </el-submenu>
@@ -77,9 +77,9 @@
             :key="index + 'menu' + 'supermarket'"
             v-for="(m,index) in supermarketMarkers">
             <div @mouseover="highlightMarker(5, index)" @mouseleave="dehighlightMarker(5, index)">
-              <div style="height: 30px; font-weight: 500">{{ m.infoText }}</div>
-              <div style="height: 30px">{{ m.infoAddr }}</div>
-              <div style="height: 30px">{{ m.infoRate }}</div>
+              <div style="height: 20px; font-weight: 500">{{ m.infoText }}</div>
+              <div style="height: 20px">{{ m.infoAddr }}</div>
+              <div style="height: 20px">{{ m.infoRate | normalize }}</div>
             </div>
           </el-menu-item>
         </el-submenu>
@@ -95,7 +95,7 @@
             <div @mouseover="highlightMarker(6, index)" @mouseleave="dehighlightMarker(6, index)">
               <div style="height: 30px; font-weight: 500">{{ m.infoText }}</div>
               <div style="height: 30px">{{ m.infoAddr }}</div>
-              <div style="height: 30px">{{ m.infoRate }}</div>
+              <div style="height: 30px">{{ m.infoRate | normalize }}</div>
             </div>
           </el-menu-item>
         </el-submenu>
@@ -107,7 +107,7 @@
         ref="mapRef"
         :center="center"
         :zoom="16"
-        style="width: 610px; height: 410px">
+        style="width: 565px; height: 410px">
         <gmap-info-window
           :options="infoOptions"
           :position="infoWindowPos"
@@ -213,6 +213,7 @@
 <!--        </el-row>-->
 <!--      </div>-->
 <!--    </div>-->
+    <div style="padding-bottom: 20px"></div>
   </div>
 </template>
 
@@ -276,6 +277,16 @@ export default {
     google: gmapApi,
     collectResults: function () {
       return [].concat(this.bankMarkers.concat(this.cafeMarkers.concat(this.convstoreMarkers.concat(this.restaurantMarkers.concat(this.supermarketMarkers.concat(this.touristMarkers))))))
+    }
+  },
+  filters: {
+    normalize: function (value) {
+      let rate = value.toString().split(' ')[1]
+      if (rate !== 'undefined') {
+        return value
+      } else {
+        return 'Rating: Unknown'
+      }
     }
   },
   methods: {
@@ -443,7 +454,7 @@ export default {
     text-align: center;
     line-height: 100px;
   }
-  >>> .el-menu-item {
+  >>> .el-submenu .el-menu-item {
     color: black;
     height: 100px;
   }

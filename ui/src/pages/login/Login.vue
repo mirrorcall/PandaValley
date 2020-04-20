@@ -49,8 +49,8 @@ export default {
         password: ''
       },
       rules: {
-        email: [{ required: true, message: 'please enter the email', trigger: 'blur' }, { validator: isEmail, trigger: 'blur' }],
-        password: [{ required: true, message: 'please enter the password', trigger: 'blur' }]
+        email: [{ required: true, message: 'Please enter the email', trigger: 'blur' }, { validator: isEmail, trigger: 'blur' }],
+        password: [{ required: true, message: 'Please enter the password', trigger: 'blur' }]
       }
     }
   },

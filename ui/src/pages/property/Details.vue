@@ -1,94 +1,127 @@
 <template>
-  <el-container>
-    <el-col :span="15" offset="1">
-<!--    <el-aside width="1000px" style="margin-left: 35px">-->
-<!--      <el-scrollbar style="width: 100%">-->
-        <el-row>
-          <div style="padding-top: 20px">
-          <p style="font-weight: bolder;font-size: 25px" > {{title}} <img src="@/assets/whiteheart.png" style="width: 25px;height: 20px;margin-top: 0px;" v-if="!this.saved" @click="addTowishlist(item)">
-            <img src="@/assets/heart.png" style="width: 25px;height: 20px;margin-top: 0px;" v-if="this.saved" @click="addTowishlist(item)">
-          </p>
+  <div>
+    <el-container>
+      <el-col :span="15" offset="1">
+  <!--    <el-aside width="1000px" style="margin-left: 35px">-->
+  <!--      <el-scrollbar style="width: 100%">-->
+          <el-row>
+            <div style="padding-top: 20px">
+            <p style="font-weight: bolder;font-size: 25px" > {{title}} <img src="@/assets/whiteheart.png" style="width: 25px;height: 20px;margin-top: 0px;" v-if="!this.saved" @click="addTowishlist(item)">
+              <img src="@/assets/heart.png" style="width: 25px;height: 20px;margin-top: 0px;" v-if="this.saved" @click="addTowishlist(item)">
+            </p>
+            </div>
+          </el-row>
+          <el-row>
+            <div>
+              <el-col :span="18"><i class="el-icon-location-information"></i>{{suburb}}, NSW</el-col>
+              <el-col :span="6">
+                <el-rate
+                  v-model="rating"
+                  disabled
+                  show-score
+                  text-color="#ff9900"
+                  score-template="{value}">
+                </el-rate>
+              </el-col>
+            </div>
+          </el-row>
+        <el-row >
+          <div id="banner" style="margin-top: 10px">
+            <!--动态将图片轮播图的容器高度设置成与图片一致-->
+            <el-carousel height="450px">
+              <!--遍历图片地址,动态生成轮播图-->
+              <el-carousel-item v-for="item in img_list" :key="item">
+                <img :src="item" alt="">
+              </el-carousel-item>
+            </el-carousel>
           </div>
         </el-row>
         <el-row>
-          <div>
-            <el-col :span="18"><i class="el-icon-location-information"></i>{{suburb}}, NSW</el-col>
-            <el-col :span="6">
-              <el-rate
-                v-model="rating"
-                disabled
-                show-score
-                text-color="#ff9900"
-                score-template="{value}">
-              </el-rate>
-            </el-col>
+          <div class="box_fixed" id="boxFixed" :class="{'is_fixed' :isFixed}">
+            <el-col :span="6"><span class="a"  @click="jump ('aaa')" >Overview</span></el-col>
+            <el-col :span="6"><span class="a" @click="jump('bbb')">Amenities</span></el-col>
+            <el-col :span="6"><span  class="a" @click="jump('ccc')">Reviews</span></el-col>
+            <el-col :span="6"><span class="a" @click="jump('ddd')">Map</span></el-col>
           </div>
         </el-row>
-      <el-row >
-        <div id="banner" style="margin-top: 10px">
-          <!--动态将图片轮播图的容器高度设置成与图片一致-->
-          <el-carousel height="450px">
-            <!--遍历图片地址,动态生成轮播图-->
-            <el-carousel-item v-for="item in img_list" :key="item">
-              <img :src="item" alt="">
-            </el-carousel-item>
-          </el-carousel>
-        </div>
-      </el-row>
-      <el-row>
-        <div class="box_fixed" id="boxFixed" :class="{'is_fixed' :isFixed}">
-          <el-col :span="6"><span class="a"  @click="jump ('aaa')" >Overview</span></el-col>
-          <el-col :span="6"><span class="a" @click="jump('bbb')">Amenities</span></el-col>
-          <el-col :span="6"><span  class="a" @click="jump('ccc')">Reviews</span></el-col>
-          <el-col :span="6"><span class="a" @click="jump('ddd')">Map</span></el-col>
-        </div>
-      </el-row>
-      <el-row>
-        <el-card id="aaa" align="left" style="padding-left: 20px">
-          <h2 align="center">Overview</h2>
-          <h2><i class = "el-icon-document"></i> Description</h2>
-          <el-main><span style="white-space: pre-line">{{description}}</span></el-main>
-          <h2><i class="el-icon-house"></i> Type: {{property_type | capitalize}}</h2>
-          <h2><i class="icon iconfont iconrenshu" style="font-size: 25px"></i> Guests: {{guests}}</h2>
-          <el-row style="font-size: 20px; padding-bottom: 10px">
-            <el-col :offset="1"><div><i class="iconfont iconfangjian"></i><span>Rooms</span></div></el-col>
-            <el-col :span="10" align="left" :offset="2"><span><i class="icon iconfont iconchuang" style="font-size: 23px"></i> Bedroom: {{bedrooms}}</span></el-col>
-            <el-col :span="12" align="left"><span><i class="icon iconfont iconyushiyongpin" style="font-size: 23px"></i> Bathrooms: {{bathrooms}}</span></el-col>
-          </el-row >
-          <el-row style="font-size: 20px;">
-            <el-col :offset="1"><div><i class="iconfont iconic_bedroom"></i><span>Beds</span></div></el-col>
-            <el-col :span="10" align="left" :offset="2"><i class="iconfont icondanrenchuang"></i><span>Single bed: {{single_bed}}</span></el-col>
-            <el-col :span="12" align="left"><i class="iconfont iconshuangrenchuang"></i><span>Double bed: {{double_bed}}</span></el-col>
-          </el-row>
-          <el-row style="font-size: 20px; text-align: left;">
-            <el-col><div><span></span></div></el-col>
-            <el-col :span="10" align="left" :offset="2"><i class="iconfont iconshuangrenchuang"></i><span>Queen bed: {{queen_bed}}</span></el-col>
-            <el-col :span="12" align="left"><i class="iconfont iconshuangrenchuang"></i><span>King bed: {{king_bed}}</span></el-col>
-          </el-row>
-        </el-card>
-        <el-card id="bbb" style="padding-left: 20px">
-          <h2>Amenities</h2>
-          <el-row v-for="item in this.lennum" :key="item" style="padding-bottom: 10px">
-            <el-col :span="12" align="left"><i :class="occuam[2*item-2].classname" style="font-size: 25px"><span > {{occuam[2*item-2].name}}</span></i></el-col>
-            <el-col :span="12" align="left"><i :class="occuam[2*item-1].classname" style="font-size: 25px"><span > {{occuam[2*item-1].name}}</span></i>
-            </el-col>
-          </el-row>
-          <el-row v-show="this.oddnum" style="padding-bottom: 10px">
-            <el-col :span="12" align="left"><i :class="occuam[this.occuam.length-1].classname" style="font-size: 25px"><span > {{occuam[this.occuam.length-1].name}}</span></i></el-col>
-            <el-col :span="12" align="left"></el-col>
-          </el-row>
-        </el-card>
-        <el-card id="ccc" style="padding-left: 20px">
-          <h2>Review</h2>
-          <el-row style="border-top: none;">
-            <el-col style="border-top: none;">
-              <div id="example" style="font-size: 20px">
-                <!-- 利用v-if…v-else切换 展开 和 收起 两个画面，template包裹多个元素 -->
-                <template v-if="isHide">
-                  <!-- 只显示摘要的画面 -->
-                  <div class="hideBg">
-                    <div class="summary" >
-                      <div style="text-align: left;padding-left: 20px" v-for="item in this.listshow" :key="item">
+        <el-row>
+          <el-card id="aaa" align="left" style="padding-left: 20px">
+            <h2 align="center">Overview</h2>
+            <h2><i class = "el-icon-document"></i> Description</h2>
+            <el-main><span style="white-space: pre-line">{{description}}</span></el-main>
+            <h2><i class="el-icon-house"></i> Type: {{property_type | capitalize}}</h2>
+            <h2><i class="icon iconfont iconrenshu" style="font-size: 25px"></i> Guests: {{guests}}</h2>
+            <el-row style="font-size: 20px; padding-bottom: 10px">
+              <el-col :offset="1"><div><i class="iconfont iconfangjian"></i><span>Rooms</span></div></el-col>
+              <el-col :span="10" align="left" :offset="2"><span><i class="icon iconfont iconchuang" style="font-size: 23px"></i> Bedroom: {{bedrooms}}</span></el-col>
+              <el-col :span="12" align="left"><span><i class="icon iconfont iconyushiyongpin" style="font-size: 23px"></i> Bathrooms: {{bathrooms}}</span></el-col>
+            </el-row >
+            <el-row style="font-size: 20px;">
+              <el-col :offset="1"><div><i class="iconfont iconic_bedroom"></i><span>Beds</span></div></el-col>
+              <el-col :span="10" align="left" :offset="2"><i class="iconfont icondanrenchuang"></i><span>Single bed: {{single_bed}}</span></el-col>
+              <el-col :span="12" align="left"><i class="iconfont iconshuangrenchuang"></i><span>Double bed: {{double_bed}}</span></el-col>
+            </el-row>
+            <el-row style="font-size: 20px; text-align: left;">
+              <el-col><div><span></span></div></el-col>
+              <el-col :span="10" align="left" :offset="2"><i class="iconfont iconshuangrenchuang"></i><span>Queen bed: {{queen_bed}}</span></el-col>
+              <el-col :span="12" align="left"><i class="iconfont iconshuangrenchuang"></i><span>King bed: {{king_bed}}</span></el-col>
+            </el-row>
+          </el-card>
+          <el-card id="bbb" style="padding-left: 20px">
+            <h2>Amenities</h2>
+            <el-row v-for="item in this.lennum" :key="item" style="padding-bottom: 10px">
+              <el-col :span="12" align="left"><i :class="occuam[2*item-2].classname" style="font-size: 25px"><span > {{occuam[2*item-2].name}}</span></i></el-col>
+              <el-col :span="12" align="left"><i :class="occuam[2*item-1].classname" style="font-size: 25px"><span > {{occuam[2*item-1].name}}</span></i>
+              </el-col>
+            </el-row>
+            <el-row v-show="this.oddnum" style="padding-bottom: 10px">
+              <el-col :span="12" align="left"><i :class="occuam[this.occuam.length-1].classname" style="font-size: 25px"><span > {{occuam[this.occuam.length-1].name}}</span></i></el-col>
+              <el-col :span="12" align="left"></el-col>
+            </el-row>
+          </el-card>
+          <el-card id="ccc" style="padding-left: 20px">
+            <h2>Review</h2>
+            <el-row style="border-top: none;">
+              <el-col style="border-top: none;">
+                <div id="example" style="font-size: 20px">
+                  <!-- 利用v-if…v-else切换 展开 和 收起 两个画面，template包裹多个元素 -->
+                  <template v-if="isHide">
+                    <!-- 只显示摘要的画面 -->
+                    <div class="hideBg">
+                      <div class="summary" >
+                        <div style="text-align: left;padding-left: 20px" v-for="item in this.listshow" :key="item">
+                          <el-row type="flex" justify="space-between" style="padding-bottom: 10px">
+                            <el-col :span="12"><span style="font-weight: bold">{{item.username}}</span></el-col>
+                            <el-col :span="12" style="text-align: right"><el-rate
+                              v-model="item.rating"
+                              disabled
+                              show-score
+                              text-color="#ff9900"
+                              score-template="{value}">
+                            </el-rate>
+                            </el-col>
+                          </el-row>
+                          <el-row style="padding-bottom: 25px">
+                            <el-col :span="24">{{item.context}}</el-col>
+                          </el-row>
+                        </div>
+                        <el-row>
+                        <div style="text-align: right">
+                          <el-col style="height: 20px">
+                            <a  href="#" @click.stop.prevent="onShow">More&nbsp;
+                              <!-- 向下的角箭头符号，用css画 -->
+                              <span class="downArrow"></span>
+                            </a>
+                          </el-col>
+                        </div>
+                        </el-row>
+                      </div>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <!-- 显示完整内容的画面 -->
+                    <div class="showBg">
+                      <div style="text-align: left;padding-left: 20px" v-for="item in this.reviewdata" :key="item">
                         <el-row type="flex" justify="space-between" style="padding-bottom: 10px">
                           <el-col :span="12"><span style="font-weight: bold">{{item.username}}</span></el-col>
                           <el-col :span="12" style="text-align: right"><el-rate
@@ -102,128 +135,98 @@
                         </el-row>
                         <el-row style="padding-bottom: 25px">
                           <el-col :span="24">{{item.context}}</el-col>
-                        </el-row>
+                         </el-row>
                       </div>
                       <el-row>
-                      <div style="text-align: right">
                         <el-col style="height: 20px">
-                          <a  href="#" @click.stop.prevent="onShow">More&nbsp;
-                            <!-- 向下的角箭头符号，用css画 -->
-                            <span class="downArrow"></span>
-                          </a>
+                          <div class="hideBtn">
+                            <!-- 绑定点击事件onHide，点击收起内容 -->
+                            <a href="#" @click.stop.prevent="onHide">Hide&nbsp;
+                              <!-- 向上的角箭头符号 -->
+                              <span class="upArrow"></span>
+                            </a>
+                          </div>
                         </el-col>
+                      </el-row>
                       </div>
-                      </el-row>
-                    </div>
-                  </div>
-                </template>
-                <template v-else>
-                  <!-- 显示完整内容的画面 -->
-                  <div class="showBg">
-                    <div style="text-align: left;padding-left: 20px" v-for="item in this.reviewdata" :key="item">
-                      <el-row type="flex" justify="space-between" style="padding-bottom: 10px">
-                        <el-col :span="12"><span style="font-weight: bold">{{item.username}}</span></el-col>
-                        <el-col :span="12" style="text-align: right"><el-rate
-                          v-model="item.rating"
-                          disabled
-                          show-score
-                          text-color="#ff9900"
-                          score-template="{value}">
-                        </el-rate>
-                        </el-col>
-                      </el-row>
-                      <el-row style="padding-bottom: 25px">
-                        <el-col :span="24">{{item.context}}</el-col>
-                       </el-row>
-                    </div>
-                    <el-row>
-                      <el-col style="height: 20px">
-                        <div class="hideBtn">
-                          <!-- 绑定点击事件onHide，点击收起内容 -->
-                          <a href="#" @click.stop.prevent="onHide">Hide&nbsp;
-                            <!-- 向上的角箭头符号 -->
-                            <span class="upArrow"></span>
-                          </a>
-                        </div>
-                      </el-col>
-                    </el-row>
-                    </div>
-                </template>
-              </div>
-            </el-col>
+                  </template>
+                </div>
+              </el-col>
+            </el-row>
+          </el-card>
+          <el-card id="ddd" style="padding-left: 0px">
+            <h2>Map</h2>
+            <map-view :center="center"></map-view>
+          </el-card>
+        </el-row>
+  <!--      </el-scrollbar>-->
+  <!--    </el-aside>-->
+      </el-col>
+      <el-col :span="8">
+      <el-main>
+        <el-card style="margin-top: 110px;height: 450px" shadow="never">
+          <el-row>
+            <el-avatar :size="80" :src="host_avatar" style="vertical-align: middle;margin-top: 16px;margin-bottom: 20px"></el-avatar>
+            {{host_name}}
           </el-row>
-        </el-card>
-        <el-card id="ddd" style="padding-left: 0px">
-          <h2>Map</h2>
-          <map-view :center="center"></map-view>
-        </el-card>
-      </el-row>
-<!--      </el-scrollbar>-->
-<!--    </el-aside>-->
-    </el-col>
-    <el-col :span="8">
-    <el-main>
-      <el-card style="margin-top: 110px;height: 450px" shadow="never">
-        <el-row>
-          <el-avatar :size="80" :src="host_avatar" style="vertical-align: middle;margin-top: 16px;margin-bottom: 20px"></el-avatar>
-          {{host_name}}
-        </el-row>
-        <el-row>
-          <el-date-picker
-            v-model="ruleForm.date1"
-            type="daterange"
-            range-separator="To"
-            format="dd/MM/yyyy"
-            value-format="dd/MM/yyyy"
-            size="medium"
-            :start-placeholder= "start_date"
-            :end-placeholder= "end_date" :picker-options="pickerOptions" :default-value="[ruleForm.d1,ruleForm.d2]" @change="dateChange"></el-date-picker>
-        </el-row>
-        <h2 style="margin-top: 10px;margin-bottom: 10px; padding-top: 10px;">{{period}} Nights</h2>
-        <el-divider></el-divider>
-        <el-row>
-          <div style="text-align: left;font-size: medium" >
-            <el-col :span="12">
-              <el-row>
-                <span>{{price}} * {{period}} nights</span>
-              </el-row>
-              <el-row>
-                <div style="margin-top: 10px">Cleaning fee</div>
-              </el-row>
-              <el-row>
-                <div style="margin-top: 10px;font-weight: bold"> Total</div>
-              </el-row>
-            </el-col>
-          </div>
-          <div style="text-align: right">
-            <el-col :span="12">
-              <el-row>
-                $
-                {{price*period}}
-              </el-row>
-              <el-row>
-                <div style="margin-top: 10px">
+          <el-row>
+            <el-date-picker
+              v-model="ruleForm.date1"
+              type="daterange"
+              range-separator="To"
+              format="dd/MM/yyyy"
+              value-format="dd/MM/yyyy"
+              size="medium"
+              :start-placeholder= "start_date"
+              :end-placeholder= "end_date" :picker-options="pickerOptions" :default-value="[ruleForm.d1,ruleForm.d2]" @change="dateChange"></el-date-picker>
+          </el-row>
+          <h2 style="margin-top: 10px;margin-bottom: 10px; padding-top: 10px;">{{period}} Nights</h2>
+          <el-divider></el-divider>
+          <el-row>
+            <div style="text-align: left;font-size: medium" >
+              <el-col :span="12">
+                <el-row>
+                  <span>{{price}} * {{period}} nights</span>
+                </el-row>
+                <el-row>
+                  <div style="margin-top: 10px">Cleaning fee</div>
+                </el-row>
+                <el-row>
+                  <div style="margin-top: 10px;font-weight: bold"> Total</div>
+                </el-row>
+              </el-col>
+            </div>
+            <div style="text-align: right">
+              <el-col :span="12">
+                <el-row>
                   $
-                  {{cleaning_fee}}
-                </div>
-              </el-row>
-              <el-row>
-                <div style="margin-top: 10px;font-weight: bold;margin-bottom: 20px">
-                  $
-                  {{total}}
-                </div>
-              </el-row>
-            </el-col>
-          </div>
-        </el-row>
-        <el-button type="primary" @click="submitForm('ruleForm')">Reserve</el-button>
-      </el-card>
-      <el-row style="height:50px"></el-row>
-      <el-divider><h3>Nearby recommendations</h3></el-divider>
-      <related :list="related" :start_date="start_date" :end_date="end_date"></related>
-    </el-main>
-    </el-col>
-  </el-container>
+                  {{price*period}}
+                </el-row>
+                <el-row>
+                  <div style="margin-top: 10px">
+                    $
+                    {{cleaning_fee}}
+                  </div>
+                </el-row>
+                <el-row>
+                  <div style="margin-top: 10px;font-weight: bold;margin-bottom: 20px">
+                    $
+                    {{total}}
+                  </div>
+                </el-row>
+              </el-col>
+            </div>
+          </el-row>
+          <el-button type="primary" @click="submitForm('ruleForm')">Reserve</el-button>
+        </el-card>
+        <el-row style="height:50px"></el-row>
+        <el-divider><h3>Nearby recommendations</h3></el-divider>
+        <related :list="related" :start_date="start_date" :end_date="end_date"></related>
+      </el-main>
+      </el-col>
+    </el-container>
+    <div style="padding-bottom: 20px"></div>
+  </div>
 </template>
 
 <script>
