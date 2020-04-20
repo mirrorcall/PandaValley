@@ -234,7 +234,7 @@
                 </div>
               </el-row>
               <el-row>
-                <div style="text-align: right"><el-button type="warning" @click="showcomment(item)">write a comment</el-button></div>
+                <div style="text-align: right"><el-button type="warning" @click="showcomment(item)">Write a comment</el-button></div>
               </el-row>
             </el-col>
           </el-row>

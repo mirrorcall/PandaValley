@@ -173,7 +173,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .myproperty{
     margin-right: 10%;
     margin-left: 10%;
@@ -204,5 +204,8 @@ export default {
   }
   .customWidth{
     width:90%;
+  }
+  >>> .el-dialog {
+    width: 65%;
   }
 </style>
