@@ -89,7 +89,7 @@
       { message: 'Please type the number of bed room', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="Please type the number of bedroom" v-model="dynamicValidateForm.number_of_bedroom" type="number" style="width: 500px"><template slot="append">Bed room(s)</template></el-input>
+                <el-input placeholder="Please type the number of bedroom" @keyup.native="integer1" v-model="dynamicValidateForm.number_of_bedroom" style="width: 500px"><template slot="append">Bed room(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="number_of_single_bed"
@@ -100,7 +100,7 @@
       { message: 'Please type the number of single bed', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="Please type the number of single bed" v-model="dynamicValidateForm.number_of_single_bed" type="number" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
+                <el-input placeholder="Please type the number of single bed" @keyup.native="integer2" v-model="dynamicValidateForm.number_of_single_bed" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="number_of_double_bed"
@@ -111,7 +111,7 @@
       { message: 'Please type the number of double bed', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="Please type the number of double bed" v-model="dynamicValidateForm.number_of_double_bed" type="number" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
+                <el-input placeholder="Please type the number of double bed" @keyup.native="integer3" v-model="dynamicValidateForm.number_of_double_bed" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="number_of_king_bed"
@@ -122,7 +122,7 @@
       { message: 'Please type the number of king bed', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="Please type the number of king bed" v-model="dynamicValidateForm.number_of_king_bed" type="number" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
+                <el-input placeholder="Please type the number of king bed" @keyup.native="integer4" v-model="dynamicValidateForm.number_of_king_bed" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="number_of_queen_bed"
@@ -133,7 +133,7 @@
       { message: 'Please type the number of queen bed', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="Please type the number of queen bed" v-model="dynamicValidateForm.number_of_queen_bed" type="number" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
+                <el-input placeholder="Please type the number of queen bed" @keyup.native="integer5" v-model="dynamicValidateForm.number_of_queen_bed" style="width: 500px"><template slot="append">Bed(s)</template></el-input>
               </el-form-item>
               <!--              <el-form-item-->
               <!--                style="width: 600px;"-->
@@ -156,7 +156,7 @@
       { message: 'Please type the number', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="Please type the number of bathroom" v-model="dynamicValidateForm.number_of_bathroom" type="number" ><template slot="append">Bath room(s)</template></el-input>
+                <el-input placeholder="Please type the number of bathroom" @keyup.native="integer6" v-model="dynamicValidateForm.number_of_bathroom"><template slot="append">Bath room(s)</template></el-input>
               </el-form-item>
               <el-form-item
                 prop="description"
@@ -177,7 +177,7 @@
       { message: 'Please type the guests', trigger: ['blur', 'change'] }
     ]"
               >
-                <el-input placeholder="Please type the number of guests" v-model="dynamicValidateForm.guests" type="number" ><template slot="append">Guests</template></el-input>
+                <el-input placeholder="Please type the number of guests" @keyup.native="integer7" v-model="dynamicValidateForm.guests" ><template slot="append">Guests</template></el-input>
               </el-form-item>
               <el-form-item style="margin-left: -500px">
                 <el-button type="primary" @click="submitForm(dynamicValidateForm)">Next Page</el-button>
@@ -568,6 +568,55 @@ export default {
     google: gmapApi
   },
   methods: {
+    integer1 () {
+      if (this.dynamicValidateForm.number_of_bedroom.length === 1) {
+        this.dynamicValidateForm.number_of_bedroom = this.dynamicValidateForm.number_of_bedroom.replace(/[^0-9]/g, '')
+      } else {
+        this.dynamicValidateForm.number_of_bedroom = this.dynamicValidateForm.number_of_bedroom.replace(/\D/g, '')
+      }
+    },
+    integer2 () {
+      if (this.dynamicValidateForm.number_of_single_bed.length === 1) {
+        this.dynamicValidateForm.number_of_single_bed = this.dynamicValidateForm.number_of_single_bed.replace(/[^0-9]/g, '')
+      } else {
+        this.dynamicValidateForm.number_of_single_bed = this.dynamicValidateForm.number_of_single_bed.replace(/\D/g, '')
+      }
+    },
+    integer3 () {
+      if (this.dynamicValidateForm.number_of_double_bed.length === 1) {
+        this.dynamicValidateForm.number_of_double_bed = this.dynamicValidateForm.number_of_double_bed.replace(/[^0-9]/g, '')
+      } else {
+        this.dynamicValidateForm.number_of_double_bed = this.dynamicValidateForm.number_of_double_bed.replace(/\D/g, '')
+      }
+    },
+    integer4 () {
+      if (this.dynamicValidateForm.number_of_king_bed.length === 1) {
+        this.dynamicValidateForm.number_of_king_bed = this.dynamicValidateForm.number_of_king_bed.replace(/[^0-9]/g, '')
+      } else {
+        this.dynamicValidateForm.number_of_king_bed = this.dynamicValidateForm.number_of_king_bed.replace(/\D/g, '')
+      }
+    },
+    integer5 () {
+      if (this.dynamicValidateForm.number_of_queen_bed.length === 1) {
+        this.dynamicValidateForm.number_of_queen_bed = this.dynamicValidateForm.number_of_queen_bed.replace(/[^0-9]/g, '')
+      } else {
+        this.dynamicValidateForm.number_of_queen_bed = this.dynamicValidateForm.number_of_queen_bed.replace(/\D/g, '')
+      }
+    },
+    integer6 () {
+      if (this.dynamicValidateForm.number_of_bathroom.length === 1) {
+        this.dynamicValidateForm.number_of_bathroom = this.dynamicValidateForm.number_of_bathroom.replace(/[^0-9]/g, '')
+      } else {
+        this.dynamicValidateForm.number_of_bathroom = this.dynamicValidateForm.number_of_bathroom.replace(/\D/g, '')
+      }
+    },
+    integer7 () {
+      if (this.dynamicValidateForm.guests.length === 1) {
+        this.dynamicValidateForm.guests = this.dynamicValidateForm.guests.replace(/[^0-9]/g, '')
+      } else {
+        this.dynamicValidateForm.guests = this.dynamicValidateForm.guests.replace(/\D/g, '')
+      }
+    },
     submitFormAll () {
       // let data = this.$qs.stringify(formName.number_of_bedroom)
       // let formData = new FormData()

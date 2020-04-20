@@ -38,23 +38,25 @@
             <el-col :span="6"><p class="dates">{{item.end_date}}</p></el-col>
           </el-row>
           <el-row type="flex" justify="space-between">
-            <el-col :span="12"><span class="dates">{{item.days}} nights</span></el-col>
-            <el-col :span="12"><span class="dates">total cost: ${{item.total_cost}}</span></el-col>
+            <el-col :span="6"><span class="dates">Period:</span></el-col>
+            <el-col :span="6"><span class="dates">{{item.days}} nights</span></el-col>
+            <el-col :span="6"><span class="dates">Total cost:</span></el-col>
+            <el-col :span="6"><span class="dates">${{item.total_cost}}</span></el-col>
           </el-row>
           <el-row>
-            <div style="margin-top: 10px;padding-bottom: 10px;font-size: medium;text-align: left">
+            <div style="font-size: medium;text-align: left">
               <el-row type="flex" class="row-bg" justify="space-between">
-                <el-col :span="4">
-                  <span style="font-weight: bold">Host:</span>
+                <el-col :span="6">
+                  <p class="dates">Host:</p>
                 </el-col>
-                <el-col :span="8">
-                  {{item.host_name}}
+                <el-col :span="6">
+                  <p class="dates">{{item.host_name}}</p>
                 </el-col>
-                <el-col :span="4">
-                  <span style="font-weight: bold">Phone:</span>
+                <el-col :span="6">
+                  <p style="font-weight: bold">Phone:</p>
                 </el-col>
-                <el-col :span="8">
-                  {{item.contact}}
+                <el-col :span="6">
+                  <p class="dates">{{item.contact}}</p>
                 </el-col>
               </el-row>
             </div>
@@ -143,23 +145,25 @@
                 <el-col :span="6"><p class="dates">{{item.end_date}}</p></el-col>
               </el-row>
               <el-row type="flex" justify="space-between">
-                <el-col :span="12"><span class="dates">{{item.days}} nights</span></el-col>
-                <el-col :span="12"><span class="dates">total cost: ${{item.total_cost}}</span></el-col>
+                <el-col :span="6"><span class="dates">Period:</span></el-col>
+                <el-col :span="6"><span class="dates">{{item.days}} nights</span></el-col>
+                <el-col :span="6"><span class="dates">Total cost:</span></el-col>
+                <el-col :span="6"><span class="dates">${{item.total_cost}}</span></el-col>
               </el-row>
               <el-row>
-                <div style="margin-top: 10px;padding-bottom: 10px;font-size: medium;text-align: left">
+                <div style="font-size: medium;text-align: left">
                   <el-row type="flex" class="row-bg" justify="space-between">
-                    <el-col :span="4">
-                      <span style="font-weight: bold">Host:</span>
+                    <el-col :span="6">
+                      <p class="dates">Host:</p>
                     </el-col>
-                    <el-col :span="8">
-                      {{item.host_name}}
+                    <el-col :span="6">
+                      <p class="dates">{{item.host_name}}</p>
                     </el-col>
-                    <el-col :span="4">
-                      <span style="font-weight: bold">Phone:</span>
+                    <el-col :span="6">
+                      <p style="font-weight: bold">Phone:</p>
                     </el-col>
-                    <el-col :span="8">
-                      {{item.contact}}
+                    <el-col :span="6">
+                      <p class="dates">{{item.contact}}</p>
                     </el-col>
                   </el-row>
                 </div>
@@ -206,52 +210,31 @@
                 <el-col :span="6"><p class="dates">{{item.end_date}}</p></el-col>
               </el-row>
               <el-row type="flex" justify="space-between">
-                <el-col :span="12"><span class="dates">{{item.days}} nights</span></el-col>
-                <el-col :span="12"><span class="dates">total cost: ${{item.total_cost}}</span></el-col>
+                <el-col :span="6"><span class="dates">Period:</span></el-col>
+                <el-col :span="6"><span class="dates">{{item.days}} nights</span></el-col>
+                <el-col :span="6"><span class="dates">Total cost:</span></el-col>
+                <el-col :span="6"><span class="dates">${{item.total_cost}}</span></el-col>
               </el-row>
               <el-row>
-                <div style="margin-top: 10px;padding-bottom: 10px;font-size: medium;text-align: left">
+                <div style="font-size: medium;text-align: left">
                   <el-row type="flex" class="row-bg" justify="space-between">
-                    <el-col :span="4">
-                      <span style="font-weight: bold">Host:</span>
+                    <el-col :span="6">
+                      <p class="dates">Host:</p>
                     </el-col>
-                    <el-col :span="8">
-                      {{item.host_name}}
+                    <el-col :span="6">
+                      <p class="dates">{{item.host_name}}</p>
                     </el-col>
-                    <el-col :span="4">
-                      <span style="font-weight: bold">Phone:</span>
+                    <el-col :span="6">
+                      <p style="font-weight: bold">Phone:</p>
                     </el-col>
-                    <el-col :span="8">
-                      {{item.contact}}
+                    <el-col :span="6">
+                      <p class="dates">{{item.contact}}</p>
                     </el-col>
-
-                    <!--                <el-col :span="10">-->
-                    <!--                  <el-row>-->
-                    <!--                    <span style="font-weight: bold">Host contact:</span>-->
-                    <!--                  </el-row>-->
-                    <!--                  <el-row>-->
-                    <!--                    <span>{{item.host_name}}</span>-->
-                    <!--                  </el-row>-->
-                    <!--                  <el-row>-->
-                    <!--                    <span>{{item.contact}}</span>-->
-                    <!--                  </el-row>-->
-                    <!--                  <el-row>-->
-                    <!--                    <span>{{item.email}}</span>-->
-                    <!--                  </el-row>-->
-                    <!--                </el-col>-->
-                    <!--                <el-col :span="10">-->
-                    <!--                  <el-row>-->
-                    <!--                    <div style="margin-top: 30px">-->
-                    <!--                      <el-button v-if="test(item)" @click="showcomment(index,item)">write a comment</el-button>-->
-                    <!--                    </div>-->
-                    <!--<el-button type="text" @click="dialogVisible = true">click to open the Dialog</el-button>-->
-                    <!--                  </el-row>-->
-                    <!--                </el-col>-->
                   </el-row>
                 </div>
               </el-row>
               <el-row>
-                <div style="text-align: right"><el-button type="warning" @click="showcomment(item)">write a comment</el-button></div>
+                <div style="text-align: right"><el-button type="warning" @click="showcomment(item)">Write a comment</el-button></div>
               </el-row>
             </el-col>
           </el-row>
@@ -336,8 +319,10 @@
                 <el-col :span="6"><p class="dates">{{item.end_date}}</p></el-col>
               </el-row>
               <el-row type="flex" justify="space-between">
-                <el-col :span="12"><span class="dates">{{item.days}} nights</span></el-col>
-                <el-col :span="12"><span class="dates">total cost: ${{item.total_cost}}</span></el-col>
+                <el-col :span="6"><span class="dates">Period:</span></el-col>
+                <el-col :span="6"><span class="dates">{{item.days}} nights</span></el-col>
+                <el-col :span="6"><span class="dates">Total cost:</span></el-col>
+                <el-col :span="6"><span class="dates">${{item.total_cost}}</span></el-col>
               </el-row>
               <el-row>
                 <div style="margin-top: 10px;padding-bottom: 10px;font-size: medium;text-align: left">
@@ -399,23 +384,25 @@
                 <el-col :span="6"><p class="dates">{{item.end_date}}</p></el-col>
               </el-row>
               <el-row type="flex" justify="space-between">
-                <el-col :span="12"><span class="dates">{{item.days}} nights</span></el-col>
-                <el-col :span="12"><span class="dates">total cost: ${{item.total_cost}}</span></el-col>
+                <el-col :span="6"><span class="dates">Period:</span></el-col>
+                <el-col :span="6"><span class="dates">{{item.days}} nights</span></el-col>
+                <el-col :span="6"><span class="dates">Total cost:</span></el-col>
+                <el-col :span="6"><span class="dates">${{item.total_cost}}</span></el-col>
               </el-row>
               <el-row>
-                <div style="margin-top: 10px;padding-bottom: 10px;font-size: medium;text-align: left">
+                <div style="font-size: medium;text-align: left">
                   <el-row type="flex" class="row-bg" justify="space-between">
-                    <el-col :span="4">
-                      <span style="font-weight: bold">Host:</span>
+                    <el-col :span="6">
+                      <p class="dates">Host:</p>
                     </el-col>
-                    <el-col :span="8">
-                      {{item.host_name}}
+                    <el-col :span="6">
+                      <p class="dates">{{item.host_name}}</p>
                     </el-col>
-                    <el-col :span="4">
-                      <span style="font-weight: bold">Phone:</span>
+                    <el-col :span="6">
+                      <p style="font-weight: bold">Phone:</p>
                     </el-col>
-                    <el-col :span="8">
-                      {{item.contact}}
+                    <el-col :span="6">
+                      <p class="dates">{{item.contact}}</p>
                     </el-col>
                   </el-row>
                 </div>
@@ -464,8 +451,10 @@
                 <el-col :span="6"><p class="dates">{{item.end_date}}</p></el-col>
               </el-row>
               <el-row type="flex" justify="space-between">
-                <el-col :span="12"><span class="dates">{{item.days}} nights</span></el-col>
-                <el-col :span="12"><span class="dates">total cost: ${{item.total_cost}}</span></el-col>
+                <el-col :span="6"><span class="dates">Period:</span></el-col>
+                <el-col :span="6"><span class="dates">{{item.days}} nights</span></el-col>
+                <el-col :span="6"><span class="dates">Total cost:</span></el-col>
+                <el-col :span="6"><span class="dates">${{item.total_cost}}</span></el-col>
               </el-row>
               <el-row>
                 <div style="margin-top: 10px;padding-bottom: 10px;font-size: medium;text-align: left">
@@ -539,19 +528,6 @@ export default {
       })
   },
   methods: {
-    test: function (l) {
-      var result = true
-      // var result = false
-      // var date = new Date() // 得到当前日期原始模式
-      // var currentyear = date.getFullYear() // 得到当前日期年份
-      // var newmonth = date.getMonth() + 1 // 得到当前日期月份（注意： getMonth()方法一月为 0, 二月为 1, 以此类推。）
-      // var newday = date.getDate()
-      // l.end_date.split('/')
-      // if (l.end_date === 1) {
-      //   result = true
-      // }
-      return result
-    },
     showcomment (item) {
       // this.item.comment = true
       // this.isactive = item.property_id

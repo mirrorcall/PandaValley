@@ -85,7 +85,7 @@
                 <!-- </el-row> -->
                 <el-row>
                   <el-form-item>
-                    <el-button @click="onSubmit" type="primary" round>SEARCH</el-button>
+                    <el-button @click="onSubmit" type="danger" round>SEARCH</el-button>
                   </el-form-item>
                 </el-row>
               </el-col>

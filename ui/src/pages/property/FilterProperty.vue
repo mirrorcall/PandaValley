@@ -197,6 +197,9 @@ export default {
       if (command === '-') {
         this.order = '-price'
       }
+      if (command === '0') {
+        this.order = ''
+      }
     },
     handlesearch () {
       this.getProductBySearch()

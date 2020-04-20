@@ -226,6 +226,8 @@ export default {
   text-align: left;
 }
 .explain-text-right {
+  /*color: #777777;*/
+  color: #333333;
   font-size: 14px;
   font-weight: 300;
   text-align: right;

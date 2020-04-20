@@ -16,16 +16,17 @@
         </el-form>
         <div class="panel-form-button">
           <el-button type="primary" style="width: 100%; height: 100%" @click="resetAction">
-            <el-row>
-              <el-col :span="12"><div style="text-align: left"><span>Next</span></div></el-col>
-              <el-col :span="12">
-                <div style="text-align: right"><span><i class="el-icon-right"></i></span></div>
-              </el-col>
-            </el-row>
+<!--            <el-row>-->
+<!--              <el-col :span="12"><div style="text-align: left"><span>Next</span></div></el-col>-->
+<!--              <el-col :span="12">-->
+<!--                <div style="text-align: right"><span><i class="el-icon-right"></i></span></div>-->
+<!--              </el-col>-->
+<!--            </el-row>-->
+              <span>Next&nbsp;</span><i class="el-icon-right"></i>
           </el-button>
         </div>
         <div class="cancel">
-          <el-button type="info" style="width: 100%; height: 100%" @click="cancel">cancel</el-button>
+          <el-button type="info" style="width: 100%; height: 100%" @click="cancel">Cancel</el-button>
         </div>
       </div>
     </div>

@@ -1,14 +1,11 @@
 import datetime
 import decimal
-
 from django.db.models import Q, Count
 from django.http import JsonResponse
 from django.views.generic.base import View
 from django.contrib.gis.geos import GEOSGeometry
 from .models import Property, Inspection, Booking, Reviews
-
 from ..user.models import UserProfile, WishList
-#from django.forms.models import model_to_dict
 from django.core.mail import send_mail
 
 
@@ -84,7 +81,7 @@ class DeletePropertyView(View):
         try:
             prop_id = request.POST.get('property_id')
             prop = Property.objects.get(pk=prop_id)
-            bookings = Booking.objects.filter(host=prop).values()
+            bookings = Booking.objects.filter(host=prop).exclude(state='canceled').values()
             state = True
             if bookings.exists():
                 for each in bookings.iterator():
@@ -142,7 +139,7 @@ class SearchPropertyView(View):
                 res = res.filter(price__gte=min_price)
 
             result = []
-            # print('res',type(res))
+            #print('res', type(res))
             # res <class 'django.db.models.query.QuerySet'>
             res = res.values()
             if res.exists():
@@ -150,8 +147,8 @@ class SearchPropertyView(View):
                     # temp = {}
                     if not Booking.objects.filter(host=each['id']) \
                             .filter(Q(start_date__lte=datetime.date(end_date[2], end_date[1], end_date[0])),
-                                    Q(end_date__gte=datetime.date(start_date[2], start_date[1], start_date[0]))):
-
+                                    Q(end_date__gte=datetime.date(start_date[2], start_date[1], start_date[0])))\
+                            .exclude(state='canceled'):
                         temp = dict()
                         temp['property_id'] = each['id']
                         temp['title'] = each['title']  # prop.title
@@ -176,6 +173,7 @@ class SearchPropertyView(View):
             response['code'] = 0
             response['msg'] = 'Return search information.'
             response['total'] = len(result)
+            #print(result,'result')
             if page == 1:
                 response['body'] = result[0:8]
             else:
@@ -205,7 +203,8 @@ class VerifyReserveView(View):
             period = period.days
             # check if avaiable
             if not Booking.objects.filter(host=prop_id) \
-                    .filter(Q(start_date__lte=end_date), Q(end_date__gte=start_date)):
+                    .filter(Q(start_date__lte=end_date), Q(end_date__gte=start_date))\
+                    .exclude(state='canceled'):
                 response['state'] = True  # true can book
             res = dict()
             prop = Property.objects.get(pk=prop_id)
@@ -278,7 +277,7 @@ class ShowPropertyView(View):
             s = False
             if user:
                 state = WishList.objects.filter(user=user, property=prop_id)
-                print(state)
+                #print(state)
                 if state:
                     s = True
             res['saved'] = s
@@ -288,7 +287,7 @@ class ShowPropertyView(View):
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
-        print(response)
+        #print(response)
         return JsonResponse(response)
 
 
@@ -297,7 +296,7 @@ class ShowReviewsView(View):
         response = {}
         try:
             prop_id = request.GET.get('property')
-            result = Reviews.objects.filter(property=prop_id).values()
+            result = Reviews.objects.filter(property=prop_id).order_by('-id').values()
             response['code'] = 0
             response['msg'] = 'Return review information.'
             #print(type(result))
@@ -339,7 +338,7 @@ class AddReviewView(View):
             record = Booking.objects.get(pk=booking)
             record.state = 'completed'
             record.save()
-            print(record.state)
+            #print(record.state)
 
             response['code'] = 0
             response['msg'] = 'Save review information.'
@@ -436,7 +435,8 @@ class ReserveView(View):
             # NEW BOOKING
             response['state'] = False
             if not Booking.objects.filter(host=prop_id) \
-                    .filter(Q(start_date__lte=end_date), Q(end_date__gte=start_date)):
+                    .filter(Q(start_date__lte=end_date), Q(end_date__gte=start_date))\
+                    .exclude(state='canceled'):
                 response['state'] = True  # true can book
                 new_booking = Booking()
                 new_booking.guest = UserProfile.objects.get(pk=email)
@@ -546,17 +546,19 @@ class ShowBookingView(View):
 
             response['msg'] = 'Return wish list information.'
             response['body'] = res
+            #print(res)
         except Exception as e:
             response['code'] = 127
             response['msg'] = 'Internal server failure. ' + str(e)
         return JsonResponse(response)
+
 
 class ShowHostBookingView(View):
     # show bookings from users
     def get(self, request):
         response = {}
         try:
-            print(request)
+            #print(request)
             host = request.GET.get('property_id')
             prop = Property.objects.get(pk=host)
             res = Booking.objects.filter(host=prop).order_by('-id').values()
@@ -656,8 +658,9 @@ class AgreeRefundView(View):
             booking = request.POST.get('booking_id')
             record = Booking.objects.get(pk=booking)
             record.state = 'canceled'
-            record.is_deleted = True
+            #record.is_deleted = True
             record.save()
+            #print(record)
             mail_title = 'Your booking has been canceled.'
             mail_body = \
                 f"Dear {record.guest.first_name},\n\n" + \
@@ -680,10 +683,10 @@ class AgreeRefundView(View):
 class ShowNearbyPropertyView(View):
     def get(self, request):
         response = {}
-        #print(request)
         try:
             # LocationsNearMe = Property.objects.filter(latitude__gte=(the minimal lat from distance()),
             #                   latitude__lte = (the minimal lat from distance()),
+            user = request.GET.get('email')
             prop_id = request.GET.get('property_id')
             start_date = request.GET.get('start_date')
             end_date = request.GET.get('end_date')
@@ -691,7 +694,7 @@ class ShowNearbyPropertyView(View):
             end_date = datetime.datetime.strptime(end_date, "%d/%m/%Y")
             prop = Property.objects.get(pk=prop_id)
             #within the range
-            res = Property.objects.filter(latitude_longitude__distance_lte=(prop.latitude_longitude, 3)).exclude(pk=prop_id).values()
+            res = Property.objects.filter(latitude_longitude__distance_lte=(prop.latitude_longitude, 0.02)).exclude(pk=prop_id).values()
             result = []
             count = 0
             if res.exists():
@@ -700,7 +703,8 @@ class ShowNearbyPropertyView(View):
                         break
                     if not Booking.objects.filter(host=each['id']) \
                             .filter(Q(start_date__lte=end_date),
-                                    Q(end_date__gte=start_date)):
+                                    Q(end_date__gte=start_date))\
+                            .exclude(state='canceled'):
                         temp = {}
                         temp['property_id'] = each['id']
                         temp['title'] = each['title']  # prop.title
@@ -711,6 +715,14 @@ class ShowNearbyPropertyView(View):
                         temp['price'] = each['price']
                         temp['suburb'] = each['suburb']
                         temp['street'] = each['street']
+                        temp['rating'] = each['rating']
+                        # wishlist
+                        s = False
+                        if user:
+                            state = WishList.objects.filter(user=user, property=each['id'])
+                            if state:
+                                s = True
+                        temp['saved'] = s
                         result.append(temp)
                         count += 1
 
@@ -736,13 +748,12 @@ class RefuseRefundView(View):
             mail_body = \
                 f"Dear {record.guest.first_name},\n\n" + \
                 f"We are pleased to inform you that your application for canceling booking at {record.host.street} has been refused.\n\n" + \
-                f"Your check-in : {record.start_date.date()}\n" + \
-                f"Your checkout : {record.end_date.date()}\n\n" + \
+                f"Your check-in : {record.start_date}\n" + \
+                f"Your checkout : {record.end_date}\n\n" + \
                 "Reservation details:\n\n" + \
                 f"Room type: {record.host.property_type}\nGuests: {record.host.guests}\n" + \
                 f"Days: {record.days}\nCost: ${record.total_cost}\n\n"
             send_state = send_mail(mail_title, mail_body, 'pdvalley.official@gmail.com', [record.guest.email])
-            # print(record.state)
             response['code'] = 0
             response['msg'] = 'The application for canceling booking has been refused.'
         except Exception as e:

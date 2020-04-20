@@ -47,7 +47,7 @@
         <el-card id="aaa" align="left" style="padding-left: 20px">
           <h2 align="center">Overview</h2>
           <h2><i class = "el-icon-document"></i> Description</h2>
-          <el-main>{{description}}</el-main>
+          <el-main><span style="white-space: pre-line">{{description}}</span></el-main>
           <h2><i class="el-icon-house"></i> Type: {{property_type | capitalize}}</h2>
           <h2><i class="icon iconfont iconrenshu" style="font-size: 25px"></i> Guests: {{guests}}</h2>
           <el-row style="font-size: 20px; padding-bottom: 10px">
@@ -121,7 +121,7 @@
                   <!-- 显示完整内容的画面 -->
                   <div class="showBg">
                     <div style="text-align: left;padding-left: 20px" v-for="item in this.reviewdata" :key="item">
-                      <el-row type="flex" justify="space-between">
+                      <el-row type="flex" justify="space-between" style="padding-bottom: 10px">
                         <el-col :span="12"><span style="font-weight: bold">{{item.username}}</span></el-col>
                         <el-col :span="12" style="text-align: right"><el-rate
                           v-model="item.rating"
@@ -132,7 +132,7 @@
                         </el-rate>
                         </el-col>
                       </el-row>
-                      <el-row>
+                      <el-row style="padding-bottom: 25px">
                         <el-col :span="24">{{item.context}}</el-col>
                        </el-row>
                     </div>
@@ -428,9 +428,14 @@ export default {
     },
     getNearby () {
       this.$axios
-        .get('/api/nearby_property?property_id=' + this.property + '&start_date=' + this.start_date + '&end_date=' + this.end_date)
+        .get('/api/nearby_property?property_id=' + this.property + '&start_date=' + this.start_date + '&end_date=' + this.end_date + '&email=' + this.$store.getters.getStorage)
         .then(res => {
           this.related = res.data.body
+          this.related.forEach(function (item) {
+            if (item['rating'] === '5.00') {
+              item['rating'] = '5'
+            }
+          })
         })
     },
     checkReview () {
